@@ -6,6 +6,7 @@ using API.Data;
 using API.Dtos.Users;
 using API.Interfaces;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,12 @@ namespace API.Controllers
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AuthenticationController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly ITokenService _tokenService;
+        public AuthenticationController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
 
@@ -53,8 +56,8 @@ namespace API.Controllers
                         return Ok(new UserDto
                         {
                             Username = user.UserName,
-                            Email = user.Email
-                            // TODO Token
+                            Email = user.Email,
+                            Token = _tokenService.GenerateToken(user)
                         });
                     }
                     else
@@ -90,16 +93,11 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Email = user.Email,
-                // TODO Token
+                Token = _tokenService.GenerateToken(user)
             });
 
         }
 
-        [HttpPost("signout")]
-        public async Task<IActionResult> SignOut()
-        {
-            throw new NotImplementedException();
-        }
 
 
     }

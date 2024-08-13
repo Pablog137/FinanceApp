@@ -11,7 +11,7 @@ namespace API.Interfaces
     {
         Task<IActionResult> Register([FromBody] RegisterDto registerDto);
         Task<IActionResult> Login([FromBody] LoginDto loginDto);
-        Task<IActionResult> SignOut();
+        // Task<IActionResult> SignOut();
 
     }
 }
