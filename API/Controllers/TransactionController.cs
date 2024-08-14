@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.Dtos.Transaction;
+using API.Mappers;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ namespace API.Controllers
 
             if (transactions == null) return NotFound();
 
-            return Ok(transactions);
+            return Ok(transactions.Select(t => t.toDto()));
 
         }
 
@@ -62,7 +63,7 @@ namespace API.Controllers
 
             if (transaction == null) return NotFound();
 
-            return Ok(transaction);
+            return Ok(transaction.toDto());
         }
 
         [HttpPost("add-transaction")]
