@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.Dtos.Transaction;
+using API.Interfaces.Repositories;
 using API.Mappers;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,11 +18,10 @@ namespace API.Controllers
     [Route("api/transaction")]
     public class TransactionController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public TransactionController(AppDbContext context)
+        private readonly ITransactionRepository _transactionRepo;
+        public TransactionController(ITransactionRepository transactionRepo)
         {
-            _context = context;
-
+            _transactionRepo = transactionRepo;
         }
 
 
@@ -38,9 +38,9 @@ namespace API.Controllers
                 return BadRequest("Invalid user ID format.");
             }
 
-            var transactions = await _context.Transactions.Where(t => t.Account_Id == userId).ToListAsync();
+            var transactions = await _transactionRepo.GetAllTransaction(userId);
 
-            if (transactions == null) return NotFound();
+            if (transactions == null) return NotFound("No transactions found.");
 
             return Ok(transactions.Select(t => t.toDto()));
 
@@ -59,7 +59,7 @@ namespace API.Controllers
                 return BadRequest("Invalid user ID format.");
             }
 
-            var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.Account_Id == userId);
+            var transaction = await _transactionRepo.GetById(id, userId);
 
             if (transaction == null) return NotFound();
 
@@ -81,21 +81,11 @@ namespace API.Controllers
                 return BadRequest("Invalid user ID format.");
             }
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == transactionDto.Account_Id && a.User_Id == userId);
+            var transaction = await _transactionRepo.AddTransaction(transactionDto, userId);
 
-            if (account == null) return NotFound("Account not found.");
+            if (transaction == null) return NotFound("Account not found.");
 
-            var transaction = new Transaction
-            {
-                Account_Id = transactionDto.Account_Id,
-                Type = transactionDto.Type,
-                Amount = transactionDto.Amount,
-                Description = transactionDto.Description,
-                Date = DateTime.Now
-            };
 
-            await _context.Transactions.AddAsync(transaction);
-            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction);
 
 
