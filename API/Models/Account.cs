@@ -10,10 +10,16 @@ namespace API.Models
     public class Account
     {
         public int Id { get; set; }
+        public int User_Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public long Balance { get; set; }
+        public decimal Balance { get; set; }
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }
+
+        public List<Transaction> Transactions { get; set; }
+
+        public User User { get; set; }
+
 
     }
 }
