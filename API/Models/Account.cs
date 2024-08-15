@@ -10,15 +10,19 @@ namespace API.Models
     public class Account
     {
         public int Id { get; set; }
-        public int User_Id { get; set; }
+
+        public int UserId { get; set; }
+        public AppUser User { get; set; }
+
         public string Name { get; set; } = string.Empty;
+
+        [Column(TypeName = "decimal(10,3)")]
         public decimal Balance { get; set; }
-        public DateTime Created_at { get; set; }
-        public DateTime Updated_at { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public List<Transaction> Transactions { get; set; }
 
-        public User User { get; set; }
 
 
     }

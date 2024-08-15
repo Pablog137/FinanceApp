@@ -23,7 +23,7 @@ namespace API.Services
         }
 
 
-        public string GenerateToken(User user)
+        public string GenerateToken(AppUser user)
         {
             // Creates claims. They are pieces of information that are being included in the token.
             var claims = new List<Claim>

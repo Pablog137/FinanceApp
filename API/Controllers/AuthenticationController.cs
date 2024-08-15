@@ -19,10 +19,10 @@ namespace API.Controllers
     public class AuthenticationController : ControllerBase, IAuthentication
     {
 
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
-        public AuthenticationController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+        public AuthenticationController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -40,7 +40,7 @@ namespace API.Controllers
 
                 if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                var user = new User
+                var user = new AppUser
                 {
                     UserName = registerDto.Username,
                     Email = registerDto.Email,

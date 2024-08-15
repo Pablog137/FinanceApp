@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.Models
 {
-    public class User : IdentityUser
+    public class AppUser : IdentityUser<int>
     {
         public Account Account { get; set; }
     }

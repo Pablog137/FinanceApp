@@ -15,7 +15,7 @@ namespace API.Mappers
             return new TransactionDto
             {
                 Id = transaction.Id,
-                Account_Id = transaction.Account_Id,
+                AccountId = transaction.AccountId,
                 Type = transaction.Type,
                 Amount = transaction.Amount,
                 Description = transaction.Description,

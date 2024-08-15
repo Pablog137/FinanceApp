@@ -26,7 +26,7 @@ namespace API.Controllers
 
 
         [HttpGet("get-all")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAllTransaction()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

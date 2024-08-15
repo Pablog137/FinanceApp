@@ -1,7 +1,9 @@
 using System.Text;
 using API.Data;
 using API.Interfaces;
+using API.Interfaces.Repositories;
 using API.Models;
+using API.Repository;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -12,13 +14,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(options => options
-    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -48,13 +44,18 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddIdentity<User, IdentityRole>(opt =>
+builder.Services.AddDbContext<AppDbContext>(options => options
+    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 {
     opt.Password.RequireUppercase = true;
     opt.Password.RequireNonAlphanumeric = false;
     opt.Password.RequiredLength = 6;
     opt.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<AppDbContext>();
+}).AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -73,6 +74,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 var app = builder.Build();
 
@@ -85,8 +87,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

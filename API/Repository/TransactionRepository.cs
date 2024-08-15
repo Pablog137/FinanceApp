@@ -22,13 +22,13 @@ namespace API.Repository
 
         public async Task<Transaction> AddTransaction(CreateTransactionDto createTransactionDto, int userId)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == createTransactionDto.Account_Id && a.User_Id == userId);
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == createTransactionDto.AccountId && a.UserId == userId);
 
             if (account == null) return null;
 
             var transaction = new Transaction
             {
-                Account_Id = createTransactionDto.Account_Id,
+                AccountId = createTransactionDto.AccountId,
                 Type = createTransactionDto.Type,
                 Amount = createTransactionDto.Amount,
                 Description = createTransactionDto.Description,
@@ -44,14 +44,14 @@ namespace API.Repository
 
         public async Task<List<Transaction>> GetAllTransaction(int userId)
         {
-            var transactions = await _context.Transactions.Where(t => t.Account_Id == userId).ToListAsync();
+            var transactions = await _context.Transactions.Where(t => t.AccountId == userId).ToListAsync();
 
             return transactions;
         }
 
         public async Task<Transaction> GetById(int id, int userId)
         {
-            var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.Account_Id == userId);
+            var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.AccountId == userId);
 
             return transaction;
         }

@@ -9,7 +9,7 @@ namespace API.Dtos.Transaction
     public class TransactionDto
     {
         public int Id { get; set; }
-        public int Account_Id { get; set; }
+        public int AccountId { get; set; }
         public string Type { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : IdentityDbContext<AppUser,AppRole,int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -24,10 +24,16 @@ namespace API.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<AppUser>()
+                .HasOne(u => u.Account)
+                .WithOne(u => u.User)
+                .HasForeignKey<Account>(a => a.UserId);
+
+
             // Roles
-            builder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Id = "2", Name = "User", NormalizedName = "USER" }
+            builder.Entity<AppRole>().HasData(
+                new AppRole { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
+                new AppRole { Id = 2, Name = "User", NormalizedName = "USER" }
             );
         }
     }
