@@ -50,27 +50,35 @@ builder.Services.AddDbContext<AppDbContext>(options => options
 
 builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 {
-    opt.Password.RequireUppercase = true;
+    opt.Password.RequireUppercase = false;
     opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequiredLength = 6;
+    opt.Password.RequiredLength = 2;
+    opt.Password.RequireDigit = false;
     opt.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
 // JWT Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(opt =>
+builder.Services.AddAuthentication(options =>
 {
-    opt.TokenValidationParameters = new TokenValidationParameters
+    options.DefaultAuthenticateScheme =
+    options.DefaultChallengeScheme =
+    options.DefaultScheme =
+    options.DefaultSignInScheme =
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])),
+
     };
+
 });
 
 builder.Services.AddScoped<ITokenService, TokenService>();

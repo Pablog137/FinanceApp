@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/transaction")]
     public class TransactionController : ControllerBase
     {
@@ -24,9 +25,7 @@ namespace API.Controllers
             _transactionRepo = transactionRepo;
         }
 
-
         [HttpGet("get-all")]
-        //[Authorize]
         public async Task<IActionResult> GetAllTransaction()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -47,7 +46,6 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -67,7 +65,6 @@ namespace API.Controllers
         }
 
         [HttpPost("add-transaction")]
-        [Authorize]
         public async Task<IActionResult> AddTransaction([FromBody] CreateTransactionDto transactionDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
