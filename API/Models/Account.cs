@@ -23,6 +23,8 @@ namespace API.Models
 
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
+        public List<Notification> Notifications { get; set; } = new List<Notification>();
+
 
 
     }
