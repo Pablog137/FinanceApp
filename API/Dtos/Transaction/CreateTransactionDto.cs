@@ -8,8 +8,7 @@ namespace API.Dtos.Transaction
 {
     public class CreateTransactionDto
     {
-        [Required]
-        public int AccountId { get; set; }
+
         [Required]
         public string Type { get; set; }
         [Required]

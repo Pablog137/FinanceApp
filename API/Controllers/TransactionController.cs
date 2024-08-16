@@ -83,7 +83,7 @@ namespace API.Controllers
             if (transaction == null) return NotFound("Account not found.");
 
 
-            return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction);
+            return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction.toDto());
 
 
         }

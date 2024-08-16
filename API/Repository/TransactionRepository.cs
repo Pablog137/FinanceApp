@@ -22,13 +22,14 @@ namespace API.Repository
 
         public async Task<Transaction> AddTransaction(CreateTransactionDto createTransactionDto, int userId)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == createTransactionDto.AccountId && a.UserId == userId);
+            
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
 
             if (account == null) return null;
 
             var transaction = new Transaction
             {
-                AccountId = createTransactionDto.AccountId,
+                AccountId = account.Id,
                 Type = createTransactionDto.Type,
                 Amount = createTransactionDto.Amount,
                 Description = createTransactionDto.Description,

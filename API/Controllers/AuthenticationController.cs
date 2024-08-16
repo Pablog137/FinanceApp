@@ -22,11 +22,13 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
-        public AuthenticationController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+        private readonly AppDbContext _context;
+        public AuthenticationController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, AppDbContext context )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _context = context;
         }
 
 
@@ -47,12 +49,22 @@ namespace API.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, registerDto.Password);
+                var account = new Account
+                {
+                    Balance = 0,
+                    Name = $"{user.UserName} account",
+                    UserId = user.Id,
+                    UpdatedAt = DateTime.UtcNow,
+                    CreatedAt = DateTime.UtcNow,
+                };
+                var createdAccount = await _context.Accounts.AddAsync(account);
 
                 if (result.Succeeded)
                 {
                     var role = await _userManager.AddToRoleAsync(user, "User");
                     if (role.Succeeded)
                     {
+                        await _context.SaveChangesAsync();
                         return Ok(new UserDto
                         {
                             Username = user.UserName,
