@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.Interfaces.Repositories;
 using API.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace API.Controllers
 {
@@ -14,18 +16,29 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
-        public AccountController(AppDbContext context)
+        private readonly IAccountRepository _accountRepo;
+        public AccountController(IAccountRepository accountRepository)
         {
-            _context = context;
+            _accountRepo = accountRepository;
 
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var accounts = await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).Select(a => a.toDto()).ToListAsync();
-            return Ok(accounts);
+            var accounts = await _accountRepo.GetAll();
+
+            return Ok(accounts.Select(a => a.toDto()));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var account = await _accountRepo.GetById(id);
+
+            if (account == null) return NotFound("Account not found.");
+
+            return Ok(account.toDto());
         }
 
     }
