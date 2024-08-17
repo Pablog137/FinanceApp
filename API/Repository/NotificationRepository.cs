@@ -24,20 +24,22 @@ namespace API.Repository
 
         public Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
         {
-            throw new NotImplementedException();
+            var notifications = _context.Notifications.Where(n => n.Account.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
+            return notifications;
         }
 
-        public Task<Notification> GetByIdAsync(int id, int userId)
+        public async Task<Notification?> GetByIdAsync(int id, int userId)
+        {
+            var notification = await _context.Notifications.Where(n => n.Id == id && n.Account.UserId == userId).FirstOrDefaultAsync();
+            return notification;
+        }
+
+        public Task<Notification?> UpdateAsync(int id, int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Notification> UpdateAsync(int id, int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Notification> CreateAsync(CreateNotificationDto notification, int userId)
+        public Task<Notification?> CreateAsync(CreateNotificationDto notification, int userId)
         {
             throw new NotImplementedException();
         }
