@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pablo\\source\\repos\\Finance\\API\\API.csproj": {}
+    "C:\\Users\\pablo\\source\\repos\\Finance\\api\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pablo\\source\\repos\\Finance\\API\\API.csproj": {
+    "C:\\Users\\pablo\\source\\repos\\Finance\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\Finance\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\Finance\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\pablo\\source\\repos\\Finance\\API\\API.csproj",
+        "projectPath": "C:\\Users\\pablo\\source\\repos\\Finance\\api\\API.csproj",
         "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pablo\\source\\repos\\Finance\\API\\obj\\",
+        "outputPath": "C:\\Users\\pablo\\source\\repos\\Finance\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",

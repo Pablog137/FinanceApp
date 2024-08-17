@@ -57,17 +57,25 @@ namespace API.Controllers
         [HttpPost("add-transaction")]
         public async Task<IActionResult> AddTransaction([FromBody] CreateTransactionDto transactionDto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var transaction = await _transactionRepo.AddTransactionAsync(transactionDto, userId.Value);
+                var transaction = await _transactionRepo.AddTransactionAsync(transactionDto, userId.Value);
 
-            if (transaction == null) return NotFound("Account not found.");
+                if (transaction == null) return NotFound("Account not found.");
 
 
-            return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction.toDto());
+                return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction.toDto());
+            }
+            catch(InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+  
 
 
         }

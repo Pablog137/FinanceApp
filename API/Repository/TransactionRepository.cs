@@ -23,7 +23,7 @@ namespace API.Repository
 
         public async Task<Transaction> AddTransactionAsync(CreateTransactionDto createTransactionDto, int userId)
         {
-            
+
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
 
             if (account == null) return null;
@@ -36,6 +36,17 @@ namespace API.Repository
                 Description = createTransactionDto.Description,
                 Date = DateTime.Now
             };
+
+            switch (transaction.Type)
+            {
+                case TransactionType.Income:
+                    account.Balance += transaction.Amount;
+                    break;
+                case TransactionType.Expense:
+                    if(transaction.Amount > account.Balance) throw new InvalidOperationException("Insufficient balance.");
+                    account.Balance -= transaction.Amount;
+                    break;
+            }
 
             await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync();
