@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class AppDbContext : IdentityDbContext<AppUser,AppRole,int>
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -30,6 +30,14 @@ namespace API.Data
                 .HasOne(u => u.Account)
                 .WithOne(u => u.User)
                 .HasForeignKey<Account>(a => a.UserId);
+
+            builder.Entity<Account>()
+           .HasMany(a => a.Contacts)
+           .WithMany(c => c.Accounts)
+           .UsingEntity<Dictionary<string, object>>(
+               "AccountContact",
+               j => j.HasOne<Contact>().WithMany().HasForeignKey("ContactId"),
+               j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"));
 
 
             // Roles

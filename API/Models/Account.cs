@@ -25,6 +25,8 @@ namespace API.Models
 
         public List<Notification> Notifications { get; set; } = new List<Notification>();
 
+        public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+
 
 
     }

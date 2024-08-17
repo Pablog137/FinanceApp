@@ -16,7 +16,7 @@ namespace API.Models
         [Column(TypeName = "decimal(10,3)")]
         public decimal Amount { get; set; }
         public string Description { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public Account Account { get; set; }
 
