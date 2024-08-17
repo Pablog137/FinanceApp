@@ -34,14 +34,33 @@ namespace API.Repository
             return notification;
         }
 
-        public Task<Notification?> UpdateAsync(int id, int userId)
+        public async Task<Notification?> UpdateAsync(int id, int userId)
         {
-            throw new NotImplementedException();
+            var account = _context.Accounts.Where(a => a.UserId == userId).FirstOrDefault();
+            if (account == null) return null;
+
+            var notification = _context.Notifications.Where(n => n.Id == id && n.AccountId == account.Id).FirstOrDefault();
+            notification.IsRead = true;
+            await _context.SaveChangesAsync();
+            return notification;
         }
 
-        public Task<Notification?> CreateAsync(CreateNotificationDto notification, int userId)
+        public async Task<Notification?> CreateAsync(CreateNotificationDto notificationdto, int userId)
         {
-            throw new NotImplementedException();
+            var account = await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+            if (account == null) return null;
+
+            var notification = new Notification
+            {
+                AccountId = account.Id,
+                Type = notificationdto.Type,
+                Message = notificationdto.Message,
+            };
+
+            await _context.Notifications.AddAsync(notification);
+            await _context.SaveChangesAsync();
+
+            return notification;
         }
 
     }
