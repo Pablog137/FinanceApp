@@ -6,6 +6,7 @@ using API.Data;
 using API.Dtos.Transaction;
 using API.Enums;
 using API.Interfaces.Repositories;
+using API.Mappers;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,34 +25,49 @@ namespace API.Repository
         public async Task<Transaction> AddTransactionAsync(CreateTransactionDto createTransactionDto, int userId)
         {
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
+            using var transaction = _context.Database.BeginTransaction();
 
-            if (account == null) return null;
-
-            var transaction = new Transaction
+            try
             {
-                AccountId = account.Id,
-                Type = createTransactionDto.Type,
-                Amount = createTransactionDto.Amount,
-                Description = createTransactionDto.Description,
-                Date = DateTime.Now
-            };
+                var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
 
-            switch (transaction.Type)
+                if (account == null)
+                {
+                    await transaction.RollbackAsync();
+                    return null;
+                }
+
+                var transactionEntity = createTransactionDto.FromDtoToEntity(account.Id);
+
+                switch (transactionEntity.Type)
+                {
+                    case TransactionType.Income:
+                        account.Balance += transactionEntity.Amount;
+                        break;
+                    case TransactionType.Expense:
+                        if (transactionEntity.Amount > account.Balance)
+                            throw new InvalidOperationException("Insufficient balance.");
+
+                        account.Balance -= transactionEntity.Amount;
+                        break;
+                }
+
+                await _context.Transactions.AddAsync(transactionEntity);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return transactionEntity;
+
+
+            }
+            catch (Exception e)
             {
-                case TransactionType.Income:
-                    account.Balance += transaction.Amount;
-                    break;
-                case TransactionType.Expense:
-                    if(transaction.Amount > account.Balance) throw new InvalidOperationException("Insufficient balance.");
-                    account.Balance -= transaction.Amount;
-                    break;
+                await transaction.RollbackAsync();
+                // Re throw the exception
+                throw;
             }
 
-            await _context.Transactions.AddAsync(transaction);
-            await _context.SaveChangesAsync();
-
-            return transaction;
 
         }
 

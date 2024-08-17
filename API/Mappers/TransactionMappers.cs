@@ -23,5 +23,16 @@ namespace API.Mappers
             };
         }
 
+        public static Transaction FromDtoToEntity(this CreateTransactionDto createTransactionDto, int accountId)
+        {
+            return new Transaction
+            {
+                AccountId = accountId,
+                Type = createTransactionDto.Type,
+                Amount = createTransactionDto.Amount,
+                Description = createTransactionDto.Description,
+            };
+        }
+
     }
 }
