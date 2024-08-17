@@ -26,7 +26,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var accounts = await _accountRepo.GetAll();
+            var accounts = await _accountRepo.GetAllAsync();
 
             return Ok(accounts.Select(a => a.toDto()));
         }
@@ -34,7 +34,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var account = await _accountRepo.GetById(id);
+            var account = await _accountRepo.GetByIdAsync(id);
 
             if (account == null) return NotFound("Account not found.");
 

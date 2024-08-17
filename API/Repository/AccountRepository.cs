@@ -15,7 +15,7 @@ namespace API.Repository
             _context = context;
             
         }
-        public async Task<List<Account>> GetAll()
+        public async Task<List<Account>> GetAllAsync()
         {
             var accounts = await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).ToListAsync();
 
@@ -23,7 +23,7 @@ namespace API.Repository
 
         }
 
-        public async Task<Account?> GetById(int id)
+        public async Task<Account?> GetByIdAsync(int id)
         {
             var account = await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).FirstOrDefaultAsync(a => a.Id == id);
             return account;

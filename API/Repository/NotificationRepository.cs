@@ -15,28 +15,28 @@ namespace API.Repository
             _context = context;
             
         }
-        public Task<Notification> Create(CreateNotificationDto notification)
+        public Task<Notification> CreateAsync(CreateNotificationDto notification)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Notification>> GetAll()
+        public async Task<List<Notification>> GetAllAsync()
         {
             throw new NotImplementedException();
 
         }
 
-        public Task<List<Notification>> GetAllOrderedByTime()
+        public Task<List<Notification>> GetAllOrderedByTimeAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Notification> GetById(int id)
+        public Task<Notification> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Notification> Update(int id)
+        public Task<Notification> UpdateAsync(int id)
         {
             throw new NotImplementedException();
         }

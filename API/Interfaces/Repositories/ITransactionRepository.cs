@@ -10,9 +10,9 @@ namespace API.Interfaces.Repositories
 {
     public interface ITransactionRepository
     {
-        Task<List<Transaction>> GetAllTransaction(int userId);
-        Task<Transaction> GetById(int id, int userId);
-        Task<Transaction> AddTransaction(CreateTransactionDto createTransactionDto, int userId);
+        Task<List<Transaction>> GetAllTransactionAsync(int userId);
+        Task<Transaction> GetByIdAsync(int id, int userId);
+        Task<Transaction> AddTransactionAsync(CreateTransactionDto createTransactionDto, int userId);
 
 
     }

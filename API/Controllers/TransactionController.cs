@@ -37,7 +37,7 @@ namespace API.Controllers
                 return BadRequest("Invalid user ID format.");
             }
 
-            var transactions = await _transactionRepo.GetAllTransaction(userId);
+            var transactions = await _transactionRepo.GetAllTransactionAsync(userId);
 
             if (transactions == null) return NotFound("No transactions found.");
 
@@ -57,7 +57,7 @@ namespace API.Controllers
                 return BadRequest("Invalid user ID format.");
             }
 
-            var transaction = await _transactionRepo.GetById(id, userId);
+            var transaction = await _transactionRepo.GetByIdAsync(id, userId);
 
             if (transaction == null) return NotFound();
 
@@ -78,7 +78,7 @@ namespace API.Controllers
                 return BadRequest("Invalid user ID format.");
             }
 
-            var transaction = await _transactionRepo.AddTransaction(transactionDto, userId);
+            var transaction = await _transactionRepo.AddTransactionAsync(transactionDto, userId);
 
             if (transaction == null) return NotFound("Account not found.");
 

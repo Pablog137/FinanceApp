@@ -20,7 +20,7 @@ namespace API.Repository
             _context = context;
         }
 
-        public async Task<Transaction> AddTransaction(CreateTransactionDto createTransactionDto, int userId)
+        public async Task<Transaction> AddTransactionAsync(CreateTransactionDto createTransactionDto, int userId)
         {
             
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
@@ -43,14 +43,14 @@ namespace API.Repository
 
         }
 
-        public async Task<List<Transaction>> GetAllTransaction(int userId)
+        public async Task<List<Transaction>> GetAllTransactionAsync(int userId)
         {
             var transactions = await _context.Transactions.Where(t => t.AccountId == userId).ToListAsync();
 
             return transactions;
         }
 
-        public async Task<Transaction> GetById(int id, int userId)
+        public async Task<Transaction> GetByIdAsync(int id, int userId)
         {
             var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.AccountId == userId);
 
