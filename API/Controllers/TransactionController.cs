@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.Dtos.Transaction;
+using API.Extensions;
 using API.Interfaces.Repositories;
 using API.Mappers;
 using API.Models;
@@ -28,16 +29,11 @@ namespace API.Controllers
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAllTransaction()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (userIdClaim == null) return Unauthorized();
+            var userId = User.GetUserId();
+            if (userId == null) return Unauthorized();
 
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return BadRequest("Invalid user ID format.");
-            }
-
-            var transactions = await _transactionRepo.GetAllTransactionAsync(userId);
+            var transactions = await _transactionRepo.GetAllTransactionAsync(userId.Value);
 
             if (transactions == null) return NotFound("No transactions found.");
 
@@ -48,16 +44,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.GetUserId();
+            if (userId == null) return Unauthorized();
 
-            if (userIdClaim == null) return Unauthorized();
-
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return BadRequest("Invalid user ID format.");
-            }
-
-            var transaction = await _transactionRepo.GetByIdAsync(id, userId);
+            var transaction = await _transactionRepo.GetByIdAsync(id, userId.Value);
 
             if (transaction == null) return NotFound();
 
@@ -69,16 +59,10 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.GetUserId();
+            if (userId == null) return Unauthorized();
 
-            if (userIdClaim == null) return Unauthorized();
-
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return BadRequest("Invalid user ID format.");
-            }
-
-            var transaction = await _transactionRepo.AddTransactionAsync(transactionDto, userId);
+            var transaction = await _transactionRepo.AddTransactionAsync(transactionDto, userId.Value);
 
             if (transaction == null) return NotFound("Account not found.");
 
