@@ -1,3 +1,4 @@
+using API.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace API.Models
     {
         public int Id { get; set; }
         public int AccountId { get; set; }
-        public string Type { get; set; }
+        public TransactionType Type { get; set; }
 
         [Column(TypeName = "decimal(10,3)")]
         public decimal Amount { get; set; }
@@ -19,6 +20,8 @@ namespace API.Models
         public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public Account Account { get; set; }
+
+        // Will have transactions between contacts
 
         
     }

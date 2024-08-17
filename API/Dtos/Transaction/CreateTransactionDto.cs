@@ -1,3 +1,4 @@
+using API.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,17 +8,12 @@ using System.Threading.Tasks;
 namespace API.Dtos.Transaction
 {
 
-    public enum TransactionType
-    {
-        Income,
-        Expense
-    }
     public class CreateTransactionDto
     {
 
         [Required]
         [EnumDataType(typeof(TransactionType))]
-        public string Type { get; set; }
+        public TransactionType Type { get; set; }
         [Required]
         public decimal Amount { get; set; }
         [Required]

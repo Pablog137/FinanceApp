@@ -24,16 +24,16 @@ namespace API.Data
 
 
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            builder.Entity<AppUser>()
+            modelBuilder.Entity<AppUser>()
                 .HasOne(u => u.Account)
                 .WithOne(u => u.User)
                 .HasForeignKey<Account>(a => a.UserId);
 
-            builder.Entity<Account>()
+            modelBuilder.Entity<Account>()
            .HasMany(a => a.Contacts)
            .WithMany(c => c.Accounts)
            .UsingEntity<Dictionary<string, object>>(
@@ -41,9 +41,13 @@ namespace API.Data
                j => j.HasOne<Contact>().WithMany().HasForeignKey("ContactId"),
                j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"));
 
+            modelBuilder.Entity<Transaction>()
+                .Property(p => p.Type)
+                .HasConversion<string>();
+
 
             // Roles
-            builder.Entity<AppRole>().HasData(
+            modelBuilder.Entity<AppRole>().HasData(
                 new AppRole { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
                 new AppRole { Id = 2, Name = "User", NormalizedName = "USER" }
             );

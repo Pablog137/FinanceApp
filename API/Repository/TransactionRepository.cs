@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.Dtos.Transaction;
+using API.Enums;
 using API.Interfaces.Repositories;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
