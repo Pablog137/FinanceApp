@@ -13,32 +13,34 @@ namespace API.Repository
         public NotificationRepository(AppDbContext context)
         {
             _context = context;
-            
+
         }
-        public Task<Notification> CreateAsync(CreateNotificationDto notification)
+
+        public async Task<List<Notification>> GetAllAsync(int userId)
+        {
+            var notifications = await _context.Notifications.Where(n => n.Account.UserId == userId).ToListAsync();
+            return notifications;
+        }
+
+        public Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Notification>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-
-        }
-
-        public Task<List<Notification>> GetAllOrderedByTimeAsync()
+        public Task<Notification> GetByIdAsync(int id, int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Notification> GetByIdAsync(int id)
+        public Task<Notification> UpdateAsync(int id, int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Notification> UpdateAsync(int id)
+        public Task<Notification> CreateAsync(CreateNotificationDto notification, int userId)
         {
             throw new NotImplementedException();
         }
+
     }
 }

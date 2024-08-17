@@ -1,4 +1,6 @@
-﻿using API.Interfaces.Repositories;
+﻿using API.Extensions;
+using API.Interfaces.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +8,7 @@ namespace API.Controllers
 {
     [Route("api/notification")]
     [ApiController]
+    [Authorize]
     
     public class NotificationController : ControllerBase
     {
@@ -18,10 +21,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        
         public async Task<IActionResult> GetAll()
         {
-            var notifications = await _notificationRepo.GetAllAsync();
+            var userId = User.GetUserId();
+            if (userId == null) return Unauthorized();
+
+            var notifications = await _notificationRepo.GetAllAsync(userId.Value);
             return Ok(notifications);
         }
 
