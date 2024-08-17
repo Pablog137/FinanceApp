@@ -17,6 +17,9 @@ namespace API.Repository
 
         public async Task<Contact> CreateAsync(CreateContactDto createContactDto, int userId)
         {
+            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
+            if (account == null) return null;
+
             var contact = new Contact
             {
                 Email = createContactDto.Email,
@@ -25,12 +28,23 @@ namespace API.Repository
             };
             await _context.Contacts.AddAsync(contact);
             await _context.SaveChangesAsync();
+
+            account.Contacts.Add(contact);
+            await _context.SaveChangesAsync();
+
             return contact;
         }
 
-        public Task<Contact> DeleteAsync(int id, int userId)
+        public async Task<Contact> DeleteAsync(int id, int userId)
         {
-            throw new NotImplementedException();
+            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
+            if (account == null) return null;
+            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.Accounts.Any(a => a.Id == account.Id));
+            if (contact == null) return null;
+
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return contact;
         }
 
         public async Task<List<Contact>> GetAllAsync(int userId)

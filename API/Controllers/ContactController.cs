@@ -55,5 +55,16 @@ namespace API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = contact.Id }, contact.toDto());
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var userId = User.GetUserId();
+            if (userId == null) return Unauthorized();
+
+            var contact = await _contactRepository.DeleteAsync(id, userId.Value);
+            if (contact == null) return NotFound();
+            return Ok(contact.toDto());
+        }
+
     }
 }
