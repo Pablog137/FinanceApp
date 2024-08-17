@@ -22,9 +22,9 @@ namespace API.Repository
             return notifications;
         }
 
-        public Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
+        public async Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
         {
-            var notifications = _context.Notifications.Where(n => n.Account.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
+            var notifications = await _context.Notifications.Where(n => n.Account.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
             return notifications;
         }
 

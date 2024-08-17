@@ -20,6 +20,8 @@ namespace API.Data
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
