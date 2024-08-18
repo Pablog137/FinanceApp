@@ -1,16 +1,11 @@
-﻿using API.Models;
+﻿using API.Enums;
+using API.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Dtos.Notification
 {
 
-    public enum NotificationType
-    {
-        Success,
-        Error,
-        Warning,
-        Info
-    }
+ 
     public class CreateNotificationDto
     {
         [Required]
