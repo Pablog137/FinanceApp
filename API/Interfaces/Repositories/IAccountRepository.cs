@@ -8,5 +8,7 @@ namespace API.Interfaces.Repositories
         Task<List<Account>> GetAllAsync();
         Task<Account> GetByUserIdAsync(int userId);
         Task UpdateAsync(Account account);
+
+        Task CreateAsync(Account account);
     }
 }

@@ -17,9 +17,9 @@ namespace API.Models
         public string Name { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(10,3)")]
-        public decimal Balance { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public decimal Balance { get; set; } = 0;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 

@@ -86,6 +86,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 // Repositories
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
