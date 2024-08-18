@@ -1,5 +1,6 @@
 ﻿using API.Dtos.Contact;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces.Repositories;
 using API.Interfaces.Services;
 using API.Mappers;
@@ -22,12 +23,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject)
         {
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var contacts = await _contactService.GetAllAsync(userId.Value);
+            var contacts = await _contactService.GetAllAsync(userId.Value, queryObject);
             if (contacts == null) return NotFound();
             return Ok(contacts.Select(c => c.toDto()));
         }

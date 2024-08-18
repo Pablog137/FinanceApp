@@ -18,12 +18,12 @@ namespace API.Services
             _contactRepo = contactRepo;
             _accountRepo = accountRepo;
         }
-        public async Task<List<Contact>> GetAllAsync(int userId)
+        public async Task<List<Contact>> GetAllAsync(int userId, QueryObject query)
         {
             var account = await _accountRepo.GetByUserIdAsync(userId);
             if (account == null) return null;
 
-            return await _contactRepo.GetAllAsync(account);
+            return await _contactRepo.GetAllAsync(account, query);
 
         }
 
@@ -35,13 +35,6 @@ namespace API.Services
             return await _contactRepo.GetByIdAsync(id, account);
         }
 
-        public async Task<Contact?> GetByQueryAsync(QueryObject query, int userId)
-        {
-            var account = await _accountRepo.GetByUserIdAsync(userId);
-            if (account == null) return null;
-
-            return await _contactRepo.GetByQueryAsync(query, account);
-        }
         public async Task<Contact?> CreateAsync(CreateContactDto createContactDto, int userId)
         {
 

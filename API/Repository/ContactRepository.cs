@@ -16,9 +16,23 @@ namespace API.Repository
             _context = context;
         }
 
-        public async Task<List<Contact>> GetAllAsync(Account account)
+        public async Task<List<Contact>> GetAllAsync(Account account, QueryObject query)
         {
-            return await _context.Contacts.Where(c => c.Accounts.Any(a => a.Id == account.Id)).ToListAsync();
+            var contacts =  _context.Contacts.Where(c => c.Accounts.Any(a => a.Id == account.Id));
+
+            if(!string.IsNullOrEmpty(query.Email))
+            {
+                contacts = contacts.Where(c => c.Email.ToLower() == query.Email.ToLower());
+            }
+            if(!string.IsNullOrEmpty(query.PhoneNumber))
+            {
+                contacts = contacts.Where(c => c.PhoneNumber == query.PhoneNumber);
+            }
+            if(!string.IsNullOrEmpty(query.Username))
+            {
+                contacts = contacts.Where(c => c.Username == query.Username);
+            }
+            return await contacts.ToListAsync();
         }
 
         public async Task<Contact> GetByIdAsync(int id, Account account)
@@ -26,11 +40,6 @@ namespace API.Repository
             return await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.Accounts.Any(a => a.Id == account.Id));
         }
 
-        // TODO
-        public async Task<Contact> GetByQueryAsync(QueryObject query, Account account)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<Contact> CreateAsync(Contact contact, Account account)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
