@@ -60,6 +60,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateNotificationDto notificationDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 

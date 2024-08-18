@@ -57,9 +57,9 @@ namespace API.Controllers
         [HttpPost("add-transaction")]
         public async Task<IActionResult> AddTransaction([FromBody] CreateTransactionDto transactionDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
 
                 var userId = User.GetUserId();
                 if (userId == null) return Unauthorized();
@@ -71,11 +71,11 @@ namespace API.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction.toDto());
             }
-            catch(InvalidOperationException ex)
+            catch (InvalidOperationException ex)
             {
                 return BadRequest(ex.Message);
             }
-  
+
 
 
         }

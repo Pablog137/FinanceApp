@@ -46,6 +46,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateContactDto contactDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
