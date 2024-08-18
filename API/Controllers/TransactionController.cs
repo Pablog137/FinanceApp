@@ -7,6 +7,7 @@ using API.Data;
 using API.Dtos.Transaction;
 using API.Extensions;
 using API.Interfaces.Repositories;
+using API.Interfaces.Services;
 using API.Mappers;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,10 +21,11 @@ namespace API.Controllers
     [Route("api/transaction")]
     public class TransactionController : ControllerBase
     {
-        private readonly ITransactionRepository _transactionRepo;
-        public TransactionController(ITransactionRepository transactionRepo)
+        private readonly ITransactionService _transactionService;
+
+        public TransactionController(ITransactionService transactionService)
         {
-            _transactionRepo = transactionRepo;
+            _transactionService = transactionService;
         }
 
         [HttpGet("get-all")]
@@ -33,7 +35,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var transactions = await _transactionRepo.GetAllTransactionAsync(userId.Value);
+            var transactions = await _transactionService.GetAllTransactionsAsync(userId.Value);
 
             if (transactions == null) return NotFound("No transactions found.");
 
@@ -47,7 +49,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var transaction = await _transactionRepo.GetByIdAsync(id, userId.Value);
+            var transaction = await _transactionService.GetTransactionByIdAsync(id, userId.Value);
 
             if (transaction == null) return NotFound();
 
@@ -64,7 +66,7 @@ namespace API.Controllers
                 var userId = User.GetUserId();
                 if (userId == null) return Unauthorized();
 
-                var transaction = await _transactionRepo.AddTransactionAsync(transactionDto, userId.Value);
+                var transaction = await _transactionService.AddTransactionAsync(transactionDto, userId.Value);
 
                 if (transaction == null) return NotFound("Account not found.");
 

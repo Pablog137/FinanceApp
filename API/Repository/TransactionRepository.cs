@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Data;
-using API.Dtos.Transaction;
-using API.Enums;
 using API.Interfaces.Repositories;
-using API.Mappers;
 using API.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Repository
 {
@@ -22,68 +15,31 @@ namespace API.Repository
             _context = context;
         }
 
-        public async Task<Transaction> AddTransactionAsync(CreateTransactionDto createTransactionDto, int userId)
+        public async Task AddAsync(Transaction transaction)
         {
-
-            using var transaction = _context.Database.BeginTransaction();
-
-            try
-            {
-                var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
-
-                if (account == null)
-                {
-                    await transaction.RollbackAsync();
-                    return null;
-                }
-
-                var transactionEntity = createTransactionDto.FromDtoToEntity(account.Id);
-
-                switch (transactionEntity.Type)
-                {
-                    case TransactionType.Income:
-                        account.Balance += transactionEntity.Amount;
-                        break;
-                    case TransactionType.Expense:
-                        if (transactionEntity.Amount > account.Balance)
-                            throw new InvalidOperationException("Insufficient balance.");
-
-                        account.Balance -= transactionEntity.Amount;
-                        break;
-                }
-
-                await _context.Transactions.AddAsync(transactionEntity);
-                await _context.SaveChangesAsync();
-
-                await transaction.CommitAsync();
-
-                return transactionEntity;
-
-
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync();
-                // Re throw the exception
-                throw;
-            }
-
+            await _context.Transactions.AddAsync(transaction);
+            await _context.SaveChangesAsync();
 
         }
 
-        public async Task<List<Transaction>> GetAllTransactionAsync(int userId)
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
-            var transactions = await _context.Transactions.Where(t => t.AccountId == userId).ToListAsync();
+            return await _context.Database.BeginTransactionAsync();
+        }
 
-            return transactions;
+        public async Task<List<Transaction>> GetAllTransactionsAsync(int userId)
+        {
+            return await _context.Transactions
+                      .Where(t => t.Account.UserId == userId)
+                      .ToListAsync();
         }
 
         public async Task<Transaction> GetByIdAsync(int id, int userId)
         {
-            var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.AccountId == userId);
-
-            return transaction;
+            return await _context.Transactions
+                                            .FirstOrDefaultAsync(t => t.Id == id && t.Account.UserId == userId);
         }
+
 
     }
 }

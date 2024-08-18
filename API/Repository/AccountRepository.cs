@@ -13,20 +13,28 @@ namespace API.Repository
         public AccountRepository(AppDbContext context)
         {
             _context = context;
-            
+
         }
         public async Task<List<Account>> GetAllAsync()
         {
-            var accounts = await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).ToListAsync();
-
-            return accounts;
+            return await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).ToListAsync();
 
         }
 
         public async Task<Account?> GetByIdAsync(int id)
         {
-            var account = await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).FirstOrDefaultAsync(a => a.Id == id);
-            return account;
+            return await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<Account> GetByUserId(int userId)
+        {
+            return await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateAsync(Account account)
+        {
+            _context.Accounts.Update(account);
+            await _context.SaveChangesAsync();
         }
     }
 }
