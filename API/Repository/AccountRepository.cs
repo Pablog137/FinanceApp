@@ -3,6 +3,7 @@ using API.Interfaces.Repositories;
 using API.Mappers;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Repository
 {
@@ -15,6 +16,13 @@ namespace API.Repository
             _context = context;
 
         }
+        public async Task CreateAsync(Account account)
+        {
+            await _context.Accounts.AddAsync(account);
+            await _context.SaveChangesAsync();
+            
+        }
+
         public async Task<List<Account>> GetAllAsync()
         {
             return await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).ToListAsync();
@@ -35,6 +43,11 @@ namespace API.Repository
         {
             _context.Accounts.Update(account);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
         }
     }
 }

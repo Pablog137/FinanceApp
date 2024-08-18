@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Interfaces.Repositories
 {
@@ -8,7 +9,7 @@ namespace API.Interfaces.Repositories
         Task<List<Account>> GetAllAsync();
         Task<Account> GetByUserIdAsync(int userId);
         Task UpdateAsync(Account account);
-
         Task CreateAsync(Account account);
+        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }
