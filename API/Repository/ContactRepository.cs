@@ -2,6 +2,7 @@
 using API.Dtos.Contact;
 using API.Helpers;
 using API.Interfaces.Repositories;
+using API.Interfaces.Services;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,57 +16,49 @@ namespace API.Repository
             _context = context;
         }
 
-        public async Task<Contact> CreateAsync(CreateContactDto createContactDto, int userId)
+        public async Task<List<Contact>> GetAllAsync(Account account)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
-            if (account == null) return null;
-
-            var contact = new Contact
-            {
-                Email = createContactDto.Email,
-                PhoneNumber = createContactDto.PhoneNumber,
-                Username = createContactDto.Username
-            };
-            await _context.Contacts.AddAsync(contact);
-            await _context.SaveChangesAsync();
-
-            account.Contacts.Add(contact);
-            await _context.SaveChangesAsync();
-
-            return contact;
+            return await _context.Contacts.Where(c => c.Accounts.Any(a => a.Id == account.Id)).ToListAsync();
         }
 
-        public async Task<Contact> DeleteAsync(int id, int userId)
+        public async Task<Contact> GetByIdAsync(int id, Account account)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
-            if (account == null) return null;
-            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.Accounts.Any(a => a.Id == account.Id));
-            if (contact == null) return null;
-
-            _context.Contacts.Remove(contact);
-            await _context.SaveChangesAsync();
-            return contact;
+            return await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.Accounts.Any(a => a.Id == account.Id));
         }
 
-        public async Task<List<Contact>> GetAllAsync(int userId)
-        {
-            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
-            if (account == null) return null;
-            var contacts = await _context.Contacts.Where(c => c.Accounts.Any(a => a.Id == account.Id)).ToListAsync();
-            return contacts;
-        }
-
-        public async Task<Contact> GetByIdAsync(int id, int userId)
-        {
-            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == userId);
-            if (account == null) return null;
-            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.Accounts.Any(a => a.Id == account.Id));
-            return contact;
-        }
-
-        public Task<Contact> GetByQueryAsync(QueryObject query, int userId)
+        // TODO
+        public async Task<Contact> GetByQueryAsync(QueryObject query, Account account)
         {
             throw new NotImplementedException();
         }
+        public async Task<Contact> CreateAsync(Contact contact, Account account)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+
+                await _context.Contacts.AddAsync(contact);
+                account.Contacts.Add(contact);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return contact;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task<Contact> DeleteAsync(Contact contact, Account account)
+        {
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+
+            return contact;
+        }
+
     }
 }

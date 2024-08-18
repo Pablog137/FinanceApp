@@ -26,7 +26,7 @@ namespace API.Repository
             return await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<Account> GetByUserId(int userId)
+        public async Task<Account> GetByUserIdAsync(int userId)
         {
             return await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
         }

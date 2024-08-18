@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using API.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Interfaces
+namespace API.Interfaces.Services
 {
     public interface ITokenService
     {

@@ -27,7 +27,7 @@ namespace API.Services
 
             try
             {
-                var account = await _accountRepo.GetByUserId(userId);
+                var account = await _accountRepo.GetByUserIdAsync(userId);
                 if (account == null)
                     throw new InvalidOperationException("Account not found.");
 

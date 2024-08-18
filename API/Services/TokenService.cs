@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using API.Interfaces;
+using API.Interfaces.Services;
 using API.Models;
 using Microsoft.IdentityModel.Tokens;
 

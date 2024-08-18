@@ -6,7 +6,7 @@ namespace API.Interfaces.Repositories
     {
         Task<Account?> GetByIdAsync(int id);
         Task<List<Account>> GetAllAsync();
-        Task<Account> GetByUserId(int userId);
+        Task<Account> GetByUserIdAsync(int userId);
         Task UpdateAsync(Account account);
     }
 }

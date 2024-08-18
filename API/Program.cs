@@ -1,7 +1,7 @@
 using System.Text;
 using API.Data;
-using API.Interfaces;
 using API.Interfaces.Repositories;
+using API.Interfaces.Services;
 using API.Models;
 using API.Repository;
 using API.Services;
@@ -81,7 +81,12 @@ builder.Services.AddAuthentication(options =>
 
 });
 
+// Services
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+
+// Repositories
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
