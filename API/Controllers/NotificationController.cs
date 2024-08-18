@@ -1,11 +1,10 @@
 ﻿using API.Dtos.Notification;
 using API.Extensions;
 using API.Interfaces.Repositories;
+using API.Interfaces.Services;
 using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 
 namespace API.Controllers
 {
@@ -16,10 +15,10 @@ namespace API.Controllers
     public class NotificationController : ControllerBase
     {
 
-        private readonly INotificationRepository _notificationRepo;
-        public NotificationController(INotificationRepository notificationRepo)
+        private readonly INotificationService _notificationService;
+        public NotificationController(INotificationService notificationService)
         {
-            _notificationRepo = notificationRepo;
+            _notificationService = notificationService;
 
         }
 
@@ -29,7 +28,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var notifications = await _notificationRepo.GetAllAsync(userId.Value);
+            var notifications = await _notificationService.GetAllAsync(userId.Value);
             return Ok(notifications.Select(n => n.toDto()));
         }
 
@@ -40,7 +39,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var notifications = await _notificationRepo.GetAllOrderedByTimeAsync(userId.Value);
+            var notifications = await _notificationService.GetAllOrderedByTimeAsync(userId.Value);
             return Ok(notifications.Select(n => n.toDto()));
         }
 
@@ -50,7 +49,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var notification = await _notificationRepo.GetByIdAsync(id, userId.Value);
+            var notification = await _notificationService.GetByIdAsync(id, userId.Value);
 
             if (notification == null) return NotFound();
 
@@ -65,7 +64,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var notification = await _notificationRepo.CreateAsync(notificationDto, userId.Value);
+            var notification = await _notificationService.CreateAsync(notificationDto, userId.Value);
 
             return CreatedAtAction(nameof(GetById), new { id = notification.Id }, notification.toDto());
         }
@@ -76,7 +75,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var notification = await _notificationRepo.UpdateAsync(id, userId.Value);
+            var notification = await _notificationService.UpdateAsync(id, userId.Value);
             return Ok(notification.toDto());
         }
 

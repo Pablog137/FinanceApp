@@ -1,15 +1,15 @@
 ﻿using API.Dtos.Notification;
 using API.Models;
 
-namespace API.Interfaces.Repositories
+namespace API.Interfaces.Services
 {
-    public interface INotificationRepository
+    public interface INotificationService
     {
 
         Task<Notification?> GetByIdAsync(int id, int userId);
         Task<List<Notification>> GetAllAsync(int userId);
         Task<List<Notification>> GetAllOrderedByTimeAsync(int userId);
-        Task<Notification?> CreateAsync(Notification notification, Account account);
-        Task<Notification?> UpdateAsync(Notification notification, Account account);
+        Task<Notification?> CreateAsync(CreateNotificationDto notification, int userId);
+        Task<Notification?> UpdateAsync(int id, int userId);
     }
 }

@@ -18,45 +18,28 @@ namespace API.Repository
 
         public async Task<List<Notification>> GetAllAsync(int userId)
         {
-            var notifications = await _context.Notifications.Where(n => n.Account.UserId == userId).ToListAsync();
-            return notifications;
+            return await _context.Notifications.Where(n => n.Account.UserId == userId).ToListAsync();
         }
 
         public async Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
         {
-            var notifications = await _context.Notifications.Where(n => n.Account.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
-            return notifications;
+            return await _context.Notifications.Where(n => n.Account.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
         }
 
         public async Task<Notification?> GetByIdAsync(int id, int userId)
         {
-            var notification = await _context.Notifications.Where(n => n.Id == id && n.Account.UserId == userId).FirstOrDefaultAsync();
-            return notification;
+            return await _context.Notifications.Where(n => n.Id == id && n.Account.UserId == userId).FirstOrDefaultAsync();
         }
 
-        public async Task<Notification?> UpdateAsync(int id, int userId)
+        public async Task<Notification?> UpdateAsync(Notification notification, Account account)
         {
-            var account = _context.Accounts.Where(a => a.UserId == userId).FirstOrDefault();
-            if (account == null) return null;
-
-            var notification = _context.Notifications.Where(n => n.Id == id && n.AccountId == account.Id).FirstOrDefault();
             notification.IsRead = true;
             await _context.SaveChangesAsync();
             return notification;
         }
 
-        public async Task<Notification?> CreateAsync(CreateNotificationDto notificationdto, int userId)
+        public async Task<Notification?> CreateAsync(Notification notification, Account account)
         {
-            var account = await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
-            if (account == null) return null;
-
-            var notification = new Notification
-            {
-                AccountId = account.Id,
-                Type = notificationdto.Type,
-                Message = notificationdto.Message,
-            };
-
             await _context.Notifications.AddAsync(notification);
             await _context.SaveChangesAsync();
 

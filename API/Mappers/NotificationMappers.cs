@@ -18,5 +18,16 @@ namespace API.Mappers
                 CreatedAt = notification.CreatedAt
             };
         }
+
+        public static Notification toEntity(this CreateNotificationDto notificationDto, Account account)
+        {
+             return new Notification
+            {
+                AccountId = account.Id,
+                Type = notificationDto.Type,
+                Message = notificationDto.Message,
+            };
+
+        }
     }
 }
