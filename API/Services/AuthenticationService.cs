@@ -79,5 +79,12 @@ namespace API.Services
 
 
         }
+
+
+        public async Task LogOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            
+        }
     }
 }

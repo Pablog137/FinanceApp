@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Interfaces.Repositories;
 using API.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -13,6 +14,7 @@ namespace API.Controllers
 {
     [Route("api/account")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
 

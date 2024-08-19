@@ -6,5 +6,6 @@ namespace API.Interfaces.Services
     {
         Task<UserDto> RegisterAsync(RegisterDto registerDto);
         Task<UserDto> LoginAsync(LoginDto loginDto);
+        Task LogOutAsync();
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using API.Data;
 using API.Dtos.Users;
@@ -8,6 +9,7 @@ using API.Interfaces;
 using API.Interfaces.Services;
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +72,20 @@ namespace API.Controllers
 
         }
 
-
-
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> LogOut()
+        {
+            try
+            {
+                await _authService.LogOutAsync();
+                return Ok("Logged out successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+          
+        }
     }
 }

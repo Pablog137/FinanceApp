@@ -8,12 +8,14 @@ namespace API.Dtos.Users
 {
     public class RegisterDto
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Email is required")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
     }
 }
