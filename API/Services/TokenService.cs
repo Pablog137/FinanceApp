@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using API.Dtos.Token;
+using API.Interfaces.Repositories;
 using API.Interfaces.Services;
 using API.Models;
 using Microsoft.IdentityModel.Tokens;
@@ -15,10 +17,12 @@ namespace API.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config)
+        private readonly IUserRepository _userRepo;
+        public TokenService(IConfiguration config, IUserRepository userRepo)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
+            _userRepo = userRepo;
 
         }
 
@@ -53,7 +57,41 @@ namespace API.Services
             return tokenHandler.WriteToken(token);
         }
 
+        public RefreshToken GenerateRefreshToken()
+        {
 
+            return new RefreshToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                Expires = DateTime.Now.AddDays(7),
+                Created = DateTime.Now
+            };
 
+        }
+
+        public async Task<TokenDto> HandleRefreshTokenAsync(string refreshToken)
+        {
+            // Transaction
+            var user = await _userRepo.GetUserByRefreshTokenAsync(refreshToken);
+
+            if (user == null) throw new Exception("Invalid refresh token");
+
+            var newToken = GenerateRefreshToken();
+
+            user.RefreshTokens.Add(newToken);
+
+            // Revoke old token
+            var oldToken = user.RefreshTokens.Single(r => r.Token == refreshToken);
+            oldToken.Revoked = DateTime.Now;
+
+            await _userRepo.UpdateAsync(user);
+
+            return new TokenDto
+            {
+                RefreshToken = newToken.Token,
+                Token = GenerateToken(user)
+            };
+
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using API.Data;
+using API.Dtos.Token;
 using API.Dtos.Users;
 using API.Interfaces;
 using API.Interfaces.Services;
@@ -24,10 +25,12 @@ namespace API.Controllers
 
 
         private readonly IAuthenticationService _authService;
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationController(IAuthenticationService authService)
+        public AuthenticationController(IAuthenticationService authService, ITokenService tokenService)
         {
             _authService = authService;
+            _tokenService = tokenService;
         }
 
 
@@ -85,7 +88,27 @@ namespace API.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-          
+
+        }
+
+        [HttpPost("refresh-token")]
+
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto request)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
+            {
+                var refreshToken = await _tokenService.HandleRefreshTokenAsync(request.RefreshToken);
+                return Ok(refreshToken);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
     }
 }

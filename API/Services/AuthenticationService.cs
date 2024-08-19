@@ -35,7 +35,12 @@ namespace API.Services
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) throw new UnauthorizedAccessException("Invalid email or password");
 
-            return user.ToDto(_tokenService.GenerateToken(user));
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshTokens.Add(refreshToken);
+
+            await _userRepository.UpdateAsync(user);
+
+            return user.ToDto(_tokenService.GenerateToken(user), refreshToken.Token);
 
         }
 
@@ -65,9 +70,15 @@ namespace API.Services
 
                 await _accountRepository.CreateAsync(account);
 
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshTokens.Add(refreshToken);
+
+                await _userRepository.UpdateAsync(user);
+
+
                 await transaction.CommitAsync();
 
-                return user.ToDto(_tokenService.GenerateToken(user));
+                return user.ToDto(_tokenService.GenerateToken(user), refreshToken.Token);
 
             }
             catch
@@ -84,7 +95,7 @@ namespace API.Services
         public async Task LogOutAsync()
         {
             await _signInManager.SignOutAsync();
-            
+
         }
     }
 }

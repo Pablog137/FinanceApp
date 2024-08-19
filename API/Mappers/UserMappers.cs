@@ -6,13 +6,14 @@ namespace API.Mappers
     public static class UserMappers
     {
 
-        public static UserDto ToDto(this AppUser user, string token)
+        public static UserDto ToDto(this AppUser user, string token, string refreshToken)
         {
             return new UserDto
             {
                 Username = user.UserName,
                 Email = user.Email,
-                Token = token
+                Token = token,
+                RefreshToken = refreshToken
             };
         }
     }
