@@ -15,7 +15,6 @@ namespace API.Interfaces.Services
 
         string GenerateToken(AppUser user);
         RefreshToken GenerateRefreshToken();
-
         Task<TokenDto> HandleRefreshTokenAsync(string refreshToken);
 
         

@@ -97,7 +97,7 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 
 var app = builder.Build();
