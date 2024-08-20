@@ -20,12 +20,14 @@ namespace API.Services
         private readonly SymmetricSecurityKey _key;
         private readonly IUserRepository _userRepo;
         private readonly IAccountRepository _accountRepository;
-        public TokenService(IConfiguration config, IUserRepository userRepo, IAccountRepository accountRepository)
+        private readonly ITokenRepository _tokenRepository;
+        public TokenService(IConfiguration config, IUserRepository userRepo, IAccountRepository accountRepository, ITokenRepository tokenRepository)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
             _userRepo = userRepo;
             _accountRepository = accountRepository;
+            _tokenRepository = tokenRepository;
         }
 
 
@@ -83,13 +85,7 @@ namespace API.Services
 
                 var newToken = GenerateRefreshToken();
 
-                user.RefreshTokens.Add(newToken);
-
-                // Revoke old token
-                var oldToken = user.RefreshTokens.Single(r => r.Token == refreshToken);
-                oldToken.Revoked = DateTime.UtcNow;
-
-                await _userRepo.UpdateAsync(user);
+                await _tokenRepository.UpdateRefreshToken(user, newToken, refreshToken);
 
                 await transaction.CommitAsync();
 
