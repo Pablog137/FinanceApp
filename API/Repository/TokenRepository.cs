@@ -7,9 +7,9 @@ namespace API.Repository
 {
     public class TokenRepository : ITokenRepository
     {
-        private readonly UserRepository _userRepo;
+        private readonly IUserRepository _userRepo;
 
-        public TokenRepository(UserRepository userRepo)
+        public TokenRepository(IUserRepository userRepo)
         {
             _userRepo = userRepo;
         }
