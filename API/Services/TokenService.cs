@@ -43,7 +43,7 @@ namespace API.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
                 Audience = _config["JWT:Audience"]
@@ -63,8 +63,8 @@ namespace API.Services
             return new RefreshToken
             {
                 Token = Guid.NewGuid().ToString(),
-                Expires = DateTime.Now.AddDays(7),
-                Created = DateTime.Now
+                Expires = DateTime.UtcNow.AddDays(7),
+                Created = DateTime.UtcNow
             };
 
         }
@@ -82,7 +82,7 @@ namespace API.Services
 
             // Revoke old token
             var oldToken = user.RefreshTokens.Single(r => r.Token == refreshToken);
-            oldToken.Revoked = DateTime.Now;
+            oldToken.Revoked = DateTime.UtcNow;
 
             await _userRepo.UpdateAsync(user);
 
