@@ -9,6 +9,7 @@ using API.Dtos.Token;
 using API.Interfaces.Repositories;
 using API.Interfaces.Services;
 using API.Models;
+using API.Repository;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services
@@ -18,12 +19,13 @@ namespace API.Services
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
         private readonly IUserRepository _userRepo;
-        public TokenService(IConfiguration config, IUserRepository userRepo)
+        private readonly IAccountRepository _accountRepository;
+        public TokenService(IConfiguration config, IUserRepository userRepo, IAccountRepository accountRepository)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
             _userRepo = userRepo;
-
+            _accountRepository = accountRepository;
         }
 
 
@@ -71,26 +73,39 @@ namespace API.Services
 
         public async Task<TokenDto> HandleRefreshTokenAsync(string refreshToken)
         {
-            // Transaction
-            var user = await _userRepo.GetUserByRefreshTokenAsync(refreshToken);
+            using var transaction = await _accountRepository.BeginTransactionAsync();
 
-            if (user == null) throw new Exception("Invalid refresh token");
-
-            var newToken = GenerateRefreshToken();
-
-            user.RefreshTokens.Add(newToken);
-
-            // Revoke old token
-            var oldToken = user.RefreshTokens.Single(r => r.Token == refreshToken);
-            oldToken.Revoked = DateTime.UtcNow;
-
-            await _userRepo.UpdateAsync(user);
-
-            return new TokenDto
+            try
             {
-                RefreshToken = newToken.Token,
-                Token = GenerateToken(user)
-            };
+                var user = await _userRepo.GetUserByRefreshTokenAsync(refreshToken);
+
+                if (user == null) throw new Exception("Invalid refresh token");
+
+                var newToken = GenerateRefreshToken();
+
+                user.RefreshTokens.Add(newToken);
+
+                // Revoke old token
+                var oldToken = user.RefreshTokens.Single(r => r.Token == refreshToken);
+                oldToken.Revoked = DateTime.UtcNow;
+
+                await _userRepo.UpdateAsync(user);
+
+                await transaction.CommitAsync();
+
+                return new TokenDto
+                {
+                    RefreshToken = newToken.Token,
+                    Token = GenerateToken(user)
+                };
+
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+
 
         }
     }

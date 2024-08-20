@@ -28,19 +28,32 @@ namespace API.Services
 
         public async Task<UserDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
+            using var transaction = await _accountRepository.BeginTransactionAsync();
 
-            if (user == null) throw new UnauthorizedAccessException("Invalid email or password");
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            if (!result.Succeeded) throw new UnauthorizedAccessException("Invalid email or password");
+                if (user == null) throw new UnauthorizedAccessException("Invalid email or password");
 
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshTokens.Add(refreshToken);
+                var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+                if (!result.Succeeded) throw new UnauthorizedAccessException("Invalid email or password");
 
-            await _userRepository.UpdateAsync(user);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshTokens.Add(refreshToken);
 
-            return user.ToDto(_tokenService.GenerateToken(user), refreshToken.Token);
+                await _userRepository.UpdateAsync(user);
+
+                await transaction.CommitAsync();
+
+                return user.ToDto(_tokenService.GenerateToken(user), refreshToken.Token);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+
 
         }
 
