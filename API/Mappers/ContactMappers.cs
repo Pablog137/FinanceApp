@@ -17,5 +17,15 @@ namespace API.Mappers
             };
         }
 
+        public static Contact toEntity(this CreateContactDto createContactDto)
+        {
+            return new Contact
+            {
+                Email = createContactDto.Email,
+                PhoneNumber = createContactDto.PhoneNumber,
+                Username = createContactDto.Username
+            };
+        }   
+
     }
 }

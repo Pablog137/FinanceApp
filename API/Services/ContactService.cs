@@ -2,6 +2,7 @@
 using API.Helpers;
 using API.Interfaces.Repositories;
 using API.Interfaces.Services;
+using API.Mappers;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,12 +42,7 @@ namespace API.Services
             var account = await _accountRepo.GetByUserIdAsync(userId);
             if (account == null) return null;
 
-            var contact = new Contact
-            {
-                Email = createContactDto.Email,
-                PhoneNumber = createContactDto.PhoneNumber,
-                Username = createContactDto.Username
-            };
+            var contact = createContactDto.toEntity();
 
             var contactAlreadyExists = await _contactRepo.ContactExists(contact, account);
 
