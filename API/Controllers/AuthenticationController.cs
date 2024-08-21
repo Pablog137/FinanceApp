@@ -46,11 +46,14 @@ namespace API.Controllers
                 return Ok(userDto);
 
             }
+            catch (ArgumentException argEx)
+            {
+                return Conflict(argEx.Message);
+            }
             catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
-
         }
 
         [HttpPost("login")]

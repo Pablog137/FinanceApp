@@ -63,6 +63,13 @@ namespace API.Services
 
             try
             {
+
+                var userExistsByEmail = await _userManager.FindByEmailAsync(registerDto.Email);
+                if(userExistsByEmail != null) throw new ArgumentException("Email is already taken");
+
+                var userExistsByUsername = await _userManager.FindByNameAsync(registerDto.Username);
+                if(userExistsByUsername != null) throw new ArgumentException("Username is already taken");
+
                 var user = new AppUser
                 {
                     UserName = registerDto.Username,
