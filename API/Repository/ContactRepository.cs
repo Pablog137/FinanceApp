@@ -18,17 +18,17 @@ namespace API.Repository
 
         public async Task<List<Contact>> GetAllAsync(Account account, QueryObject query)
         {
-            var contacts =  _context.Contacts.Where(c => c.Accounts.Any(a => a.Id == account.Id));
+            var contacts = _context.Contacts.Where(c => c.Accounts.Any(a => a.Id == account.Id));
 
-            if(!string.IsNullOrEmpty(query.Email))
+            if (!string.IsNullOrEmpty(query.Email))
             {
                 contacts = contacts.Where(c => c.Email.ToLower() == query.Email.ToLower());
             }
-            if(!string.IsNullOrEmpty(query.PhoneNumber))
+            if (!string.IsNullOrEmpty(query.PhoneNumber))
             {
                 contacts = contacts.Where(c => c.PhoneNumber == query.PhoneNumber);
             }
-            if(!string.IsNullOrEmpty(query.Username))
+            if (!string.IsNullOrEmpty(query.Username))
             {
                 contacts = contacts.Where(c => c.Username == query.Username);
             }
@@ -69,5 +69,14 @@ namespace API.Repository
             return contact;
         }
 
+        public async Task<Contact?> ContactExists(Contact contact, Account account)
+        {
+
+            return await _context.Contacts.
+                FirstOrDefaultAsync(c => c.Email == contact.Email && c.Accounts.
+                Any(a => a.Id == account.Id) || c.PhoneNumber == contact.PhoneNumber && c.Accounts.
+                Any(a => a.Id == account.Id) || c.Username == contact.Username && c.Accounts.
+                Any(a => a.Id == account.Id));
+        }
     }
 }

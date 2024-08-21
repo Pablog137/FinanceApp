@@ -35,18 +35,6 @@ namespace API.Data
                 .WithOne(u => u.User)
                 .HasForeignKey<Account>(a => a.UserId);
 
-            modelBuilder.Entity<Contact>()
-                .HasIndex(c => c.PhoneNumber)
-                .IsUnique();
-
-            modelBuilder.Entity<Contact>()
-                .HasIndex(c => c.Email)
-                .IsUnique();
-
-            modelBuilder.Entity<Contact>()
-                .HasIndex(c => c.Username)
-                .IsUnique();
-
             modelBuilder.Entity<Account>()
            .HasMany(a => a.Contacts)
            .WithMany(c => c.Accounts)

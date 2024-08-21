@@ -7,6 +7,7 @@ using API.Mappers;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -50,13 +51,25 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
 
-            var contact = await _contactService.CreateAsync(contactDto, userId.Value);
-            if (contact == null) return BadRequest();
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            return CreatedAtAction(nameof(GetById), new { id = contact.Id }, contact.toDto());
+                var contact = await _contactService.CreateAsync(contactDto, userId.Value);
+                if (contact == null) return BadRequest();
+
+                return CreatedAtAction(nameof(GetById), new { id = contact.Id }, contact.toDto());
+            }
+            catch (DbUpdateException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]

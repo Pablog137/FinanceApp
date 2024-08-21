@@ -13,6 +13,8 @@ namespace API.Interfaces.Repositories
 
         Task<Contact?> CreateAsync(Contact contact, Account account);
 
+        Task<Contact?> ContactExists(Contact contact, Account account);
+
 
     }
 }
