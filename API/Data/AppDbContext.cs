@@ -47,6 +47,9 @@ namespace API.Data
                 .Property(p => p.Type)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<Notification>()
+                .Property(p => p.Type)
+                .HasConversion<string>();
 
             // Roles
             modelBuilder.Entity<AppRole>().HasData(

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using API.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
@@ -9,7 +10,7 @@ namespace API.Models
         public int AccountId { get; set; }
         public Account Account { get; set; }
         public string Message { get; set; } = string.Empty;
-        public string Type { get; set; }
+        public NotificationType Type { get; set; }
         public bool IsRead { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

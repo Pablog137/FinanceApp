@@ -14,7 +14,8 @@ namespace API.Dtos.Notification
 
         [Required]
         [EnumDataType(typeof(NotificationType))]
-        public string Type { get; set; }
+
+        public NotificationType Type { get; set; }
 
     }
 }
