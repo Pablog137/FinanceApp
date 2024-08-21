@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  api:
+    image: finance-api
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Finance;User Id=sa;Password=iaoserhHYE_i389748r.;MultipleActiveResultSets=true;TrustServerCertificate=True
+    networks:
+      - finance-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "iaoserhHYE_i389748r."
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - finance-network
+
+networks:
+  finance-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:

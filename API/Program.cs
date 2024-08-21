@@ -102,9 +102,16 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Create Database
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
