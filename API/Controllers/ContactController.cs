@@ -8,6 +8,7 @@ using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace API.Controllers
 {
@@ -62,25 +63,32 @@ namespace API.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = contact.Id }, contact.toDto());
             }
-            catch (DbUpdateException e)
-            {
-                return BadRequest(e.Message);
-            }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                Log.Error(e, "Error creating contact");
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var contact = await _contactService.DeleteAsync(id, userId.Value);
-            if (contact == null) return NotFound();
-            return Ok(contact.toDto());
+                var contact = await _contactService.DeleteAsync(id, userId.Value);
+                if (contact == null) return NotFound();
+                return Ok(contact.toDto());
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error deleting contact");
+                return StatusCode(500, e.Message);
+            }
+
         }
 
     }

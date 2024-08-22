@@ -5,6 +5,7 @@ using API.Interfaces.Services;
 using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace API.Controllers
 {
@@ -60,23 +61,42 @@ namespace API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateNotificationDto notificationDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
 
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var notification = await _notificationService.CreateAsync(notificationDto, userId.Value);
+                var notification = await _notificationService.CreateAsync(notificationDto, userId.Value);
 
-            return CreatedAtAction(nameof(GetById), new { id = notification.Id }, notification.toDto());
+                return CreatedAtAction(nameof(GetById), new { id = notification.Id }, notification.toDto());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error creating notification");
+                return StatusCode(500, e);
+            }
+
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id)
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var notification = await _notificationService.UpdateAsync(id, userId.Value);
-            return Ok(notification.toDto());
+                var notification = await _notificationService.UpdateAsync(id, userId.Value);
+                return Ok(notification.toDto());
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error updating notification");
+                return StatusCode(500, e);
+            }
+
         }
 
 

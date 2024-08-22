@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Serilog;
 
 namespace API.Controllers
 {
@@ -46,12 +47,14 @@ namespace API.Controllers
                 return Ok(userDto);
 
             }
-            catch (ArgumentException argEx)
+            catch (ArgumentException a)
             {
-                return Conflict(argEx.Message);
+                Log.Error(a, a.Message);
+                return Conflict(a.Message);
             }
             catch (Exception e)
             {
+                Log.Error(e, "Error registering user");
                 return StatusCode(500, e.Message);
             }
         }
@@ -67,13 +70,15 @@ namespace API.Controllers
                 return Ok(userDto);
 
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException e)
             {
-                return Unauthorized(ex.Message);
+                Log.Error(e, "Invalid email or password");
+                return Unauthorized(e.Message);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return StatusCode(500, ex.Message);
+                Log.Error(e, "Error logging user");
+                return StatusCode(500, e.Message);
             }
 
         }
@@ -89,6 +94,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Error logging out user");
                 return StatusCode(500, ex.Message);
             }
 
@@ -107,9 +113,10 @@ namespace API.Controllers
                 return Ok(refreshToken);
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return StatusCode(500, ex.Message);
+                Log.Error(e, "Error with refresh token");
+                return StatusCode(500, e.Message);
             }
 
         }

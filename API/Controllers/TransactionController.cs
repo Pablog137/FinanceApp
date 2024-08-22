@@ -13,6 +13,7 @@ using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace API.Controllers
 {
@@ -73,12 +74,16 @@ namespace API.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction.toDto());
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException e)
             {
-                return BadRequest(ex.Message);
+                Log.Error(e, "Account not found creating transaction");
+                return BadRequest(e.Message);
             }
-
-
+            catch (Exception e)
+            {
+                Log.Error(e, "Error creating transaction");
+                return StatusCode(500, e.Message);
+            }
 
         }
     }

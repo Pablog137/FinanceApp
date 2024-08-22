@@ -47,7 +47,7 @@ namespace API.Services
             var contactAlreadyExists = await _contactRepo.ContactExists(contact, account);
 
             if (contactAlreadyExists != null) throw new Exception("Contact already exists.");
-          
+
             return await _contactRepo.CreateAsync(contact, account);
         }
 
