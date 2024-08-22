@@ -1,5 +1,6 @@
 using System.Text;
 using API.Data;
+using API.Helpers;
 using API.Interfaces.Repositories;
 using API.Interfaces.Services;
 using API.Models;
@@ -115,8 +116,13 @@ try
     // Logging
     builder.Services.AddSerilog();
 
+    builder.Services.AddHealthChecks()
+      .AddCheck<HealthCheck>("API and DB Check", tags: new[] { "api", "db" });
+
 
     var app = builder.Build();
+
+    app.MapHealthChecks("/health");
 
     // Create Database
     using (var scope = app.Services.CreateScope())
