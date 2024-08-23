@@ -12,10 +12,15 @@ namespace API.Services
     {
         private readonly IAccountRepository _accountRepo;
         private readonly ITransferRepository _transferRepo;
-        public TransferService(AppDbContext context, IAccountRepository accountRepo, ITransferRepository transferRepo)
+        private readonly ITransactionRepository _transactionRepo;
+        public TransferService(AppDbContext context, IAccountRepository accountRepo, ITransferRepository transferRepo,
+            ITransactionRepository transactionRepo
+
+            )
         {
             _accountRepo = accountRepo;
             _transferRepo = transferRepo;
+            _transactionRepo = transactionRepo;
         }
         public async Task<Transfer> CreateTransferAsync(int userId, CreateTransferDto transferDto)
         {
@@ -38,6 +43,26 @@ namespace API.Services
                 var transfer = transferDto.ToEntity(senderAccount.Id);
 
                 await _transferRepo.CreateTransferAsync(transfer);
+
+                var senderTransaction = new Transaction
+                {
+                    AccountId = senderAccount.Id,
+                    Amount = -transferDto.Amount,
+                    Description = $"Transfer to the account with id : {recipientAccount.Id}",
+                    Type = Enums.TransactionType.Expense
+                };
+
+                await _transactionRepo.AddAsync(senderTransaction);
+
+                var recipientTransaction = new Transaction
+                {
+                    AccountId = recipientAccount.Id,
+                    Amount = transferDto.Amount,
+                    Description = $"Transfer from the account with id : {senderAccount.Id}",
+                    Type = Enums.TransactionType.Income
+                };
+
+                await _transactionRepo.AddAsync(recipientTransaction);
 
                 await transaction.CommitAsync();
 
