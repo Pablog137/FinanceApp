@@ -102,6 +102,7 @@ try
     builder.Services.AddScoped<ITransactionService, TransactionService>();
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<INotificationService, NotificationService>();
+    builder.Services.AddScoped<ITransferService, TransferService>();
 
     // Repositories
     builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
@@ -111,6 +112,7 @@ try
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
     builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+    builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 
 
     // Logging
