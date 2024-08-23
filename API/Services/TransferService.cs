@@ -11,10 +11,13 @@ namespace API.Services
     public class TransferService : ITransferService
     {
         private readonly AppDbContext _context;
-        private readonly IAccountRepository _accountRepository;
-        public TransferService(AppDbContext context)
+        private readonly IAccountRepository _accountRepo;
+        private readonly ITransferRepository _transferRepo;
+        public TransferService(AppDbContext context, IAccountRepository accountRepo, ITransferRepository transferRepo)
         {
             _context = context;
+            _accountRepo = accountRepo;
+            _transferRepo = transferRepo;
         }
         public async Task<Transfer> CreateTransferAsync(int userId, CreateTransferDto transferDto)
         {
@@ -25,27 +28,19 @@ namespace API.Services
 
                 var senderAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
 
-                if(senderAccount == null || senderAccount.Balance < transferDto.Amount)
-                {
-                    throw new Exception("Insufficient funds");
-                }
+                if (senderAccount == null || senderAccount.Balance < transferDto.Amount) throw new Exception("Insufficient funds");
 
                 senderAccount.Balance -= transferDto.Amount;
 
                 var recipientAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == transferDto.RecipientAccountId);
 
-                if(recipientAccount == null)
-                {
-                    throw new Exception("Recipient account not found");
-                }
+                if (recipientAccount == null) throw new Exception("Recipient account not found");
 
                 recipientAccount.Balance += transferDto.Amount;
 
                 var transfer = transferDto.ToEntity(senderAccount.Id);
 
-                _context.Transfers.Add(transfer);
-              
-                await _context.SaveChangesAsync();
+                await _transferRepo.CreateTransferAsync(transfer);
 
                 await transaction.CommitAsync();
 
@@ -59,9 +54,10 @@ namespace API.Services
             }
         }
 
-        public async Task<Transfer> GetTransferByIdAsync(int id, int userId)
+        public async Task<Transfer> GetByIdAsync(int id, int userId)
         {
-            return await _context.Transfers.Where(t => t.Id == id && t.RecipientAccountId == userId || t.SenderAccountId == userId).FirstOrDefaultAsync();
+            return await _transferRepo.GetByIdAsync(id, userId);
+
         }
     }
 }

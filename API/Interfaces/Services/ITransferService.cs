@@ -7,6 +7,6 @@ namespace API.Interfaces.Services
     {
         Task<Transfer> CreateTransferAsync(int userId, CreateTransferDto transferDto);
 
-        Task<Transfer?> GetTransferByIdAsync(int id, int userId);
+        Task<Transfer?> GetByIdAsync(int id, int userId);
     }
 }

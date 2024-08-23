@@ -47,7 +47,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             if (userId == null) return Unauthorized();
 
-            var transfer = await _transferService.GetTransferByIdAsync(id, userId.Value);
+            var transfer = await _transferService.GetByIdAsync(id, userId.Value);
             return Ok(transfer);
         }
 
