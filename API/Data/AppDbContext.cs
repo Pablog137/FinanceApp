@@ -18,11 +18,10 @@ namespace API.Data
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }
 
 
 
