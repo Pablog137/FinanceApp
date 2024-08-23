@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Interfaces.Repositories
 {
@@ -6,5 +7,7 @@ namespace API.Interfaces.Repositories
     {
         Task CreateTransferAsync(Transfer transfer);
         Task<Transfer> GetByIdAsync(int id, int userId);
+
+        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }

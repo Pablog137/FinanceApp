@@ -2,6 +2,7 @@
 using API.Interfaces.Repositories;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Repository
 {
@@ -24,6 +25,10 @@ namespace API.Repository
         {
             return await _context.Transfers.Where(t => t.Id == id && t.RecipientAccountId == userId || t.SenderAccountId == userId).FirstOrDefaultAsync();
 
+        }
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
         }
     }
 }
