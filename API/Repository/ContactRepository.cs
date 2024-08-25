@@ -24,13 +24,13 @@ namespace API.Repository
             {
                 contacts = contacts.Where(c => c.Email.ToLower() == query.Email.ToLower());
             }
-            if (!string.IsNullOrEmpty(query.PhoneNumber))
-            {
-                contacts = contacts.Where(c => c.PhoneNumber == query.PhoneNumber);
-            }
+            //if (!string.IsNullOrEmpty(query.PhoneNumber))
+            //{
+            //    contacts = contacts.Where(c => c.PhoneNumber == query.PhoneNumber);
+            //}
             if (!string.IsNullOrEmpty(query.Username))
             {
-                contacts = contacts.Where(c => c.Username == query.Username);
+                contacts = contacts.Where(c => c.UserName == query.Username);
             }
             return await contacts.ToListAsync();
         }
@@ -74,14 +74,13 @@ namespace API.Repository
 
             return await _context.Contacts.
                 FirstOrDefaultAsync(c => c.Email == contact.Email && c.Accounts.
-                Any(a => a.Id == account.Id) || c.PhoneNumber == contact.PhoneNumber && c.Accounts.
-                Any(a => a.Id == account.Id) || c.Username == contact.Username && c.Accounts.
+                Any(a => a.Id == account.Id) || c.UserName == contact.UserName && c.Accounts.
                 Any(a => a.Id == account.Id));
         }
 
         public async Task<bool> ContactExistsAsync(Contact contact)
         {
-            return await _context.Users.AnyAsync(u => u.Email == contact.Email && u.PhoneNumber == contact.PhoneNumber && u.UserName == contact.Username);
+            return await _context.Users.AnyAsync(u => u.Email == contact.Email && u.UserName == contact.UserName);
         }
     }
 }

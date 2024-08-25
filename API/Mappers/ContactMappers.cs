@@ -11,9 +11,8 @@ namespace API.Mappers
             return new ContactDto
             {
                 Id = contact.Id,
-                PhoneNumber = contact.PhoneNumber,
                 Email = contact.Email,
-                Username = contact.Username
+                UserName = contact.UserName
             };
         }
 
@@ -22,10 +21,9 @@ namespace API.Mappers
             return new Contact
             {
                 Email = createContactDto.Email,
-                PhoneNumber = createContactDto.PhoneNumber,
-                Username = createContactDto.Username
+                UserName = createContactDto.UserName
             };
-        }   
+        }
 
     }
 }

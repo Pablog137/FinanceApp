@@ -4,9 +4,6 @@ namespace API.Dtos.Contact
 {
     public class CreateContactDto
     {
-        [Required]
-        [Phone]
-        public string PhoneNumber { get; set; }
 
         [Required]
         [EmailAddress]
@@ -14,6 +11,6 @@ namespace API.Dtos.Contact
 
         [Required]
         [MaxLength(20)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
     }
 }
