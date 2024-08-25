@@ -30,15 +30,17 @@ namespace API.Services
             {
 
                 var senderAccount = await _accountRepo.GetByUserIdAsync(userId);
+                var recipientAccount = await _accountRepo.GetByIdAsync(transferDto.RecipientAccountId);
+
+                if (senderAccount == recipientAccount) throw new Exception("You can't transfer to the same account");
+
+                if (recipientAccount == null) throw new Exception("Recipient account not found");
 
                 if (senderAccount == null || senderAccount.Balance < transferDto.Amount) throw new Exception("Insufficient funds");
 
                 senderAccount.Balance -= transferDto.Amount;
 
                 await _accountRepo.UpdateAsync(senderAccount);
-
-                var recipientAccount = await _accountRepo.GetByIdAsync(transferDto.RecipientAccountId);
-                if (recipientAccount == null) throw new Exception("Recipient account not found");
 
                 recipientAccount.Balance += transferDto.Amount;
 
