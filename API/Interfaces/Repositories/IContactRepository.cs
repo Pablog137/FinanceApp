@@ -11,9 +11,11 @@ namespace API.Interfaces.Repositories
         Task<Contact?> GetByIdAsync(int id, Account account);
         Task<Contact?> DeleteAsync(Contact contact, Account account);
 
-        Task<Contact?> CreateAsync(Contact contact, Account account);
+        Task<Contact?> AddContactAsync(Contact contact, Account account);
 
-        Task<Contact?> ContactExists(Contact contact, Account account);
+        Task<Contact?> ContactExistsInUsersContactRegister(Contact contact, Account account);
+
+        Task<bool> ContactExistsAsync(Contact contact);
 
 
     }

@@ -36,7 +36,7 @@ namespace API.Services
             return await _contactRepo.GetByIdAsync(id, account);
         }
 
-        public async Task<Contact?> CreateAsync(CreateContactDto createContactDto, int userId)
+        public async Task<Contact?> AddContactAsync(CreateContactDto createContactDto, int userId)
         {
 
             var account = await _accountRepo.GetByUserIdAsync(userId);
@@ -44,11 +44,15 @@ namespace API.Services
 
             var contact = createContactDto.toEntity();
 
-            var contactAlreadyExists = await _contactRepo.ContactExists(contact, account);
+            var contactAlreadyExists = await _contactRepo.ContactExistsAsync(contact);
 
-            if (contactAlreadyExists != null) throw new Exception("Contact already exists.");
+            if (contactAlreadyExists == false) throw new Exception("The contact does not exist");
 
-            return await _contactRepo.CreateAsync(contact, account);
+            var contactAlreadyIsInUserRegister = await _contactRepo.ContactExistsInUsersContactRegister(contact, account);
+
+            if (contactAlreadyIsInUserRegister != null) throw new Exception("User already has this contact.");
+
+            return await _contactRepo.AddContactAsync(contact, account);
         }
 
         public async Task<Contact?> DeleteAsync(int id, int userId)

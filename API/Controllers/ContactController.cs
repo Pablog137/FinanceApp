@@ -48,7 +48,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateContactDto contactDto)
+        public async Task<IActionResult> AddContact([FromBody] CreateContactDto contactDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -58,7 +58,7 @@ namespace API.Controllers
                 var userId = User.GetUserId();
                 if (userId == null) return Unauthorized();
 
-                var contact = await _contactService.CreateAsync(contactDto, userId.Value);
+                var contact = await _contactService.AddContactAsync(contactDto, userId.Value);
                 if (contact == null) return BadRequest();
 
                 return CreatedAtAction(nameof(GetById), new { id = contact.Id }, contact.toDto());

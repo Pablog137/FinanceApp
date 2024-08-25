@@ -11,6 +11,6 @@ namespace API.Interfaces.Services
         Task<Contact?> GetByIdAsync(int id, int userId);
         Task<Contact?> DeleteAsync(int id, int userId);
 
-        Task<Contact?> CreateAsync(CreateContactDto createContactDto, int userId);
+        Task<Contact?> AddContactAsync(CreateContactDto createContactDto, int userId);
     }
 }

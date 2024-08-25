@@ -40,7 +40,7 @@ namespace API.Repository
             return await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.Accounts.Any(a => a.Id == account.Id));
         }
 
-        public async Task<Contact> CreateAsync(Contact contact, Account account)
+        public async Task<Contact> AddContactAsync(Contact contact, Account account)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
 
@@ -69,7 +69,7 @@ namespace API.Repository
             return contact;
         }
 
-        public async Task<Contact?> ContactExists(Contact contact, Account account)
+        public async Task<Contact?> ContactExistsInUsersContactRegister(Contact contact, Account account)
         {
 
             return await _context.Contacts.
@@ -77,6 +77,11 @@ namespace API.Repository
                 Any(a => a.Id == account.Id) || c.PhoneNumber == contact.PhoneNumber && c.Accounts.
                 Any(a => a.Id == account.Id) || c.Username == contact.Username && c.Accounts.
                 Any(a => a.Id == account.Id));
+        }
+
+        public async Task<bool> ContactExistsAsync(Contact contact)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == contact.Email && u.PhoneNumber == contact.PhoneNumber && u.UserName == contact.Username);
         }
     }
 }
