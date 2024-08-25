@@ -35,10 +35,14 @@ namespace API.Services
 
                 senderAccount.Balance -= transferDto.Amount;
 
+                await _accountRepo.UpdateAsync(senderAccount);
+
                 var recipientAccount = await _accountRepo.GetByIdAsync(transferDto.RecipientAccountId);
                 if (recipientAccount == null) throw new Exception("Recipient account not found");
 
                 recipientAccount.Balance += transferDto.Amount;
+
+                await _accountRepo.UpdateAsync(recipientAccount);
 
                 var transfer = transferDto.ToEntity(senderAccount.Id);
 
