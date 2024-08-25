@@ -151,9 +151,9 @@ try
 
 
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException)
 {
-    Log.Fatal(ex, "Application terminated unexpectedly");
+    Log.Fatal(ex, "Host terminated unexpectedly.");
 }
 finally
 {
