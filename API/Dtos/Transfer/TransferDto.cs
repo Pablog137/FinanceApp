@@ -1,19 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace API.Models
+﻿namespace API.Dtos.Transfer
 {
-    [Table("Transfers")]
-    public class Transfer
+    public class TransferDto
     {
         public int Id { get; set; }
 
         public int SenderAccountId { get; set; }
 
-        public Account SenderAccount { get; set; }
-
         public int RecipientAccountId { get; set; }
-
-        public Account RecipientAccount { get; set; }
 
         public decimal Amount { get; set; }
 

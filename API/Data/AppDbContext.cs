@@ -42,6 +42,24 @@ namespace API.Data
                j => j.HasOne<Contact>().WithMany().HasForeignKey("ContactId"),
                j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"));
 
+            modelBuilder.Entity<Transfer>()
+            .HasOne(t => t.SenderAccount)
+            .WithMany()
+            .HasForeignKey(t => t.SenderAccountId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Transfer>()
+                .HasOne(t => t.RecipientAccount)
+                .WithMany()
+                .HasForeignKey(t => t.RecipientAccountId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.Account)
+                .WithMany()
+                .HasForeignKey(t => t.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Transaction>()
                 .Property(p => p.Type)
                 .HasConversion<string>();

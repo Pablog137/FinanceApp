@@ -1,6 +1,7 @@
 ﻿using API.Dtos.Transfer;
 using API.Extensions;
 using API.Interfaces.Services;
+using API.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -32,7 +33,7 @@ namespace API.Controllers
 
                 var transfer = await _transferService.CreateTransferAsync(userId.Value, transferDto);
 
-                return CreatedAtAction(nameof(GetTransferById), new { id = transfer.Id }, transfer);
+                return CreatedAtAction(nameof(GetTransferById), new { id = transfer.Id }, transfer.ToDto());
             }
             catch (Exception e)
             {
