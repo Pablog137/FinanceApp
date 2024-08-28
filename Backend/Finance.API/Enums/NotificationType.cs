@@ -1,4 +1,4 @@
-﻿namespace API.Enums
+﻿namespace Finance.API.Enums
 {
     public enum NotificationType
     {

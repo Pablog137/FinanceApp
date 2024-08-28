@@ -1,8 +1,8 @@
-﻿using API.Enums;
-using API.Models;
+﻿using Finance.API.Enums;
+using Finance.API.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Dtos.Notification
+namespace Finance.API.Dtos.Notification
 {
 
  

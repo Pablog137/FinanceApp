@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using API.Data;
-using API.Dtos.Transaction;
-using API.Extensions;
-using API.Interfaces.Repositories;
-using API.Interfaces.Services;
-using API.Mappers;
-using API.Models;
+using Finance.API.Data;
+using Finance.API.Dtos.Transaction;
+using Finance.API.Extensions;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Interfaces.Services;
+using Finance.API.Mappers;
+using Finance.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-namespace API.Controllers
+namespace Finance.API.Controllers
 {
     [ApiController]
     [Authorize]

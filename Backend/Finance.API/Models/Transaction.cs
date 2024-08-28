@@ -1,11 +1,11 @@
-using API.Enums;
+using Finance.API.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models
+namespace Finance.API.Models
 {
     [Table("Transactions")]
     public class Transaction

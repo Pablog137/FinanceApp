@@ -1,12 +1,12 @@
-﻿using API.Data;
-using API.Dtos.Contact;
-using API.Helpers;
-using API.Interfaces.Repositories;
-using API.Interfaces.Services;
-using API.Models;
+﻿using Finance.API.Data;
+using Finance.API.Dtos.Contact;
+using Finance.API.Helpers;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Interfaces.Services;
+using Finance.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Repository
+namespace Finance.API.Repository
 {
     public class ContactRepository : IContactRepository
     {

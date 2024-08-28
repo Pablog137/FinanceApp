@@ -1,10 +1,10 @@
-﻿using API.Dtos.Notification;
-using API.Interfaces.Repositories;
-using API.Interfaces.Services;
-using API.Mappers;
-using API.Models;
+﻿using Finance.API.Dtos.Notification;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Interfaces.Services;
+using Finance.API.Mappers;
+using Finance.API.Models;
 
-namespace API.Services
+namespace Finance.API.Services
 {
     public class NotificationService : INotificationService
     {

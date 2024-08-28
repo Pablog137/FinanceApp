@@ -1,9 +1,9 @@
-﻿using API.Data;
-using API.Interfaces.Repositories;
-using API.Migrations;
-using API.Models;
+﻿using Finance.API.Data;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Migrations;
+using Finance.API.Models;
 
-namespace API.Repository
+namespace Finance.API.Repository
 {
     public class TokenRepository : ITokenRepository
     {

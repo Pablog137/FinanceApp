@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos.Transaction;
-using API.Models;
+using Finance.API.Dtos.Transaction;
+using Finance.API.Models;
 
-namespace API.Mappers
+namespace Finance.API.Mappers
 {
     public static class TransactionMappers
     {

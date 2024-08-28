@@ -1,5 +1,5 @@
-using API.Data;
-using API.Extensions;
+using Finance.API.Data;
+using Finance.API.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 

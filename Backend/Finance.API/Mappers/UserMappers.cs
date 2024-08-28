@@ -1,7 +1,7 @@
-﻿using API.Dtos.Users;
-using API.Models;
+﻿using Finance.API.Dtos.Users;
+using Finance.API.Models;
 
-namespace API.Mappers
+namespace Finance.API.Mappers
 {
     public static class UserMappers
     {

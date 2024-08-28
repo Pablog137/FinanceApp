@@ -1,7 +1,7 @@
-﻿using API.Dtos.Transfer;
-using API.Models;
+﻿using Finance.API.Dtos.Transfer;
+using Finance.API.Models;
 
-namespace API.Mappers
+namespace Finance.API.Mappers
 {
     public static class TransferMappers
     {

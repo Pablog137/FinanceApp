@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Data;
-using API.Interfaces.Repositories;
-using API.Mappers;
+using Finance.API.Data;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
-namespace API.Controllers
+namespace Finance.API.Controllers
 {
     [Route("api/account")]
     [ApiController]

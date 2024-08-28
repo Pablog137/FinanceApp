@@ -1,8 +1,8 @@
-﻿using API.Dtos.Account;
-using API.Dtos.Transaction;
-using API.Models;
+﻿using Finance.API.Dtos.Account;
+using Finance.API.Dtos.Transaction;
+using Finance.API.Models;
 
-namespace API.Mappers
+namespace Finance.API.Mappers
 {
     public static class AccountMapper
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Dtos.Contact
+namespace Finance.API.Dtos.Contact
 {
     public class CreateContactDto
     {

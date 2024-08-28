@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos.Transaction;
-using API.Models;
+using Finance.API.Dtos.Transaction;
+using Finance.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace API.Interfaces.Repositories
+namespace Finance.API.Interfaces.Repositories
 {
     public interface ITransactionRepository
     {

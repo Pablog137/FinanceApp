@@ -1,7 +1,7 @@
-﻿using API.Dtos.Notification;
-using API.Models;
+﻿using Finance.API.Dtos.Notification;
+using Finance.API.Models;
 
-namespace API.Mappers
+namespace Finance.API.Mappers
 {
     public static class NotificationMappers
     {

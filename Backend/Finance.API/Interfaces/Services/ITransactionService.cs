@@ -1,7 +1,7 @@
-﻿using API.Dtos.Transaction;
-using API.Models;
+﻿using Finance.API.Dtos.Transaction;
+using Finance.API.Models;
 
-namespace API.Interfaces.Services
+namespace Finance.API.Interfaces.Services
 {
     public interface ITransactionService
     {

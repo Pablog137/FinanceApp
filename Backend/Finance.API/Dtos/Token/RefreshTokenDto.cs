@@ -1,4 +1,4 @@
-﻿namespace API.Dtos.Token
+﻿namespace Finance.API.Dtos.Token
 {
     public class RefreshTokenDto
     {

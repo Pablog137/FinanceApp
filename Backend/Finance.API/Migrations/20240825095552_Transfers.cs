@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace API.Migrations
+namespace Finance.API.Migrations
 {
     /// <inheritdoc />
     public partial class Transfers : Migration

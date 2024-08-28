@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using API.Dtos.Token;
-using API.Models;
+using Finance.API.Dtos.Token;
+using Finance.API.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Interfaces.Services
+namespace Finance.API.Interfaces.Services
 {
     public interface ITokenService
     {

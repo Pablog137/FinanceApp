@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace API.Migrations
+namespace Finance.API.Migrations
 {
     /// <inheritdoc />
     public partial class RemovedUniqueKeys : Migration

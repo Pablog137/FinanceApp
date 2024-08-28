@@ -1,7 +1,7 @@
-﻿using API.Enums;
+﻿using Finance.API.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Models
+namespace Finance.API.Models
 {
     [Table("Notifications")]
     public class Notification

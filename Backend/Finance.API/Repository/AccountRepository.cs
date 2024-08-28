@@ -1,11 +1,11 @@
-﻿using API.Data;
-using API.Interfaces.Repositories;
-using API.Mappers;
-using API.Models;
+﻿using Finance.API.Data;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Mappers;
+using Finance.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace API.Repository
+namespace Finance.API.Repository
 {
     public class AccountRepository : IAccountRepository
     {

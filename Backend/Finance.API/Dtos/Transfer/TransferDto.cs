@@ -1,4 +1,4 @@
-﻿namespace API.Dtos.Transfer
+﻿namespace Finance.API.Dtos.Transfer
 {
     public class TransferDto
     {

@@ -1,6 +1,6 @@
-﻿using API.Dtos.Users;
+﻿using Finance.API.Dtos.Users;
 
-namespace API.Interfaces.Services
+namespace Finance.API.Interfaces.Services
 {
     public interface IAuthenticationService
     {

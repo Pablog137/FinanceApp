@@ -1,7 +1,7 @@
-﻿using API.Models;
+﻿using Finance.API.Models;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace API.Interfaces.Repositories
+namespace Finance.API.Interfaces.Repositories
 {
     public interface ITransferRepository
     {

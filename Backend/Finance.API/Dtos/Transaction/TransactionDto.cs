@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Enums;
-using API.Models;
+using Finance.API.Enums;
+using Finance.API.Models;
 
-namespace API.Dtos.Transaction
+namespace Finance.API.Dtos.Transaction
 {
     public class TransactionDto
     {

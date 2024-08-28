@@ -1,8 +1,8 @@
-﻿using API.Dtos.Contact;
-using API.Helpers;
-using API.Models;
+﻿using Finance.API.Dtos.Contact;
+using Finance.API.Helpers;
+using Finance.API.Models;
 
-namespace API.Interfaces.Repositories
+namespace Finance.API.Interfaces.Repositories
 {
     public interface IContactRepository
     {

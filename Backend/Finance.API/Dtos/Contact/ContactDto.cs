@@ -1,4 +1,4 @@
-﻿namespace API.Dtos.Contact
+﻿namespace Finance.API.Dtos.Contact
 {
     public class ContactDto
     {

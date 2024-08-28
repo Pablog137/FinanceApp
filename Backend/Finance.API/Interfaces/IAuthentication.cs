@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos.Users;
+using Finance.API.Dtos.Users;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Interfaces
+namespace Finance.API.Interfaces
 {
     public interface IAuthentication
     {

@@ -1,6 +1,6 @@
-﻿using API.Enums;
+﻿using Finance.API.Enums;
 
-namespace API.Dtos.Notification
+namespace Finance.API.Dtos.Notification
 {
     public class NotificationDto
     {

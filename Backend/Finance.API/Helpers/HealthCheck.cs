@@ -1,8 +1,8 @@
-﻿using API.Data;
+﻿using Finance.API.Data;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 
-namespace API.Helpers
+namespace Finance.API.Helpers
 {
     public class HealthCheck : IHealthCheck
     {

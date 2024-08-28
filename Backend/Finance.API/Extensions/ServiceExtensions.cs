@@ -1,10 +1,10 @@
-﻿using API.Data;
-using API.Helpers;
-using API.Interfaces.Repositories;
-using API.Interfaces.Services;
-using API.Models;
-using API.Repository;
-using API.Services;
+﻿using Finance.API.Data;
+using Finance.API.Helpers;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Interfaces.Services;
+using Finance.API.Models;
+using Finance.API.Repository;
+using Finance.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace API.Extensions
+namespace Finance.API.Extensions
 {
     public static class ServiceExtensions
     {

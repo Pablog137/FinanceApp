@@ -1,11 +1,11 @@
-﻿using API.Data;
-using API.Dtos.Notification;
-using API.Interfaces.Repositories;
-using API.Models;
+﻿using Finance.API.Data;
+using Finance.API.Dtos.Notification;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace API.Repository
+namespace Finance.API.Repository
 {
     public class NotificationRepository : INotificationRepository
     {

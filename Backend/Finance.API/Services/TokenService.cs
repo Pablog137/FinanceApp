@@ -5,14 +5,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using API.Dtos.Token;
-using API.Interfaces.Repositories;
-using API.Interfaces.Services;
-using API.Models;
-using API.Repository;
+using Finance.API.Dtos.Token;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Interfaces.Services;
+using Finance.API.Models;
+using Finance.API.Repository;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Services
+namespace Finance.API.Services
 {
     public class TokenService : ITokenService
     {

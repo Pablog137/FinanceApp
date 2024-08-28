@@ -1,9 +1,9 @@
-﻿using API.Dtos.Transaction;
-using API.Models;
+﻿using Finance.API.Dtos.Transaction;
+using Finance.API.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace API.Dtos.Account
+namespace Finance.API.Dtos.Account
 {
     public class AccountDto
     {
