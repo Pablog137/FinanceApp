@@ -117,5 +117,135 @@ namespace Finance.Tests.UnitTests.Services
 
         #endregion LoginAsync
 
+        #region RegisterAsync
+
+        [Fact]
+        public async void RegisterAsync_ThrowArgumentException_WhenEmailIsAlreadyTaken()
+        {
+            var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
+
+
+            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+               .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
+
+            _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(new AppUser());
+
+            await Assert.ThrowsAsync<ArgumentException>(() => _authenticationService.RegisterAsync(registerDto));
+
+        }
+
+        [Fact]
+        public async void RegisterAsync_ThrowArgumentException_WhenUsernameIsAlreadyTaken()
+        {
+            var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
+
+            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+               .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
+
+            _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(new AppUser());
+
+            await Assert.ThrowsAsync<ArgumentException>(() => _authenticationService.RegisterAsync(registerDto));
+
+        }
+
+        [Fact]
+        public async void RegisterAsync_ShouldThrowException_WhenCreateAsyncFails()
+        {
+            var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
+
+
+            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+               .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
+
+            _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            await Assert.ThrowsAsync<Exception>(() => _authenticationService.RegisterAsync(registerDto));
+
+
+        }
+
+        [Fact]
+        public async void RegisterAsync_ShouldThrowException_WhenAddToRoleAsyncFails()
+        {
+            var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
+
+
+            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+               .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
+
+            _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _userManagerMock.Setup(manager => manager.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            await Assert.ThrowsAsync<Exception>(() => _authenticationService.RegisterAsync(registerDto));
+
+        }
+
+        [Fact]
+        public async void RegisterAsync_ShouldReturnUserDto_WhenRegisterIsSuccessful()
+        {
+            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+               .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
+
+            _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppUser)null);
+
+            _userManagerMock.Setup(manager => manager.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _userManagerMock.Setup(manager => manager.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _accountRepositoryMock.Setup(repo => repo.CreateAsync(It.IsAny<Account>()))
+                .Returns(Task.CompletedTask);
+
+            var refreshToken = new RefreshToken { Token = "dummy-token" };
+            _tokenServiceMock.Setup(ts => ts.GenerateRefreshToken())
+                .Returns(refreshToken);
+
+            _userRepositoryMock.Setup(repo => repo.UpdateAsync(It.IsAny<AppUser>()))
+                .Returns(Task.CompletedTask);
+
+            var registerDto = new RegisterDto
+            {
+                Email = "new@example.com",
+                Username = "newusername",
+                Password = "Password123!"
+            };
+
+            var result = await _authenticationService.RegisterAsync(registerDto);
+
+            Assert.NotNull(result);
+            Assert.Equal("dummy-token", result.RefreshToken);
+            Assert.Equal("newusername", result.Username);
+            Assert.Equal("new@example.com", result.Email);
+        }
+
+        #endregion RegisterAsync
+   
+    
     }
 }
