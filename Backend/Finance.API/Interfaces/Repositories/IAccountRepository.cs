@@ -7,7 +7,7 @@ namespace Finance.API.Interfaces.Repositories
     {
         Task<Account?> GetByIdAsync(int id);
         Task<List<Account>> GetAllAsync();
-        Task<Account> GetByUserIdAsync(int userId);
+        Task<Account> GetByUserIdAsyncOrThrowException(int userId);
         Task UpdateAsync(Account account);
         Task CreateAsync(Account account);
         Task<IDbContextTransaction> BeginTransactionAsync();

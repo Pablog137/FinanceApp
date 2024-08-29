@@ -1,4 +1,5 @@
 ﻿using Finance.API.Data;
+using Finance.API.Exceptions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Mappers;
 using Finance.API.Models;
@@ -34,9 +35,11 @@ namespace Finance.API.Repository
             return await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<Account> GetByUserIdAsync(int userId)
+        public async Task<Account> GetByUserIdAsyncOrThrowException(int userId)
         {
-            return await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+            var account = await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+            if(account == null) throw new AccountNotFoundException("Account not found");
+            return account;
         }
 
         public async Task UpdateAsync(Account account)
