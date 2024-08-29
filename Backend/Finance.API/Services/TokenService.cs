@@ -21,13 +21,15 @@ namespace Finance.API.Services
         private readonly IUserRepository _userRepo;
         private readonly IAccountRepository _accountRepository;
         private readonly ITokenRepository _tokenRepository;
-        public TokenService(IConfiguration config, IUserRepository userRepo, IAccountRepository accountRepository, ITokenRepository tokenRepository)
+        private readonly ITransactionRepository _transactionRepository;
+        public TokenService(IConfiguration config, IUserRepository userRepo, IAccountRepository accountRepository, ITokenRepository tokenRepository, ITransactionRepository transactionRepository)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
             _userRepo = userRepo;
             _accountRepository = accountRepository;
             _tokenRepository = tokenRepository;
+            _transactionRepository = transactionRepository;
         }
 
 
@@ -75,7 +77,7 @@ namespace Finance.API.Services
 
         public async Task<TokenDto> HandleRefreshTokenAsync(string refreshToken)
         {
-            using var transaction = await _accountRepository.BeginTransactionAsync();
+            using var transaction = await _transactionRepository.BeginTransactionAsync();
 
             try
             {

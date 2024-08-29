@@ -13,26 +13,28 @@ namespace Finance.API.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
-        private readonly IAccountRepository _accountRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IAccountRepository _accountRepo;
+        private readonly IUserRepository _userRepo;
+        private readonly ITransactionRepository _transactionRepo;
 
-        public AuthenticationService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IAccountRepository accountRepository, IUserRepository userRepository)
+        public AuthenticationService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IAccountRepository accountRepository, IUserRepository userRepository, ITransactionRepository transactionRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
-            _accountRepository = accountRepository;
-            _userRepository = userRepository;
+            _accountRepo = accountRepository;
+            _userRepo = userRepository;
+            _transactionRepo = transactionRepository;
         }
 
 
         public async Task<UserDto> LoginAsync(LoginDto loginDto)
         {
-            using var transaction = await _accountRepository.BeginTransactionAsync();
+            using var transaction = await _transactionRepo.BeginTransactionAsync();
 
             try
             {
-                var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
+                var user = await _userRepo.GetUserByEmailAsync(loginDto.Email);
 
                 if (user == null) throw new UnauthorizedAccessException("Invalid email or password");
 
@@ -42,7 +44,7 @@ namespace Finance.API.Services
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshTokens.Add(refreshToken);
 
-                await _userRepository.UpdateAsync(user);
+                await _userRepo.UpdateAsync(user);
 
                 await transaction.CommitAsync();
 
@@ -59,7 +61,7 @@ namespace Finance.API.Services
 
         public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
         {
-            using var transaction = await _accountRepository.BeginTransactionAsync();
+            using var transaction = await _transactionRepo.BeginTransactionAsync();
 
             try
             {
@@ -88,12 +90,12 @@ namespace Finance.API.Services
                     UserId = user.Id
                 };
 
-                await _accountRepository.CreateAsync(account);
+                await _accountRepo.CreateAsync(account);
 
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshTokens.Add(refreshToken);
 
-                await _userRepository.UpdateAsync(user);
+                await _userRepo.UpdateAsync(user);
 
 
                 await transaction.CommitAsync();

@@ -10,6 +10,5 @@ namespace Finance.API.Interfaces.Repositories
         Task<Account> GetByUserIdAsyncOrThrowException(int userId);
         Task UpdateAsync(Account account);
         Task CreateAsync(Account account);
-        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }

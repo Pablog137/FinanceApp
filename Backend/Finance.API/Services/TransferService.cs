@@ -1,5 +1,6 @@
 ﻿using Finance.API.Data;
 using Finance.API.Dtos.Transfer;
+using Finance.API.Exceptions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
 using Finance.API.Mappers;
@@ -13,7 +14,7 @@ namespace Finance.API.Services
         private readonly IAccountRepository _accountRepo;
         private readonly ITransferRepository _transferRepo;
         private readonly ITransactionRepository _transactionRepo;
-        public TransferService(AppDbContext context, IAccountRepository accountRepo, ITransferRepository transferRepo,
+        public TransferService(IAccountRepository accountRepo, ITransferRepository transferRepo,
             ITransactionRepository transactionRepo
 
             )
@@ -24,7 +25,7 @@ namespace Finance.API.Services
         }
         public async Task<Transfer> CreateTransferAsync(int userId, CreateTransferDto transferDto)
         {
-            using var transaction = await _transferRepo.BeginTransactionAsync();
+            using var transaction = await _transactionRepo.BeginTransactionAsync();
 
             try
             {
@@ -34,7 +35,7 @@ namespace Finance.API.Services
 
                 if (senderAccount == recipientAccount) throw new Exception("You can't transfer to the same account");
 
-                if (recipientAccount == null) throw new Exception("Recipient account not found");
+                if (recipientAccount == null) throw new AccountNotFoundException("Recipient account not found");
 
                 if (senderAccount == null || senderAccount.Balance < transferDto.Amount) throw new Exception("Insufficient funds");
 
@@ -48,7 +49,7 @@ namespace Finance.API.Services
 
                 var transfer = transferDto.ToEntity(senderAccount.Id);
 
-                await _transferRepo.CreateTransferAsync(transfer);
+                var result = await _transferRepo.CreateTransferAsync(transfer);
 
                 var senderTransaction = new Transaction
                 {
@@ -72,7 +73,7 @@ namespace Finance.API.Services
 
                 await transaction.CommitAsync();
 
-                return transfer;
+                return result;
 
             }
             catch
@@ -84,7 +85,9 @@ namespace Finance.API.Services
 
         public async Task<Transfer> GetByIdAsync(int id, int userId)
         {
-            return await _transferRepo.GetByIdAsync(id, userId);
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
+
+            return await _transferRepo.GetByIdAsync(id, account);
 
         }
     }

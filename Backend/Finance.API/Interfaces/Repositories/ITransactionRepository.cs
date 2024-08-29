@@ -11,10 +11,11 @@ namespace Finance.API.Interfaces.Repositories
 {
     public interface ITransactionRepository
     {
-        Task<IDbContextTransaction> BeginTransactionAsync();
         Task AddAsync(Transaction transaction);
         Task<List<Transaction>> GetAllAsync(Account account);
         Task<Transaction> GetByIdAsync(int id, Account account);
+
+        Task<IDbContextTransaction> BeginTransactionAsync();
 
     }
 }

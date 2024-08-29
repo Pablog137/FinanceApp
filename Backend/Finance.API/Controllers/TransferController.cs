@@ -1,4 +1,5 @@
 ﻿using Finance.API.Dtos.Transfer;
+using Finance.API.Exceptions;
 using Finance.API.Extensions;
 using Finance.API.Interfaces.Services;
 using Finance.API.Mappers;
@@ -35,6 +36,11 @@ namespace Finance.API.Controllers
 
                 return CreatedAtAction(nameof(GetTransferById), new { id = transfer.Id }, transfer.ToDto());
             }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, e.Message);
+                return NotFound(e.Message);
+            }
             catch (Exception e)
             {
                 Log.Error(e, "Error creating transfer");
@@ -45,11 +51,20 @@ namespace Finance.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTransferById([FromRoute] int id)
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var transfer = await _transferService.GetByIdAsync(id, userId.Value);
-            return Ok(transfer);
+                var transfer = await _transferService.GetByIdAsync(id, userId.Value);
+                return Ok(transfer);
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, e.Message);
+                return NotFound(e.Message);
+
+            }
         }
 
     }

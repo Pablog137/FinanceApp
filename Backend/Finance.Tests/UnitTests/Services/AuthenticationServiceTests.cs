@@ -24,7 +24,9 @@ namespace Finance.Tests.UnitTests.Services
         private readonly Mock<ITokenService> _tokenServiceMock;
         private readonly Mock<IAccountRepository> _accountRepositoryMock;
         private readonly Mock<IUserRepository> _userRepositoryMock;
+        private readonly Mock<ITransactionRepository> _transactionRepositoryMock;
         private readonly AuthenticationService _authenticationService;
+
 
         public AuthenticationServiceTests()
         {
@@ -40,6 +42,7 @@ namespace Finance.Tests.UnitTests.Services
             _tokenServiceMock = new Mock<ITokenService>();
             _accountRepositoryMock = new Mock<IAccountRepository>();
             _userRepositoryMock = new Mock<IUserRepository>();
+            _transactionRepositoryMock = new Mock<ITransactionRepository>();
 
             _authenticationService = new AuthenticationService(
                 _userManagerMock.Object,
@@ -47,6 +50,7 @@ namespace Finance.Tests.UnitTests.Services
                 _tokenServiceMock.Object,
                 _accountRepositoryMock.Object,
                 _userRepositoryMock.Object
+                , _transactionRepositoryMock.Object
             );
         }
 
@@ -56,7 +60,7 @@ namespace Finance.Tests.UnitTests.Services
         [Fact]
         public async Task LoginAsync_ThrowUnauthorizedAccessException_WhenUserDoesNotExist()
         {
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                 .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(It.IsAny<string>()))
@@ -71,7 +75,7 @@ namespace Finance.Tests.UnitTests.Services
         [Fact]
         public async Task LoginAsync_ThrowUnauthorizedAccessException_WhenSignInManagerCheckPasswordSignInAsyncFails()
         {
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             var user = new AppUser { Id = 1, Email = "whatever" };
@@ -95,7 +99,7 @@ namespace Finance.Tests.UnitTests.Services
             var user = new AppUser { UserName = "testuser", Email = "test@example.com" };
             var refreshToken = new RefreshToken { Token = "refresh-token" };
 
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(It.IsAny<string>()))
@@ -124,8 +128,7 @@ namespace Finance.Tests.UnitTests.Services
         {
             var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
 
-
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
@@ -140,7 +143,7 @@ namespace Finance.Tests.UnitTests.Services
         {
             var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
 
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
@@ -159,7 +162,7 @@ namespace Finance.Tests.UnitTests.Services
             var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
 
 
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
@@ -182,7 +185,7 @@ namespace Finance.Tests.UnitTests.Services
             var registerDto = new RegisterDto { Email = "test@gmail.com", Username = "test" };
 
 
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
@@ -204,7 +207,7 @@ namespace Finance.Tests.UnitTests.Services
         [Fact]
         public async void RegisterAsync_ShouldReturnUserDto_WhenRegisterIsSuccessful()
         {
-            _accountRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
+            _transactionRepositoryMock.Setup(repo => repo.BeginTransactionAsync())
                .ReturnsAsync((Mock.Of<IDbContextTransaction>()));
 
             _userManagerMock.Setup(manager => manager.FindByEmailAsync(It.IsAny<string>()))
@@ -245,7 +248,7 @@ namespace Finance.Tests.UnitTests.Services
         }
 
         #endregion RegisterAsync
-   
-    
+
+
     }
 }
