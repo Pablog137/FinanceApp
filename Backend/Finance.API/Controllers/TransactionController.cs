@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Finance.API.Data;
 using Finance.API.Dtos.Transaction;
+using Finance.API.Exceptions;
 using Finance.API.Extensions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
@@ -29,32 +30,45 @@ namespace Finance.API.Controllers
             _transactionService = transactionService;
         }
 
-        [HttpGet("get-all")]
         public async Task<IActionResult> GetAllTransaction()
         {
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+                var transactions = await _transactionService.GetAllAsync(userId.Value);
 
-            var transactions = await _transactionService.GetAllTransactionsAsync(userId.Value);
+                return Ok(transactions.Select(t => t.toDto()));
 
-            if (transactions == null) return NotFound("No transactions found.");
-
-            return Ok(transactions.Select(t => t.toDto()));
-
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, e.Message);
+                return NotFound(e.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var transaction = await _transactionService.GetTransactionByIdAsync(id, userId.Value);
+                var transaction = await _transactionService.GetByIdAsync(id, userId.Value);
 
-            if (transaction == null) return NotFound();
+                if (transaction == null) return NotFound();
 
-            return Ok(transaction.toDto());
+                return Ok(transaction.toDto());
+            }
+            catch
+            (AccountNotFoundException e)
+            {
+                Log.Error(e, e.Message);
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost("add-transaction")]
@@ -69,10 +83,14 @@ namespace Finance.API.Controllers
 
                 var transaction = await _transactionService.AddTransactionAsync(transactionDto, userId.Value);
 
-                if (transaction == null) return NotFound("Account not found.");
-
+                if (transaction == null) return BadRequest("Failed to create transaction");
 
                 return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction.toDto());
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, e.Message);
+                return NotFound(e.Message);
             }
             catch (InvalidOperationException e)
             {

@@ -27,9 +27,7 @@ namespace Finance.API.Services
 
             try
             {
-                var account = await _accountRepo.GetByUserIdAsync(userId);
-                if (account == null)
-                    throw new InvalidOperationException("Account not found.");
+                var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
 
                 var transactionEntity = createTransactionDto.FromDtoToEntity(account.Id);
 
@@ -59,14 +57,16 @@ namespace Finance.API.Services
             }
         }
 
-        public async Task<List<Transaction>> GetAllTransactionsAsync(int userId)
+        public async Task<List<Transaction>> GetAllAsync(int userId)
         {
-            return await _transactionRepo.GetAllTransactionsAsync(userId);
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
+            return await _transactionRepo.GetAllAsync(account);
         }
 
-        public async Task<Transaction> GetTransactionByIdAsync(int id, int userId)
+        public async Task<Transaction> GetByIdAsync(int id, int userId)
         {
-            return await _transactionRepo.GetByIdAsync(id, userId);
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
+            return await _transactionRepo.GetByIdAsync(id, account);
         }
     }
 }

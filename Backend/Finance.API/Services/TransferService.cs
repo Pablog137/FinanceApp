@@ -29,7 +29,7 @@ namespace Finance.API.Services
             try
             {
 
-                var senderAccount = await _accountRepo.GetByUserIdAsync(userId);
+                var senderAccount = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
                 var recipientAccount = await _accountRepo.GetByIdAsync(transferDto.RecipientAccountId);
 
                 if (senderAccount == recipientAccount) throw new Exception("You can't transfer to the same account");

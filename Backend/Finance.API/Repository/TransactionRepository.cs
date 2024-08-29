@@ -27,17 +27,16 @@ namespace Finance.API.Repository
             return await _context.Database.BeginTransactionAsync();
         }
 
-        public async Task<List<Transaction>> GetAllTransactionsAsync(int userId)
+        public async Task<List<Transaction>> GetAllAsync(Account account)
         {
-            return await _context.Transactions
-                      .Where(t => t.Account.UserId == userId)
-                      .ToListAsync();
+            return await _context.Transactions.Where(t => t.Account == account)
+                          .ToListAsync();
         }
 
-        public async Task<Transaction> GetByIdAsync(int id, int userId)
+        public async Task<Transaction> GetByIdAsync(int id, Account account)
         {
             return await _context.Transactions
-                                            .FirstOrDefaultAsync(t => t.Id == id && t.Account.UserId == userId);
+                                            .FirstOrDefaultAsync(t => t.Id == id && t.Account == account);
         }
 
 
