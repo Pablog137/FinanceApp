@@ -35,6 +35,12 @@ namespace Finance.API.Repository
             return await _context.Accounts.Include(a => a.User).Include(t => t.Transactions).FirstOrDefaultAsync(a => a.Id == id);
         }
 
+        /// <summary>
+        /// Retrieves an account by user ID or throws an exception if not found.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose account is to be retrieved.</param>
+        /// <returns>The account associated with the given user ID.</returns>
+        /// <exception cref="AccountNotFoundException">Thrown when no account is found for the given user ID.</exception>
         public async Task<Account> GetByUserIdAsyncOrThrowException(int userId)
         {
             var account = await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
