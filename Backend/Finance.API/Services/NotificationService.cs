@@ -19,33 +19,37 @@ namespace Finance.API.Services
         }
         public async Task<List<Notification>> GetAllAsync(int userId)
         {
-            return await _notificationRepo.GetAllAsync(userId);
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
+
+            return await _notificationRepo.GetAllAsync(account);
         }
 
         public async Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
         {
-            return await _notificationRepo.GetAllOrderedByTimeAsync(userId);
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
+
+            return await _notificationRepo.GetAllOrderedByTimeAsync(account);
         }
 
         public async Task<Notification> GetByIdAsync(int id, int userId)
         {
-            return await _notificationRepo.GetByIdAsync(id, userId);
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
+
+            return await _notificationRepo.GetByIdAsync(id, account);
         }
 
         public async Task<Notification> CreateAsync(CreateNotificationDto notificationDto, int userId)
         {
-            var account = await _accountRepo.GetByIdAsync(userId);
-            if (account == null) return null;
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
 
             return await _notificationRepo.CreateAsync(notificationDto.toEntity(account), account);
         }
 
         public async Task<Notification> UpdateAsync(int id, int userId)
         {
-            var account = await _accountRepo.GetByIdAsync(userId);
-            if (account == null) return null;
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(userId);
 
-            var notification = await _notificationRepo.GetByIdAsync(id, userId);
+            var notification = await _notificationRepo.GetByIdAsync(id, account);
             if (notification == null) return null;
 
             return await _notificationRepo.UpdateAsync(notification, account);

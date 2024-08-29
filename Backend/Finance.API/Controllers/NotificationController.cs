@@ -1,4 +1,5 @@
 ﻿using Finance.API.Dtos.Notification;
+using Finance.API.Exceptions;
 using Finance.API.Extensions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
@@ -26,35 +27,63 @@ namespace Finance.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var notifications = await _notificationService.GetAllAsync(userId.Value);
-            return Ok(notifications.Select(n => n.toDto()));
+                var notifications = await _notificationService.GetAllAsync(userId.Value);
+                return Ok(notifications.Select(n => n.toDto()));
+
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, "Error getting all notifications");
+                return NotFound(e.Message);
+
+            }
+
         }
 
 
-        [HttpGet("get-ordered")]
+        [HttpGet("ordered")]
         public async Task<IActionResult> GetAllOrdered()
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var notifications = await _notificationService.GetAllOrderedByTimeAsync(userId.Value);
-            return Ok(notifications.Select(n => n.toDto()));
+                var notifications = await _notificationService.GetAllOrderedByTimeAsync(userId.Value);
+                return Ok(notifications.Select(n => n.toDto()));
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, "Error getting all ordered notifications");
+                return NotFound(e.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var userId = User.GetUserId();
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
 
-            var notification = await _notificationService.GetByIdAsync(id, userId.Value);
+                var notification = await _notificationService.GetByIdAsync(id, userId.Value);
 
-            if (notification == null) return NotFound();
+                if (notification == null) return NotFound();
 
-            return Ok(notification.toDto());
+                return Ok(notification.toDto());
+
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, "Error getting notification by id");
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
@@ -71,12 +100,16 @@ namespace Finance.API.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = notification.Id }, notification.toDto());
             }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, "Error creating notification");
+                return NotFound(e.Message);
+            }
             catch (Exception e)
             {
                 Log.Error(e, "Error creating notification");
                 return StatusCode(500, e);
             }
-
         }
 
         [HttpPatch("{id}")]
@@ -88,8 +121,14 @@ namespace Finance.API.Controllers
                 if (userId == null) return Unauthorized();
 
                 var notification = await _notificationService.UpdateAsync(id, userId.Value);
+                if(notification == null) return NotFound("Notification not found");
                 return Ok(notification.toDto());
 
+            }
+            catch (AccountNotFoundException e)
+            {
+                Log.Error(e, "Error creating notification");
+                return NotFound(e.Message);
             }
             catch (Exception e)
             {

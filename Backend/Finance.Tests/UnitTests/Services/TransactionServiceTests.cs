@@ -1,5 +1,4 @@
-﻿using Bogus;
-using Finance.API.Dtos.Transaction;
+﻿using Finance.API.Dtos.Transaction;
 using Finance.API.Enums;
 using Finance.API.Exceptions;
 using Finance.API.Interfaces.Repositories;
@@ -7,11 +6,6 @@ using Finance.API.Models;
 using Finance.API.Services;
 using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Finance.Tests.UnitTests.Services
 {
@@ -53,7 +47,6 @@ namespace Finance.Tests.UnitTests.Services
 
         #endregion GetAllAsync
 
-
         #region GetByIdAsync
 
         [Fact]
@@ -77,7 +70,6 @@ namespace Finance.Tests.UnitTests.Services
 
 
         #endregion GetByIdAsync
-
 
         #region AddTransactionAsync
 

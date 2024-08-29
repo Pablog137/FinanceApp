@@ -16,19 +16,19 @@ namespace Finance.API.Repository
 
         }
 
-        public async Task<List<Notification>> GetAllAsync(int userId)
+        public async Task<List<Notification>> GetAllAsync(Account account)
         {
-            return await _context.Notifications.Where(n => n.Account.UserId == userId).ToListAsync();
+            return await _context.Notifications.Where(n => n.Account.Id == account.Id).ToListAsync();
         }
 
-        public async Task<List<Notification>> GetAllOrderedByTimeAsync(int userId)
+        public async Task<List<Notification>> GetAllOrderedByTimeAsync(Account account)
         {
-            return await _context.Notifications.Where(n => n.Account.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
+            return await _context.Notifications.Where(n => n.Account.Id == account.Id).OrderByDescending(n => n.CreatedAt).ToListAsync();
         }
 
-        public async Task<Notification?> GetByIdAsync(int id, int userId)
+        public async Task<Notification?> GetByIdAsync(int id, Account account)
         {
-            return await _context.Notifications.Where(n => n.Id == id && n.Account.UserId == userId).FirstOrDefaultAsync();
+            return await _context.Notifications.Where(n => n.Id == id && n.Account.Id == account.Id).FirstOrDefaultAsync();
         }
 
         public async Task<Notification?> UpdateAsync(Notification notification, Account account)
