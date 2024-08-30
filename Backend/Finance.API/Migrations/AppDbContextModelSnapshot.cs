@@ -300,7 +300,7 @@ namespace Finance.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,3)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");

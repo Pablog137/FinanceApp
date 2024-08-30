@@ -298,7 +298,7 @@ namespace Finance.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SenderAccountId = table.Column<int>(type: "int", nullable: false),
                     RecipientAccountId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10,3)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

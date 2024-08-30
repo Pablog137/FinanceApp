@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Finance.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240830193100_FixedError")]
+    [Migration("20240830193545_FixedError")]
     partial class FixedError
     {
         /// <inheritdoc />
@@ -303,7 +303,7 @@ namespace Finance.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,3)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");

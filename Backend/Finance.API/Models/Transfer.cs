@@ -15,6 +15,7 @@ namespace Finance.API.Models
 
         public Account RecipientAccount { get; set; }
 
+        [Column(TypeName = "decimal(10,3)")]
         public decimal Amount { get; set; }
 
         public DateTime Date { get; set; } = DateTime.UtcNow;
