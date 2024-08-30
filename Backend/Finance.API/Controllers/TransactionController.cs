@@ -1,19 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Finance.API.Data;
 using Finance.API.Dtos.Transaction;
 using Finance.API.Exceptions;
 using Finance.API.Extensions;
-using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
 using Finance.API.Mappers;
-using Finance.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace Finance.API.Controllers
@@ -29,7 +20,7 @@ namespace Finance.API.Controllers
         {
             _transactionService = transactionService;
         }
-
+        [HttpGet]
         public async Task<IActionResult> GetAllTransaction()
         {
             try
