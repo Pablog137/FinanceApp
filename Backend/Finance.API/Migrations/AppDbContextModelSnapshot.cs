@@ -22,6 +22,21 @@ namespace Finance.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AccountContact", b =>
+                {
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AccountId", "ContactId");
+
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("AccountContact");
+                });
+
             modelBuilder.Entity("Finance.API.Models.Account", b =>
                 {
                     b.Property<int>("Id")
@@ -256,9 +271,6 @@ namespace Finance.API.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AccountId1")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,3)");
 
@@ -275,8 +287,6 @@ namespace Finance.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("AccountId1");
 
                     b.ToTable("Transactions");
                 });
@@ -311,21 +321,6 @@ namespace Finance.API.Migrations
                     b.HasIndex("SenderAccountId");
 
                     b.ToTable("Transfers");
-                });
-
-            modelBuilder.Entity("AccountContact", b =>
-                {
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContactId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AccountId", "ContactId");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("AccountContact");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -431,6 +426,21 @@ namespace Finance.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AccountContact", b =>
+                {
+                    b.HasOne("Finance.API.Models.Account", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Finance.API.Models.Contact", null)
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Finance.API.Models.Account", b =>
                 {
                     b.HasOne("Finance.API.Models.AppUser", "User")
@@ -467,14 +477,10 @@ namespace Finance.API.Migrations
             modelBuilder.Entity("Finance.API.Models.Transaction", b =>
                 {
                     b.HasOne("Finance.API.Models.Account", "Account")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Finance.API.Models.Account", null)
-                        .WithMany("Transactions")
-                        .HasForeignKey("AccountId1");
 
                     b.Navigation("Account");
                 });
@@ -482,13 +488,13 @@ namespace Finance.API.Migrations
             modelBuilder.Entity("Finance.API.Models.Transfer", b =>
                 {
                     b.HasOne("Finance.API.Models.Account", "RecipientAccount")
-                        .WithMany()
+                        .WithMany("TransfersAsRecipient")
                         .HasForeignKey("RecipientAccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Finance.API.Models.Account", "SenderAccount")
-                        .WithMany()
+                        .WithMany("TransfersAsSender")
                         .HasForeignKey("SenderAccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -496,21 +502,6 @@ namespace Finance.API.Migrations
                     b.Navigation("RecipientAccount");
 
                     b.Navigation("SenderAccount");
-                });
-
-            modelBuilder.Entity("AccountContact", b =>
-                {
-                    b.HasOne("Finance.API.Models.Account", null)
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Finance.API.Models.Contact", null)
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -569,6 +560,10 @@ namespace Finance.API.Migrations
                     b.Navigation("Notifications");
 
                     b.Navigation("Transactions");
+
+                    b.Navigation("TransfersAsRecipient");
+
+                    b.Navigation("TransfersAsSender");
                 });
 
             modelBuilder.Entity("Finance.API.Models.AppUser", b =>

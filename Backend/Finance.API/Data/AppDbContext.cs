@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Finance.API.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,32 +26,32 @@ namespace Finance.API.Data
 
             modelBuilder.Entity<AppUser>()
                 .HasOne(u => u.Account)
-                .WithOne(u => u.User)
+                .WithOne(a => a.User)
                 .HasForeignKey<Account>(a => a.UserId);
 
             modelBuilder.Entity<Account>()
-           .HasMany(a => a.Contacts)
-           .WithMany(c => c.Accounts)
-           .UsingEntity<Dictionary<string, object>>(
-               "AccountContact",
-               j => j.HasOne<Contact>().WithMany().HasForeignKey("ContactId"),
-               j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"));
+                .HasMany(a => a.Contacts)
+                .WithMany(c => c.Accounts)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AccountContact",
+                    j => j.HasOne<Contact>().WithMany().HasForeignKey("ContactId"),
+                    j => j.HasOne<Account>().WithMany().HasForeignKey("AccountId"));
 
             modelBuilder.Entity<Transfer>()
-            .HasOne(t => t.SenderAccount)
-            .WithMany()
-            .HasForeignKey(t => t.SenderAccountId)
-            .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(t => t.SenderAccount)
+                .WithMany(a => a.TransfersAsSender)
+                .HasForeignKey(t => t.SenderAccountId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Transfer>()
                 .HasOne(t => t.RecipientAccount)
-                .WithMany()
+                .WithMany(a => a.TransfersAsRecipient)
                 .HasForeignKey(t => t.RecipientAccountId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Account)
-                .WithMany()
+                .WithMany(a => a.Transactions)
                 .HasForeignKey(t => t.AccountId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -68,11 +63,11 @@ namespace Finance.API.Data
                 .Property(p => p.Type)
                 .HasConversion<string>();
 
-            // Roles
             modelBuilder.Entity<AppRole>().HasData(
                 new AppRole { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
                 new AppRole { Id = 2, Name = "User", NormalizedName = "USER" }
             );
         }
+
     }
 }

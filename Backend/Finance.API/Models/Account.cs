@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Finance.API.Models
 {
@@ -25,9 +21,12 @@ namespace Finance.API.Models
 
         public List<Notification> Notifications { get; set; } = new List<Notification>();
 
-        public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+        public List<Contact> Contacts { get; set; } = new List<Contact>();
 
-
-
+        public List<Transfer> TransfersAsSender { get; set; } = new List<Transfer>();
+        public List<Transfer> TransfersAsRecipient { get; set; } = new List<Transfer>();
     }
+
+
+
 }

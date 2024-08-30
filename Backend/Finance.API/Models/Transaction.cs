@@ -1,9 +1,5 @@
 using Finance.API.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Finance.API.Models
 {
@@ -20,8 +16,6 @@ namespace Finance.API.Models
         public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public Account Account { get; set; }
-
-        // Will have transactions between contacts
 
         
     }
