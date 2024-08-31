@@ -29,7 +29,7 @@ try
 
     app.MapHealthChecks("/health");
 
-   // Create Database
+    // Create Database
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -60,10 +60,4 @@ catch (Exception ex) when (ex is not HostAbortedException)
 finally
 {
     Log.CloseAndFlush();
-}
-
-
-public partial class Program
-{
-    
 }

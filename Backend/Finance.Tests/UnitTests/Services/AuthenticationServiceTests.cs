@@ -1,12 +1,19 @@
-﻿using Finance.API.Dtos.Users;
+﻿using Bogus;
+using Finance.API.Dtos.Users;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
+using Finance.API.Migrations;
 using Finance.API.Models;
 using Finance.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Finance.Tests.UnitTests.Services
 {

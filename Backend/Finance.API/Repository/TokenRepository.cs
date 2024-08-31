@@ -1,4 +1,6 @@
-﻿using Finance.API.Interfaces.Repositories;
+﻿using Finance.API.Data;
+using Finance.API.Interfaces.Repositories;
+using Finance.API.Migrations;
 using Finance.API.Models;
 
 namespace Finance.API.Repository
