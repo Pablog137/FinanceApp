@@ -30,6 +30,7 @@ namespace Finance.API.Controllers
             _transactionService = transactionService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllTransaction()
         {
             try
