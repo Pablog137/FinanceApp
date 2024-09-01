@@ -30,11 +30,11 @@ try
     app.MapHealthChecks("/health");
 
     // Create Database
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        dbContext.Database.Migrate();
-    }
+    //using (var scope = app.Services.CreateScope())
+    //{
+    //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    //    dbContext.Database.Migrate();
+    //}
 
     if (app.Environment.IsDevelopment())
     {
@@ -50,8 +50,6 @@ try
 
     app.Run();
 
-
-
 }
 catch (Exception ex) when (ex is not HostAbortedException)
 {
@@ -60,4 +58,9 @@ catch (Exception ex) when (ex is not HostAbortedException)
 finally
 {
     Log.CloseAndFlush();
+}
+
+namespace Finance.API
+{
+    public partial class Program { }
 }

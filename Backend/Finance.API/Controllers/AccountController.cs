@@ -14,7 +14,7 @@ namespace Finance.API.Controllers
 {
     [Route("api/account")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AccountController : ControllerBase
     {
 
