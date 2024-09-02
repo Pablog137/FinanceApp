@@ -105,5 +105,85 @@ namespace Finance.Tests.IntegrationTests
 
         #endregion Register
 
+        #region Login
+
+        [Fact]
+        public async Task Login_ShouldReturnOk_WhenSuccessfullyLoggedIn()
+        {
+
+            var loginDto = new Faker<LoginDto>()
+                .RuleFor(x => x.Email, f => "test@gmail.com")
+                .RuleFor(x => x.Password, f => "YourSecurePassword123!")
+                 .Generate();
+
+            var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var result = await response.Content.ReadFromJsonAsync<UserDto>();
+
+            if (result == null) throw new Exception("Response is null");
+
+            result.Email.Should().Be(loginDto.Email);
+            result.Token.Should().NotBeNullOrEmpty();
+            result.RefreshToken.Should().NotBeNullOrEmpty();
+
+        }
+
+        [Fact]
+        public async Task Login_ShouldReturnUnauthorizedAccessException_WhenUserDoesNotExist()
+        {
+            var loginDto = new Faker<LoginDto>()
+                           .RuleFor(x => x.Email, f => f.Person.Email)
+                           .RuleFor(x => x.Password, f => f.Internet.Password(10))
+                            .Generate();
+
+            var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+
+        }
+
+        [Fact]
+        public async Task Login_ShouldReturnUnauthorizedAccessException_WhenPasswordIsWrong()
+        {
+            var loginDto = new Faker<LoginDto>()
+                        .RuleFor(x => x.Email, f => "test@gmail.com")
+                        .RuleFor(x => x.Password, f => f.Internet.Password(10))
+                         .Generate();
+
+            var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+        }
+
+
+        [Fact]
+        public async Task Login_ShouldReturnBadRequest_WhenLoginDtoIsNotValid()
+        {
+            var loginDto = new Faker<LoginDto>()
+                 .RuleFor(x => x.Email, f => "test@gmail.com")
+                 //.RuleFor(x => x.Password, f => f.Internet.Password(10))
+                  .Generate();
+
+            var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        }
+
+
+
+        #endregion Login
+
     }
 }

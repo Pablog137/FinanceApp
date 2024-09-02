@@ -90,6 +90,7 @@ namespace Finance.API.Controllers
         }
 
         [HttpPost("refresh-token")]
+        //[Authorize]
 
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto request)
         {
