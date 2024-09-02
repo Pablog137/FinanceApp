@@ -67,10 +67,10 @@ namespace Finance.API.Services
             {
 
                 var userExistsByEmail = await _userManager.FindByEmailAsync(registerDto.Email);
-                if(userExistsByEmail != null) throw new ArgumentException("Email is already taken");
+                if (userExistsByEmail != null) throw new ArgumentException("Email is already taken");
 
                 var userExistsByUsername = await _userManager.FindByNameAsync(registerDto.Username);
-                if(userExistsByUsername != null) throw new ArgumentException("Username is already taken");
+                if (userExistsByUsername != null) throw new ArgumentException("Username is already taken");
 
                 var user = new AppUser
                 {

@@ -2,12 +2,12 @@
 using Finance.API.Data;
 using Finance.API.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Runtime.InteropServices;
 using Testcontainers.MsSql;
 
 namespace Finance.Tests
@@ -42,32 +42,38 @@ namespace Finance.Tests
         {
             await _dbContainer.StartAsync();
 
-            // Arrange
-            //var accounts = new List<Faker<Account>>()
-            //    {
-            //    new Faker<Account>()
-            //        .RuleFor(a => a.Id, f => 1)
-            //        .RuleFor(a => a.Name, f => f.Person.FullName),
-            //    new Faker<Account>()
-            //        .RuleFor(a => a.Id, f => 2)
-            //        .RuleFor(a => a.Name, f => f.Person.FullName),
-            //    new Faker<Account>()
-            //        .RuleFor(a => a.Id, f => 3)
-            //        .RuleFor(a => a.Name, f => f.Person.FullName)
-            //}.Select(f => f.Generate()).ToList();
-
             using (var scope = Services.CreateScope())
             {
                 var scopedServices = scope.ServiceProvider;
                 var context = scopedServices.GetRequiredService<AppDbContext>();
-                await context.Database.EnsureCreatedAsync();
+                await context.Database.MigrateAsync();
 
-                //context.Accounts.AddRange(accounts);
-                //await context.SaveChangesAsync();
+                var userManager = scopedServices.GetRequiredService<UserManager<AppUser>>();
+                var user = new AppUser
+                {
+                    UserName = "username777",
+                    Email = "test@gmail.com",
+                };
+                var result = await userManager.CreateAsync(user, "YourSecurePassword123!");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Failed to create test user.");
+                }
+
+                var account = new Faker<Account>()
+                    .RuleFor(a => a.Name, f => f.Person.FullName)
+                    .RuleFor(a => a.UserId, f => user.Id)
+                    .RuleFor(a => a.Balance, f => f.Finance.Amount())
+                    .Generate();
+
+                context.Accounts.Add(account);
+                await context.SaveChangesAsync();
             }
         }
 
-        public async Task DisposeAsync()
+
+        public new async Task DisposeAsync()
         {
             await _dbContainer.DisposeAsync();
         }

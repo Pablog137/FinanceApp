@@ -1,20 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Finance.API.Data;
 using Finance.API.Dtos.Token;
 using Finance.API.Dtos.Users;
 using Finance.API.Interfaces;
 using Finance.API.Interfaces.Services;
-using Finance.API.Models;
-using Finance.API.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Serilog;
 
 namespace Finance.API.Controllers

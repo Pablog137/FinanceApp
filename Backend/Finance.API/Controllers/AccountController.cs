@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Finance.API.Data;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace Finance.API.Controllers
 {
     [Route("api/account")]
     [ApiController]
-    //[Authorize]
+    [Authorize] 
     public class AccountController : ControllerBase
     {
 
