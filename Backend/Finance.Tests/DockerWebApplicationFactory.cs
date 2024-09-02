@@ -69,6 +69,17 @@ namespace Finance.Tests
 
                 context.Accounts.Add(account);
                 await context.SaveChangesAsync();
+
+
+                var refreshToken = new Faker<RefreshToken>()
+                    .RuleFor(x => x.Token, f => "e6b6c233-545b-4033-8f50-7bbb76553ebb")
+                    .RuleFor(x => x.Expires, f => f.Date.Future(10))
+                    .RuleFor(x => x.AppUserId, f => user.Id)
+                    .Generate();
+
+                context.RefreshTokens.Add(refreshToken);
+                await context.SaveChangesAsync();
+
             }
         }
 

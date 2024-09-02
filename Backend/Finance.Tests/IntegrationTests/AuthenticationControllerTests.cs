@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using Finance.API.Dtos.Account;
+using Finance.API.Dtos.Token;
 using Finance.API.Dtos.Users;
 using FluentAssertions;
 using Newtonsoft.Json;
@@ -170,7 +170,7 @@ namespace Finance.Tests.IntegrationTests
         {
             var loginDto = new Faker<LoginDto>()
                  .RuleFor(x => x.Email, f => "test@gmail.com")
-                 //.RuleFor(x => x.Password, f => f.Internet.Password(10))
+                  //.RuleFor(x => x.Password, f => f.Internet.Password(10))
                   .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
@@ -184,6 +184,44 @@ namespace Finance.Tests.IntegrationTests
 
 
         #endregion Login
+
+        #region Refresh token
+
+
+        [Fact]
+        public async Task RefreshToken_ShouldReturnOk_WhenSuccessfullyCreated()
+        {
+            var refreshTokenDto = new Faker<RefreshTokenDto>()
+                .RuleFor(x => x.RefreshToken, f => "e6b6c233-545b-4033-8f50-7bbb76553ebb")
+                .Generate();
+
+            var content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsJsonAsync("api/authentication/refresh-token", refreshTokenDto);
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var result = await response.Content.ReadFromJsonAsync<TokenDto>();
+
+            if (result == null) throw new Exception("Response is null");
+
+            result.Token.Should().NotBeNullOrEmpty();
+            result.RefreshToken.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Fact]
+        public async Task RefreshToken_ShouldReturnUnauthorized_WhenTokenDoesNotExist()
+        {
+            var refreshTokenDto = new Faker<RefreshTokenDto>()
+                .RuleFor(x => x.RefreshToken, f => f.Random.String(10))
+                .Generate();
+            var content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsJsonAsync("api/authentication/refresh-token", refreshTokenDto);
+
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        }
+        #endregion Refresh token
 
     }
 }

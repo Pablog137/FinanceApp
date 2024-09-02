@@ -1,5 +1,6 @@
 using Finance.API.Dtos.Token;
 using Finance.API.Dtos.Users;
+using Finance.API.Exceptions;
 using Finance.API.Interfaces;
 using Finance.API.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -102,6 +103,11 @@ namespace Finance.API.Controllers
                 var refreshToken = await _tokenService.HandleRefreshTokenAsync(request.RefreshToken);
                 return Ok(refreshToken);
 
+            }
+            catch (InvalidTokenException e)
+            {
+                Log.Error(e, "Token does not exist");
+                return Unauthorized(e.Message);
             }
             catch (Exception e)
             {

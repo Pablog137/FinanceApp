@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Finance.API.Dtos.Token;
+using Finance.API.Exceptions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
 using Finance.API.Models;
-using Finance.API.Repository;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Finance.API.Services
@@ -83,7 +79,7 @@ namespace Finance.API.Services
             {
                 var user = await _userRepo.GetUserByRefreshTokenAsync(refreshToken);
 
-                if (user == null) throw new Exception("Invalid refresh token");
+                if (user == null) throw new InvalidTokenException("Invalid refresh token");
 
                 var newToken = GenerateRefreshToken();
 
