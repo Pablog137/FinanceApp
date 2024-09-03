@@ -1,6 +1,9 @@
 ﻿using Bogus;
 using Finance.API.Data;
+using Finance.API.Interfaces.Services;
 using Finance.API.Models;
+using Finance.API.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -35,6 +38,10 @@ namespace Finance.Tests
                 {
                     options.UseSqlServer(connectionStr);
                 });
+
+                services.AddAuthentication("TestScheme")
+                           .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });
+
             });
         }
 

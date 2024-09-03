@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 
-namespace Finance.Tests.IntegrationTests
+namespace Finance.Tests.IntegrationTests.Controllers
 {
     public class AuthenticationControllerTests : IClassFixture<DockerWebApplicationFactory>
     {
