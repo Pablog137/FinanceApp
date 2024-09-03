@@ -43,7 +43,7 @@ namespace Finance.API.Repository
         /// <exception cref="AccountNotFoundException">Thrown when no account is found for the given user ID.</exception>
         public async Task<Account> GetByUserIdAsyncOrThrowException(int userId)
         {
-            var account = await _context.Accounts.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+            var account = await _context.Accounts.Include(a => a.Transactions).FirstOrDefaultAsync(a => a.UserId == userId);
             if(account == null) throw new AccountNotFoundException("Account not found");
             return account;
         }

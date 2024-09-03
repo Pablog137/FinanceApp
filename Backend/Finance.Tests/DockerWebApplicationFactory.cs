@@ -71,7 +71,7 @@ namespace Finance.Tests
                 var account = new Faker<Account>()
                     .RuleFor(a => a.Name, f => f.Person.FullName)
                     .RuleFor(a => a.UserId, f => user.Id)
-                    .RuleFor(a => a.Balance, f => f.Finance.Amount())
+                    .RuleFor(a => a.Balance, f => 0)
                     .Generate();
 
                 context.Accounts.Add(account);

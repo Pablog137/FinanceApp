@@ -1,3 +1,4 @@
+using Finance.API.Extensions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +36,18 @@ namespace Finance.API.Controllers
 
             return Ok(account.toDto());
         }
+
+        [HttpGet("get-by-userId")]
+        public async Task<IActionResult> GetByUserId()
+        {
+            var id = User.GetUserId();
+            if (id == null) return Unauthorized();
+
+            var account = await _accountRepo.GetByUserIdAsyncOrThrowException(id.Value);
+
+            return Ok(account.toDto());
+        }
+
 
     }
 }

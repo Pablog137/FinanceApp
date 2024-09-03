@@ -43,7 +43,9 @@ namespace Finance.API.Services
                         break;
                 }
 
+
                 await _transactionRepo.AddAsync(transactionEntity);
+
                 await _accountRepo.UpdateAsync(account);
 
                 await transaction.CommitAsync();
