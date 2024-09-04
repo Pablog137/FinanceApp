@@ -81,12 +81,12 @@ namespace Finance.API.Controllers
             }
             catch (AccountNotFoundException e)
             {
-                Log.Error(e, e.Message);
+                Log.Error(e, "The account was not found");
                 return NotFound(e.Message);
             }
             catch (InvalidOperationException e)
             {
-                Log.Error(e, "Account not found creating transaction");
+                Log.Error(e, "Insufficient balance");
                 return BadRequest(e.Message);
             }
             catch (Exception e)
