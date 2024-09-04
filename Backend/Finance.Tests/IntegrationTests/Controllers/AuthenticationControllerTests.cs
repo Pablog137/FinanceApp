@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using Finance.API.Dtos.Token;
 using Finance.API.Dtos.Users;
+using Finance.Tests.Common.Constants;
 using FluentAssertions;
 using Newtonsoft.Json;
 using System.Net;
@@ -9,18 +10,13 @@ using System.Text;
 
 namespace Finance.Tests.IntegrationTests.Controllers
 {
-    public class AuthenticationControllerTests : IClassFixture<DockerWebApplicationFactory>
+    public class AuthenticationControllerTests : BaseIntegrationTest
     {
-
-        private readonly DockerWebApplicationFactory _factory;
-        private readonly HttpClient _client;
-
-        public AuthenticationControllerTests(DockerWebApplicationFactory factory)
+        public AuthenticationControllerTests(DockerWebApplicationFactory factory) : base(factory)
         {
-            _factory = factory;
-            _client = _factory.CreateClient();
-
         }
+
+
 
         #region Register
 
@@ -36,7 +32,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync("api/authentication/register", registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var result = await response.Content.ReadFromJsonAsync<UserDto>();
@@ -61,7 +57,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync("api/authentication/register", registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Conflict);
 
@@ -80,7 +76,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync("api/authentication/register", registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Conflict);
         }
@@ -97,7 +93,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync("api/authentication/register", registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
@@ -113,12 +109,12 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var loginDto = new Faker<LoginDto>()
                 .RuleFor(x => x.Email, f => "test@gmail.com")
-                .RuleFor(x => x.Password, f => "YourSecurePassword123!")
+                .RuleFor(x => x.Password, f => TestConstants.PASSWORD)
                  .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync("api/authentication/login", loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var result = await response.Content.ReadFromJsonAsync<UserDto>();
@@ -141,7 +137,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync("api/authentication/login", loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
@@ -158,7 +154,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync("api/authentication/login", loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
@@ -175,7 +171,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync("api/authentication/login", loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
@@ -197,7 +193,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/refresh-token", refreshTokenDto);
+            var response = await PostRequestAsync("api/authentication/refresh-token", refreshTokenDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var result = await response.Content.ReadFromJsonAsync<TokenDto>();
@@ -217,7 +213,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
                 .Generate();
             var content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsJsonAsync("api/authentication/refresh-token", refreshTokenDto);
+            var response = await PostRequestAsync("api/authentication/refresh-token", refreshTokenDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }

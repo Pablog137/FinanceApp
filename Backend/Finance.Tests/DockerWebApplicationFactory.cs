@@ -1,8 +1,7 @@
-﻿using Bogus;
-using Finance.API.Data;
-using Finance.API.Interfaces.Services;
+﻿using Finance.API.Data;
 using Finance.API.Models;
-using Finance.API.Services;
+using Finance.Tests.Common.Constants;
+using Finance.Tests.Common.Factories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -60,20 +59,14 @@ namespace Finance.Tests
                 var user1 = new AppUser
                 {
                     UserName = "username777",
-                    Email = "test@gmail.com",
+                    Email = "test@gmail.com"
                 };
-                var result = await userManager.CreateAsync(user1, "YourSecurePassword123!");
 
-                if (!result.Succeeded)
-                {
-                    throw new Exception("Failed to create test user.");
-                }
+                var result = await userManager.CreateAsync(user1, TestConstants.PASSWORD);
 
-                var account = new Faker<Account>()
-                    .RuleFor(a => a.Name, f => f.Person.FullName)
-                    .RuleFor(a => a.UserId, f => user1.Id)
-                    .RuleFor(a => a.Balance, f => 0)
-                    .Generate();
+                if (!result.Succeeded) throw new Exception("Failed to create test user.");
+
+                var account = AccountFactory.GenerateAccount(user1.Id, TestConstants.AMOUNT);
 
                 context.Accounts.Add(account);
                 await context.SaveChangesAsync();
@@ -82,33 +75,19 @@ namespace Finance.Tests
                 var user2 = new AppUser
                 {
                     UserName = "username888",
-                    Email = "test2@gmail.com",
+                    Email = "test2@gmail.com"
                 };
-                var result2 = await userManager.CreateAsync(user2, "YourSecurePassword123!");
 
-                if (!result2.Succeeded)
-                {
-                    throw new Exception("Failed to create test user 2.");
-                }
+                var result2 = await userManager.CreateAsync(user2, TestConstants.PASSWORD);
 
-                var account2 = new Faker<Account>()
-                    .RuleFor(a => a.Name, f => f.Person.FullName)
-                    .RuleFor(a => a.UserId, f => user2.Id)
-                    .RuleFor(a => a.Balance, f => 150.000M)
-                    .Generate();
+                if (!result2.Succeeded) throw new Exception("Failed to create test user 2.");
+
+                var account2 = AccountFactory.GenerateAccount(user2.Id, TestConstants.BALANCE);
 
                 context.Accounts.Add(account2);
                 await context.SaveChangesAsync();
 
-                // Refresh Token
-
-                var refreshToken = new Faker<RefreshToken>()
-                    .RuleFor(x => x.Token, f => "e6b6c233-545b-4033-8f50-7bbb76553ebb")
-                    .RuleFor(x => x.Expires, f => f.Date.Future(10))
-                    .RuleFor(x => x.AppUserId, f => user1.Id)
-                    .Generate();
-
-                context.RefreshTokens.Add(refreshToken);
+                context.RefreshTokens.Add(RefreshTokenFactory.GenerateRefreshToken(user1.Id));
                 await context.SaveChangesAsync();
 
             }

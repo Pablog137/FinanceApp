@@ -1,55 +1,33 @@
 ﻿using System.Net;
 using FluentAssertions;
-using System.Net.Http.Headers;
-using Finance.API.Interfaces.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Finance.API.Models;
 using System.Net.Http.Json;
 using Finance.API.Dtos.Transaction;
-using Bogus;
 using Finance.API.Enums;
 using Finance.API.Dtos.Account;
+using Finance.Tests.Common.Constants;
+using Finance.Tests.Common.Factories;
+using Finance.API.Models;
 
 namespace Finance.Tests.IntegrationTests.Controllers
 {
-    public class TransactionControllerTests : IClassFixture<DockerWebApplicationFactory>
+    public class TransactionControllerTests : BaseIntegrationTest
     {
-
-        private readonly DockerWebApplicationFactory _factory;
-        private readonly HttpClient _client;
-        public TransactionControllerTests(DockerWebApplicationFactory factory)
+        public TransactionControllerTests(DockerWebApplicationFactory factory) : base(factory)
         {
-            _factory = factory;
-            _client = _factory.CreateClient();
-
         }
 
         [Fact]
         public async Task AddTransaction_ShouldReturnCreatedAtAction_WhenIncomeTransactionIsSuccessfullyCreated()
         {
-            using var scope = _factory.Services.CreateScope();
-            var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
+            var user = UserFactory.GenerateUser(1);
 
-            var user = new AppUser
-            {
-                Id = 1,
-                UserName = "username777",
-                Email = "test@gmail.com"
-            };
+            var token = GenerateToken(user);
 
-            const decimal AMOUNT = 100.000M;
+            SetAuthorization(token);
 
-            var token = tokenService.GenerateToken(user);
+            var createTransactionDto = TransactionFactory.GenerateTransaction(TransactionType.Income, TestConstants.AMOUNT);
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var createTransactionDto = new Faker<CreateTransactionDto>()
-               .RuleFor(x => x.Type, f => TransactionType.Income)
-               .RuleFor(x => x.Amount, f => AMOUNT)
-               .RuleFor(x => x.Description, f => f.Lorem.Sentence())
-               .Generate();
-
-            var responseTransaction = await _client.PostAsJsonAsync("api/transaction/add-transaction", createTransactionDto);
+            var responseTransaction = await PostRequestAsync("api/transaction/add-transaction", createTransactionDto);
 
             responseTransaction.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -57,7 +35,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultTransaction == null) throw new Exception("Result transaction is null");
 
-            var responseAccount = await _client.GetAsync("api/account/get-by-userId");
+            var responseAccount = await GetRequestAsync("api/account/get-by-userId");
 
             responseAccount.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -65,16 +43,8 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultAccount == null) throw new Exception("Result account is null");
 
-            resultTransaction.AccountId.Should().Be(user.Id);
-            resultTransaction.Type.Should().Be(createTransactionDto.Type);
-            resultTransaction.Amount.Should().Be(createTransactionDto.Amount);
-            resultTransaction.Description.Should().Be(createTransactionDto.Description);
-            resultTransaction.Date.Should().NotBe(null);
-
-            resultAccount.UserId.Should().Be(user.Id);
-            resultAccount.Balance.Should().Be(AMOUNT);
-            resultAccount.Transactions.Should().NotBeEmpty();
-            resultAccount.Transactions[0].Id.Should().Be(resultTransaction.Id);
+            CommonTransactionAssertions(resultTransaction, createTransactionDto, resultAccount, user);
+            resultAccount.Balance.Should().Be(TestConstants.AMOUNT + createTransactionDto.Amount);
 
         }
 
@@ -82,29 +52,15 @@ namespace Finance.Tests.IntegrationTests.Controllers
         [Fact]
         public async Task AddTransaction_ShouldReturnCreatedAtAction_WhenExpenseTransactionIsSuccessfullyCreated()
         {
-            using var scope = _factory.Services.CreateScope();
-            var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
+            var user = UserFactory.GenerateUser(2);
 
-            var user = new AppUser
-            {
-                Id = 2,
-                UserName = "username888",
-                Email = "test2@gmail.com",
-            };
+            var token = GenerateToken(user);
 
-            const decimal AMOUNT = 100.000M;
+            SetAuthorization(token);
 
-            var token = tokenService.GenerateToken(user);
+            var createTransactionDto = TransactionFactory.GenerateTransaction(TransactionType.Expense, TestConstants.AMOUNT);
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var createTransactionDto = new Faker<CreateTransactionDto>()
-               .RuleFor(x => x.Type, f => TransactionType.Expense)
-               .RuleFor(x => x.Amount, f => AMOUNT)
-               .RuleFor(x => x.Description, f => f.Lorem.Sentence())
-               .Generate();
-
-            var responseTransaction = await _client.PostAsJsonAsync("api/transaction/add-transaction", createTransactionDto);
+            var responseTransaction = await PostRequestAsync("api/transaction/add-transaction", createTransactionDto);
 
             responseTransaction.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -112,7 +68,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultTransaction == null) throw new Exception("Result transaction is null");
 
-            var responseAccount = await _client.GetAsync("api/account/get-by-userId");
+            var responseAccount = await GetRequestAsync("api/account/get-by-userId");
 
             responseAccount.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -120,46 +76,24 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultAccount == null) throw new Exception("Result account is null");
 
-            resultTransaction.AccountId.Should().Be(user.Id);
-            resultTransaction.Type.Should().Be(createTransactionDto.Type);
-            resultTransaction.Amount.Should().Be(createTransactionDto.Amount);
-            resultTransaction.Description.Should().Be(createTransactionDto.Description);
-            resultTransaction.Date.Should().NotBe(null);
-
-            resultAccount.UserId.Should().Be(user.Id);
-            resultAccount.Balance.Should().Be(150.000M - AMOUNT);
-            resultAccount.Transactions.Should().NotBeEmpty();
-            resultAccount.Transactions[0].Id.Should().Be(resultTransaction.Id);
+            CommonTransactionAssertions(resultTransaction, createTransactionDto, resultAccount, user);
+            resultAccount.Balance.Should().Be(TestConstants.BALANCE - TestConstants.AMOUNT);
 
         }
 
         [Fact]
         public async Task AddTransaction_ShouldReturnBadRequest_WhenExpenseIsHigherThanBalance()
         {
-            using var scope = _factory.Services.CreateScope();
-            var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
+            var user = UserFactory.GenerateUser(2);
 
-            var user = new AppUser
-            {
-                Id = 2,
-                UserName = "username888",
-                Email = "test2@gmail.com",
-            };
+            var token = GenerateToken(user);
 
-            const decimal EXPENSE_AMOUNT = 500.000M;
+            SetAuthorization(token);
 
-            var token = tokenService.GenerateToken(user);
-
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var createTransactionDto = new Faker<CreateTransactionDto>()
-               .RuleFor(x => x.Type, f => TransactionType.Expense)
-               .RuleFor(x => x.Amount, f => EXPENSE_AMOUNT)
-               .RuleFor(x => x.Description, f => f.Lorem.Sentence())
-               .Generate();
+            var createTransactionDto = TransactionFactory.GenerateTransaction(TransactionType.Expense, TestConstants.EXPENSE_AMOUNT);
 
             // Get initial account balance
-            var responseAccount = await _client.GetAsync("api/account/get-by-userId");
+            var responseAccount = await GetRequestAsync("api/account/get-by-userId");
 
             responseAccount.Should().NotBeNull();
 
@@ -170,12 +104,12 @@ namespace Finance.Tests.IntegrationTests.Controllers
             var initialBalance = resultAccount.Balance;
 
             // Try to create transaction
-            var responseTransaction = await _client.PostAsJsonAsync("api/transaction/add-transaction", createTransactionDto);
+            var responseTransaction = await PostRequestAsync("api/transaction/add-transaction", createTransactionDto);
 
             responseTransaction.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
             // Check if balance is the same
-            var responseAccountAfterTransaction = await _client.GetAsync("api/account/get-by-userId");
+            var responseAccountAfterTransaction = await GetRequestAsync("api/account/get-by-userId");
 
             responseAccountAfterTransaction.Should().NotBeNull();
 
@@ -190,6 +124,25 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
         }
 
+
+        #region Private methods
+
+        private void CommonTransactionAssertions(TransactionDto resultTransaction, CreateTransactionDto createTransactionDto, AccountDto resultAccount, AppUser user)
+        {
+            resultTransaction.AccountId.Should().Be(user.Id);
+            resultTransaction.Type.Should().Be(createTransactionDto.Type);
+            resultTransaction.Amount.Should().Be(createTransactionDto.Amount);
+            resultTransaction.Description.Should().Be(createTransactionDto.Description);
+            resultTransaction.Date.Should().NotBe(null);
+
+            resultAccount.UserId.Should().Be(user.Id);
+            resultAccount.Transactions.Should().NotBeEmpty();
+            resultAccount.Transactions[0].Id.Should().Be(resultTransaction.Id);
+        }
+
+
+
+        #endregion Private methods
 
     }
 }
