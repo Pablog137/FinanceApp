@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Finance.API.Models;
+using Finance.Tests.Common.Constants;
 
 namespace Finance.Tests.Common.Factories
 {
@@ -9,7 +10,7 @@ namespace Finance.Tests.Common.Factories
         public static RefreshToken GenerateRefreshToken(int userId)
         {
             return new Faker<RefreshToken>()
-                    .RuleFor(x => x.Token, f => "e6b6c233-545b-4033-8f50-7bbb76553ebb")
+                    .RuleFor(x => x.Token, f => TestConstants.REFRESH_TOKEN)
                     .RuleFor(x => x.Expires, f => f.Date.Future(10))
                     .RuleFor(x => x.AppUserId, f => userId)
                     .Generate();

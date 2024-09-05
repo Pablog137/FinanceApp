@@ -1,52 +1,32 @@
 ﻿using Bogus;
 using Finance.API.Models;
+using System.Collections.Generic;
 
 namespace Finance.Tests.Common.Factories
 {
     internal static class UserFactory
     {
-
+        private static readonly Dictionary<int, AppUser> PredefinedUsers = new()
+        {
+            { 1, new AppUser { Id = 1, UserName = "username777", Email = "test@gmail.com" } },
+            { 2, new AppUser { Id = 2, UserName = "username888", Email = "test2@gmail.com" } },
+            { 3, new AppUser { Id = 3, UserName = "username999", Email = "test3@gmail.com" } },
+            { 4, new AppUser { Id = 4, UserName = "username000", Email = "test4@gmail.com" } }
+        };
 
         public static AppUser GenerateUser(int? id)
         {
-            if (id.HasValue)
+            if (id.HasValue && PredefinedUsers.ContainsKey(id.Value))
             {
-                return GenerateUserById(id.Value);
+                return PredefinedUsers[id.Value];
             }
             return GenerateRandomUser();
         }
 
-        private static AppUser GenerateUserById(int id) =>
-     id switch
-     {
-         1 => new AppUser
-         {
-             Id = 1,
-             UserName = "username777",
-             Email = "test@gmail.com"
-         },
-         2 => new AppUser
-         {
-             Id = 2,
-             UserName = "username888",
-             Email = "test2@gmail.com"
-         },
-         3 => new AppUser
-         {
-             Id = 3,
-             UserName = "username999",
-             Email = "test3@gmail.com",
-         },
-         4 => new AppUser
-         {
-             Id = 4,
-             UserName = "username000",
-             Email = "test4@gmail.com",
-         },
-
-         _ => GenerateRandomUser()
-     };
-
+        public static List<AppUser> GetPredefinedUsers()
+        {
+            return new List<AppUser>(PredefinedUsers.Values);
+        }
 
         private static AppUser GenerateRandomUser()
         {
@@ -56,5 +36,38 @@ namespace Finance.Tests.Common.Factories
                 .RuleFor(x => x.Email, f => f.Person.Email)
                 .Generate();
         }
+
+
+        public static AppUser GenerateUserById(int id) =>
+  id switch
+  {
+      1 => new AppUser
+      {
+          Id = 1,
+          UserName = "username777",
+          Email = "test@gmail.com"
+      },
+      2 => new AppUser
+      {
+          Id = 2,
+          UserName = "username888",
+          Email = "test2@gmail.com"
+      },
+      3 => new AppUser
+      {
+          Id = 3,
+          UserName = "username999",
+          Email = "test3@gmail.com",
+      },
+      4 => new AppUser
+      {
+          Id = 4,
+          UserName = "username000",
+          Email = "test4@gmail.com",
+      },
+
+      _ => GenerateRandomUser()
+  };
+
     }
 }

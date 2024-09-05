@@ -1,5 +1,4 @@
-﻿using Bogus;
-using Finance.API.Data;
+﻿using Finance.API.Data;
 using Finance.API.Models;
 using Finance.Tests.Common.Constants;
 using Finance.Tests.Common.Factories;
@@ -56,70 +55,53 @@ namespace Finance.Tests
                 await context.Database.MigrateAsync();
 
                 var userManager = scopedServices.GetRequiredService<UserManager<AppUser>>();
-                // User 1
-                var user1 = new AppUser
-                {
-                    UserName = "username777",
-                    Email = "test@gmail.com"
-                };
 
-                var result = await userManager.CreateAsync(user1, TestConstants.PASSWORD);
-
-                if (!result.Succeeded) throw new Exception("Failed to create test user.");
-
-                var account = AccountFactory.GenerateAccount(user1.Id, TestConstants.AMOUNT);
-
-                context.Accounts.Add(account);
-                await context.SaveChangesAsync();
-
-                // User 2
-                var user2 = new AppUser
-                {
-                    UserName = "username888",
-                    Email = "test2@gmail.com"
-                };
-
-                var result2 = await userManager.CreateAsync(user2, TestConstants.PASSWORD);
-
-                if (!result2.Succeeded) throw new Exception("Failed to create test user 2.");
-
-                var account2 = AccountFactory.GenerateAccount(user2.Id, TestConstants.BALANCE);
-
-                context.Accounts.Add(account2);
-                await context.SaveChangesAsync();
-
-                // User 3
-                var user3 = new AppUser
-                {
-                    UserName = "username999",
-                    Email = "test3@gmail.com",
-                };
-                var result3 = await userManager.CreateAsync(user3, TestConstants.PASSWORD);
-                if(!result3.Succeeded) throw new Exception("Failed to create test user 3.");
-                var account3 = AccountFactory.GenerateAccount(user3.Id, TestConstants.BALANCE);
-                context.Accounts.Add(account3);
-                await context.SaveChangesAsync();
-
-                // User 4
-                var user4 = new AppUser
-                {
-                    UserName = "username000",
-                    Email = "test4@gmail.com",
-                };
-                var result4 = await userManager.CreateAsync(user4, TestConstants.PASSWORD);
-                if(!result4.Succeeded) throw new Exception("Failed to create test user 4.");
-                var account4 = AccountFactory.GenerateAccount(user4.Id, 0);
-                context.Accounts.Add(account4);
-                await context.SaveChangesAsync();
-
-
-                context.RefreshTokens.Add(RefreshTokenFactory.GenerateRefreshToken(user1.Id));
-                await context.SaveChangesAsync();
-
+                await GenerateUsersAndAccounts(4, userManager, context);
             }
         }
 
 
+
+        private async Task GenerateUsersAndAccounts(int numberOfUsers, UserManager<AppUser> userManager, AppDbContext context)
+        {
+            for (int i = 0; i < numberOfUsers; i++)
+            {
+                var user = UserFactory.GenerateUserById(i + 1);
+                int userId = user.Id;
+                user.Id = 0;
+
+                var result = await userManager.CreateAsync(user, TestConstants.PASSWORD);
+
+                if (!result.Succeeded)
+                    throw new Exception($"Failed to create test user with id {user.Id} .");
+
+                Account account;
+                switch (userId)
+                {
+                    case 1:
+                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.AMOUNT);
+                        break;
+                    case 2:
+                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.INITIAL_BALANCE);
+                        break;
+                    case 3:
+                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.INITIAL_BALANCE);
+                        break;
+                    case 4:
+                        account = AccountFactory.GenerateAccount(user.Id, 0);
+                        break;
+                    default:
+                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.AMOUNT);
+                        break;
+                }
+
+                context.Accounts.Add(account);
+                await context.SaveChangesAsync();
+
+            }
+            context.RefreshTokens.Add(RefreshTokenFactory.GenerateRefreshToken(1));
+            await context.SaveChangesAsync();
+        }
         public new async Task DisposeAsync()
         {
             await _dbContainer.DisposeAsync();

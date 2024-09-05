@@ -12,7 +12,6 @@ namespace Finance.Tests.IntegrationTests.Controllers
     public class TransferControllerTests : BaseIntegrationTest
     {
 
-        private const decimal TRANSFER_AMOUNT = 100.000M;
         private const int SENDER_ID = 3;
         private const int RECIPIENT_ID = 4;
 
@@ -25,7 +24,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
         [Fact]
         public async Task CreateTransfer_ShouldReturnCreateAtAction_WhenSuccessfullyCreated()
         {
-            var createTransferDto = TransferFactory.GenerateTransferDto(RECIPIENT_ID, TRANSFER_AMOUNT);
+            var createTransferDto = TransferFactory.GenerateTransferDto(RECIPIENT_ID, TestConstants.AMOUNT);
 
             var user = UserFactory.GenerateUser(SENDER_ID);
 
@@ -43,11 +42,11 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             resultTransfer.SenderAccountId.Should().Be(SENDER_ID);
             resultTransfer.RecipientAccountId.Should().Be(RECIPIENT_ID);
-            resultTransfer.Amount.Should().Be(TRANSFER_AMOUNT);
+            resultTransfer.Amount.Should().Be(TestConstants.AMOUNT);
 
-            var resultFirstAccountValidated = await GetAccountAndValidateAsync(SENDER_ID, TestConstants.BALANCE - TRANSFER_AMOUNT, -TRANSFER_AMOUNT, TransactionType.Expense);
+            var resultFirstAccountValidated = await GetAccountAndValidateAsync(SENDER_ID, TestConstants.INITIAL_BALANCE - TestConstants.AMOUNT, -TestConstants.AMOUNT, TransactionType.Expense);
 
-            var resultSecondAccountValidated = await GetAccountAndValidateAsync(RECIPIENT_ID, TRANSFER_AMOUNT, TRANSFER_AMOUNT, TransactionType.Income);
+            var resultSecondAccountValidated = await GetAccountAndValidateAsync(RECIPIENT_ID, TestConstants.AMOUNT, TestConstants.AMOUNT, TransactionType.Income);
 
 
         }

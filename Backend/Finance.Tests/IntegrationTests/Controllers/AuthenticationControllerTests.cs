@@ -190,12 +190,12 @@ namespace Finance.Tests.IntegrationTests.Controllers
         public async Task RefreshToken_ShouldReturnOk_WhenSuccessfullyCreated()
         {
             var refreshTokenDto = new Faker<RefreshTokenDto>()
-                .RuleFor(x => x.RefreshToken, f => "e6b6c233-545b-4033-8f50-7bbb76553ebb")
+                .RuleFor(x => x.RefreshToken, f => TestConstants.REFRESH_TOKEN)
                 .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/refresh-token", refreshTokenDto);
+            var response = await PostRequestAsync(TestConstants.REFRESH_TOKEN_URL, refreshTokenDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var result = await response.Content.ReadFromJsonAsync<TokenDto>();
@@ -215,7 +215,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
                 .Generate();
             var content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/refresh-token", refreshTokenDto);
+            var response = await PostRequestAsync(TestConstants.REFRESH_TOKEN_URL, refreshTokenDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }

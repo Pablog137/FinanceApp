@@ -78,7 +78,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
             if (resultAccount == null) throw new Exception("Result account is null");
 
             CommonTransactionAssertions(resultTransaction, createTransactionDto, resultAccount, user);
-            resultAccount.Balance.Should().Be(TestConstants.BALANCE - TestConstants.AMOUNT);
+            resultAccount.Balance.Should().Be(TestConstants.INITIAL_BALANCE - TestConstants.AMOUNT);
 
         }
 
