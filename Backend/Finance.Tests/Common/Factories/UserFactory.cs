@@ -31,6 +31,19 @@ namespace Finance.Tests.Common.Factories
              UserName = "username888",
              Email = "test2@gmail.com"
          },
+         3 => new AppUser
+         {
+             Id = 3,
+             UserName = "username999",
+             Email = "test3@gmail.com",
+         },
+         4 => new AppUser
+         {
+             Id = 4,
+             UserName = "username000",
+             Email = "test4@gmail.com",
+         },
+
          _ => GenerateRandomUser()
      };
 

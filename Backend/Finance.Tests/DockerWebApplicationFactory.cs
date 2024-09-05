@@ -1,4 +1,5 @@
-﻿using Finance.API.Data;
+﻿using Bogus;
+using Finance.API.Data;
 using Finance.API.Models;
 using Finance.Tests.Common.Constants;
 using Finance.Tests.Common.Factories;
@@ -86,6 +87,31 @@ namespace Finance.Tests
 
                 context.Accounts.Add(account2);
                 await context.SaveChangesAsync();
+
+                // User 3
+                var user3 = new AppUser
+                {
+                    UserName = "username999",
+                    Email = "test3@gmail.com",
+                };
+                var result3 = await userManager.CreateAsync(user3, TestConstants.PASSWORD);
+                if(!result3.Succeeded) throw new Exception("Failed to create test user 3.");
+                var account3 = AccountFactory.GenerateAccount(user3.Id, TestConstants.BALANCE);
+                context.Accounts.Add(account3);
+                await context.SaveChangesAsync();
+
+                // User 4
+                var user4 = new AppUser
+                {
+                    UserName = "username000",
+                    Email = "test4@gmail.com",
+                };
+                var result4 = await userManager.CreateAsync(user4, TestConstants.PASSWORD);
+                if(!result4.Succeeded) throw new Exception("Failed to create test user 4.");
+                var account4 = AccountFactory.GenerateAccount(user4.Id, 0);
+                context.Accounts.Add(account4);
+                await context.SaveChangesAsync();
+
 
                 context.RefreshTokens.Add(RefreshTokenFactory.GenerateRefreshToken(user1.Id));
                 await context.SaveChangesAsync();

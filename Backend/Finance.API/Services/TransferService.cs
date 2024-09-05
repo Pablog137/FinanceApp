@@ -1,11 +1,9 @@
-﻿using Finance.API.Data;
-using Finance.API.Dtos.Transfer;
+﻿using Finance.API.Dtos.Transfer;
 using Finance.API.Exceptions;
 using Finance.API.Interfaces.Repositories;
 using Finance.API.Interfaces.Services;
 using Finance.API.Mappers;
 using Finance.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Finance.API.Services
 {
