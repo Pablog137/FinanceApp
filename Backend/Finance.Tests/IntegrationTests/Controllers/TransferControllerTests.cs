@@ -4,13 +4,19 @@ using System.Net.Http.Json;
 using System.Net;
 using Finance.API.Dtos.Transfer;
 using Finance.API.Dtos.Account;
-using Finance.Tests.Common.Constants;
 using Finance.API.Enums;
+using Finance.Tests.Common.Constants;
 
 namespace Finance.Tests.IntegrationTests.Controllers
 {
     public class TransferControllerTests : BaseIntegrationTest
     {
+
+        private const decimal TRANSFER_AMOUNT = 100.000M;
+        private const int SENDER_ID = 3;
+        private const int RECIPIENT_ID = 4;
+
+
         public TransferControllerTests(DockerWebApplicationFactory factory) : base(factory)
         {
         }
@@ -19,17 +25,15 @@ namespace Finance.Tests.IntegrationTests.Controllers
         [Fact]
         public async Task CreateTransfer_ShouldReturnCreateAtAction_WhenSuccessfullyCreated()
         {
-            const decimal TRANSFER_AMOUNT = 100.000M;
+            var createTransferDto = TransferFactory.GenerateTransferDto(RECIPIENT_ID, TRANSFER_AMOUNT);
 
-            var createTransferDto = TransferFactory.GenerateTransferDto(4, TRANSFER_AMOUNT);
-
-            var user = UserFactory.GenerateUser(3);
+            var user = UserFactory.GenerateUser(SENDER_ID);
 
             var token = GenerateToken(user);
 
             SetAuthorization(token);
 
-            var responseTransfer = await PostRequestAsync("api/transfer", createTransferDto);
+            var responseTransfer = await PostRequestAsync(TestConstants.TRANSFER_URL, createTransferDto);
 
             responseTransfer.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -37,39 +41,34 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultTransfer == null) throw new Exception("Result transfer is null");
 
-            resultTransfer.SenderAccountId.Should().Be(3);
-            resultTransfer.RecipientAccountId.Should().Be(4);
+            resultTransfer.SenderAccountId.Should().Be(SENDER_ID);
+            resultTransfer.RecipientAccountId.Should().Be(RECIPIENT_ID);
             resultTransfer.Amount.Should().Be(TRANSFER_AMOUNT);
 
-            // Get First account
+            var resultFirstAccountValidated = await GetAccountAndValidateAsync(SENDER_ID, TestConstants.BALANCE - TRANSFER_AMOUNT, -TRANSFER_AMOUNT, TransactionType.Expense);
 
-            var responseFirstAccount = await GetRequestAsync("api/account/" + 3);
-
-            responseFirstAccount.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var resultFirstAccount = await responseFirstAccount.Content.ReadFromJsonAsync<AccountDto>();
-
-            if (resultFirstAccount == null) throw new Exception("Result first account is null");
-
-            resultFirstAccount.Balance.Should().Be(TestConstants.BALANCE - TRANSFER_AMOUNT);
-            resultFirstAccount.Transactions[0].Amount.Should().Be(-TRANSFER_AMOUNT);
-            resultFirstAccount.Transactions[0].Type.Should().Be(TransactionType.Expense);
-
-            // Get Second account
-
-            var responseSecondAccount = await GetRequestAsync("api/account/" + 4);
-
-            responseSecondAccount.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var resultSecondAccount = await responseSecondAccount.Content.ReadFromJsonAsync<AccountDto>();
-
-            if (resultSecondAccount == null) throw new Exception("Result second account is null");
-
-            resultSecondAccount.Balance.Should().Be(TRANSFER_AMOUNT);
-            resultSecondAccount.Transactions[0].Amount.Should().Be(TRANSFER_AMOUNT);
-            resultSecondAccount.Transactions[0].Type.Should().Be(TransactionType.Income);
+            var resultSecondAccountValidated = await GetAccountAndValidateAsync(RECIPIENT_ID, TRANSFER_AMOUNT, TRANSFER_AMOUNT, TransactionType.Income);
 
 
         }
+
+
+        private async Task<AccountDto?> GetAccountAndValidateAsync(int accountId, decimal expectedBalance, decimal transferAmount, TransactionType type)
+        {
+            var responseAccount = await GetRequestAsync(TestConstants.ACCOUNT_URL + accountId);
+
+            responseAccount.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var resultAccount = await responseAccount.Content.ReadFromJsonAsync<AccountDto>();
+
+            if (resultAccount == null) throw new Exception($"Result {accountId} account is null");
+
+            resultAccount.Balance.Should().Be(expectedBalance);
+            resultAccount.Transactions[0].Amount.Should().Be(transferAmount);
+            resultAccount.Transactions[0].Type.Should().Be(type);
+
+            return resultAccount;
+        }
+
     }
 }

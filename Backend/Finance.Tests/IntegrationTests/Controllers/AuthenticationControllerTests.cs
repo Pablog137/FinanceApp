@@ -12,6 +12,8 @@ namespace Finance.Tests.IntegrationTests.Controllers
 {
     public class AuthenticationControllerTests : BaseIntegrationTest
     {
+
+
         public AuthenticationControllerTests(DockerWebApplicationFactory factory) : base(factory)
         {
         }
@@ -32,7 +34,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync(TestConstants.REGISTER_URL, registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var result = await response.Content.ReadFromJsonAsync<UserDto>();
@@ -57,7 +59,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync(TestConstants.REGISTER_URL, registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Conflict);
 
@@ -76,7 +78,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync(TestConstants.REGISTER_URL, registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Conflict);
         }
@@ -93,7 +95,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/register", registerDto);
+            var response = await PostRequestAsync(TestConstants.REGISTER_URL, registerDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
@@ -114,7 +116,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync(TestConstants.LOGIN_URL, loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var result = await response.Content.ReadFromJsonAsync<UserDto>();
@@ -137,7 +139,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync(TestConstants.LOGIN_URL, loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
@@ -154,7 +156,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync(TestConstants.LOGIN_URL, loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
@@ -171,7 +173,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-            var response = await PostRequestAsync("api/authentication/login", loginDto);
+            var response = await PostRequestAsync(TestConstants.LOGIN_URL, loginDto);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

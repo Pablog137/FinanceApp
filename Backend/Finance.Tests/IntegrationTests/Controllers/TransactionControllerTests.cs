@@ -12,6 +12,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 {
     public class TransactionControllerTests : BaseIntegrationTest
     {
+
         public TransactionControllerTests(DockerWebApplicationFactory factory) : base(factory)
         {
         }
@@ -27,7 +28,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var createTransactionDto = TransactionFactory.GenerateTransaction(TransactionType.Income, TestConstants.AMOUNT);
 
-            var responseTransaction = await PostRequestAsync("api/transaction/add-transaction", createTransactionDto);
+            var responseTransaction = await PostRequestAsync(TestConstants.TRANSACTION_URL, createTransactionDto);
 
             responseTransaction.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -35,7 +36,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultTransaction == null) throw new Exception("Result transaction is null");
 
-            var responseAccount = await GetRequestAsync("api/account/get-by-userId");
+            var responseAccount = await GetRequestAsync(TestConstants.GET_ACCOUNT_URL);
 
             responseAccount.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -60,7 +61,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             var createTransactionDto = TransactionFactory.GenerateTransaction(TransactionType.Expense, TestConstants.AMOUNT);
 
-            var responseTransaction = await PostRequestAsync("api/transaction/add-transaction", createTransactionDto);
+            var responseTransaction = await PostRequestAsync(TestConstants.TRANSACTION_URL, createTransactionDto);
 
             responseTransaction.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -68,7 +69,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
 
             if (resultTransaction == null) throw new Exception("Result transaction is null");
 
-            var responseAccount = await GetRequestAsync("api/account/get-by-userId");
+            var responseAccount = await GetRequestAsync(TestConstants.GET_ACCOUNT_URL);
 
             responseAccount.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -93,7 +94,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
             var createTransactionDto = TransactionFactory.GenerateTransaction(TransactionType.Expense, TestConstants.EXPENSE_AMOUNT);
 
             // Get initial account balance
-            var responseAccount = await GetRequestAsync("api/account/get-by-userId");
+            var responseAccount = await GetRequestAsync(TestConstants.GET_ACCOUNT_URL);
 
             responseAccount.Should().NotBeNull();
 
@@ -104,12 +105,12 @@ namespace Finance.Tests.IntegrationTests.Controllers
             var initialBalance = resultAccount.Balance;
 
             // Try to create transaction
-            var responseTransaction = await PostRequestAsync("api/transaction/add-transaction", createTransactionDto);
+            var responseTransaction = await PostRequestAsync(TestConstants.TRANSACTION_URL, createTransactionDto);
 
             responseTransaction.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
             // Check if balance is the same
-            var responseAccountAfterTransaction = await GetRequestAsync("api/account/get-by-userId");
+            var responseAccountAfterTransaction = await GetRequestAsync(TestConstants.GET_ACCOUNT_URL);
 
             responseAccountAfterTransaction.Should().NotBeNull();
 
