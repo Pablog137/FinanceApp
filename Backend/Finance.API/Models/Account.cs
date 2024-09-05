@@ -1,3 +1,4 @@
+using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Finance.API.Models
@@ -25,6 +26,19 @@ namespace Finance.API.Models
 
         public List<Transfer> TransfersAsSender { get; set; } = new List<Transfer>();
         public List<Transfer> TransfersAsRecipient { get; set; } = new List<Transfer>();
+
+
+
+
+        public Account Clone()
+        {
+            return new Account
+            {
+                Name = this.Name,
+                UserId = this.UserId,
+                Balance = this.Balance,
+            };
+        }
     }
 
 

@@ -1,11 +1,6 @@
 ﻿using Bogus;
 using Finance.API.Models;
 using Finance.Tests.Common.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Finance.Tests.Common.Factories
 {
@@ -20,14 +15,14 @@ namespace Finance.Tests.Common.Factories
 
         };
 
-
-        public static Account GenerateRandomAccount(int userId, decimal? balance)
+        public static Account GenerateAccount(int userId, decimal? balance)
         {
-            return new Faker<Account>()
-                  .RuleFor(a => a.Name, f => f.Person.FullName)
-                  .RuleFor(a => a.UserId, f => userId)
-                  .RuleFor(a => a.Balance, f => balance ?? f.Random.Decimal())
-                  .Generate();
+            if (PredefinedAccounts.ContainsKey(userId))
+            {
+                var predefinedAccount = PredefinedAccounts[userId].Clone();
+                return predefinedAccount;
+            }
+            return GenerateRandomAccount(userId, balance);
         }
 
         public static List<Account> GetPredefinedAccounts()
@@ -35,7 +30,7 @@ namespace Finance.Tests.Common.Factories
             return new List<Account>(PredefinedAccounts.Values);
         }
 
-        public static Account GenerateAccount(int userId, decimal? balance)
+        private static Account GenerateRandomAccount(int userId, decimal? balance)
         {
             return new Faker<Account>()
                   .RuleFor(a => a.Name, f => f.Person.FullName)

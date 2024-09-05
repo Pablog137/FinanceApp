@@ -18,7 +18,8 @@ namespace Finance.Tests.Common.Factories
         {
             if (id.HasValue && PredefinedUsers.ContainsKey(id.Value))
             {
-                return PredefinedUsers[id.Value];
+                var predefinedUser = PredefinedUsers[id.Value].Clone();
+                return predefinedUser;
             }
             return GenerateRandomUser();
         }
@@ -36,38 +37,5 @@ namespace Finance.Tests.Common.Factories
                 .RuleFor(x => x.Email, f => f.Person.Email)
                 .Generate();
         }
-
-
-        public static AppUser GenerateUserById(int id) =>
-  id switch
-  {
-      1 => new AppUser
-      {
-          Id = 1,
-          UserName = "username777",
-          Email = "test@gmail.com"
-      },
-      2 => new AppUser
-      {
-          Id = 2,
-          UserName = "username888",
-          Email = "test2@gmail.com"
-      },
-      3 => new AppUser
-      {
-          Id = 3,
-          UserName = "username999",
-          Email = "test3@gmail.com",
-      },
-      4 => new AppUser
-      {
-          Id = 4,
-          UserName = "username000",
-          Email = "test4@gmail.com",
-      },
-
-      _ => GenerateRandomUser()
-  };
-
     }
 }

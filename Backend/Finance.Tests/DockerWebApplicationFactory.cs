@@ -61,12 +61,19 @@ namespace Finance.Tests
         }
 
 
+        public new async Task DisposeAsync()
+        {
+            await _dbContainer.DisposeAsync();
+        }
+
+
+        #region private methods
 
         private async Task GenerateUsersAndAccounts(int numberOfUsers, UserManager<AppUser> userManager, AppDbContext context)
         {
             for (int i = 0; i < numberOfUsers; i++)
             {
-                var user = UserFactory.GenerateUserById(i + 1);
+                var user = UserFactory.GenerateUser(i + 1);
                 int userId = user.Id;
                 user.Id = 0;
 
@@ -75,25 +82,7 @@ namespace Finance.Tests
                 if (!result.Succeeded)
                     throw new Exception($"Failed to create test user with id {user.Id} .");
 
-                Account account;
-                switch (userId)
-                {
-                    case 1:
-                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.AMOUNT);
-                        break;
-                    case 2:
-                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.INITIAL_BALANCE);
-                        break;
-                    case 3:
-                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.INITIAL_BALANCE);
-                        break;
-                    case 4:
-                        account = AccountFactory.GenerateAccount(user.Id, 0);
-                        break;
-                    default:
-                        account = AccountFactory.GenerateAccount(user.Id, TestConstants.AMOUNT);
-                        break;
-                }
+                var account = AccountFactory.GenerateAccount(i + 1, null);
 
                 context.Accounts.Add(account);
                 await context.SaveChangesAsync();
@@ -102,9 +91,8 @@ namespace Finance.Tests
             context.RefreshTokens.Add(RefreshTokenFactory.GenerateRefreshToken(1));
             await context.SaveChangesAsync();
         }
-        public new async Task DisposeAsync()
-        {
-            await _dbContainer.DisposeAsync();
-        }
+
+        #endregion private methods
+
     }
 }
