@@ -1,10 +1,8 @@
+import LandingPage from "./pages/LandingPage";
+import "./styles/pages/index.css";
 
 function App() {
-  return (
-    <>
-      <h1 className="text-lg text-red-700 font-bold">Hello world!</h1>
-    </>
-  );
+  return <LandingPage />;
 }
 
 export default App;
