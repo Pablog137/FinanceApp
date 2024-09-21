@@ -1,8 +1,15 @@
 import LandingPage from "./pages/LandingPage";
 import "./styles/pages/index.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  return <LandingPage />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
