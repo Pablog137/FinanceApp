@@ -1,5 +1,5 @@
 import NavBar from "../components/Navbar";
-import Header from "./Header";
+import Header from "../components/Header";
 
 export default function LandingPage() {
   return (
