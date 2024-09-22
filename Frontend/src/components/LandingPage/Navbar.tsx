@@ -12,9 +12,9 @@ export default function NavBar({
   toggleDarkMode,
 }: NavBarProps) {
   return (
-    <nav className="border-gray-200 col-span-10 md:col-span-8 grid grid-cols-12 items-center justify-end gap-4 ">
+    <nav className="border-gray-200 col-span-8 xl:col-span-10 grid grid-cols-12 items-center justify-end gap-4 ">
       <ul
-        className={`${textColor} flex col-span-6 lg:col-span-8 justify-start gap-12 text-lg me-5`}
+        className={`${textColor} flex col-span-6 lg:col-span-8 justify-start gap-12 text-lg mx-5`}
       >
         <li>
           <a href="Pricing" className="hover:text-green-200">
