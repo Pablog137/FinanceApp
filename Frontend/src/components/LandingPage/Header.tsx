@@ -1,11 +1,25 @@
-import Logo from './Logo';
-import NavBar from './Navbar';
+import Logo from "./Logo";
+import NavBar from "./Navbar";
 
-export default function Header() {
+interface HeaderProps {
+  textColor: string;
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
+}
+
+export default function Header({
+  textColor,
+  isDarkMode,
+  toggleDarkMode,
+}: HeaderProps) {
   return (
     <section className="grid grid-cols-12 p-6 ">
-      <Logo />
-      <NavBar />
+      <Logo textColor={textColor} />
+      <NavBar
+        textColor={textColor}
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
+      />
     </section>
   );
 }

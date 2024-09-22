@@ -1,19 +1,15 @@
-import LandingPage from "./pages/LandingPage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import ThemedApp from "./components/ThemedApp";
+import { DarkModeProvider } from "./context/DarkModeContext";
 import "./styles/pages/index.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
+    <DarkModeProvider>
+      <BrowserRouter>
+        <ThemedApp />
+      </BrowserRouter>
+    </DarkModeProvider>
   );
 }
-
 export default App;

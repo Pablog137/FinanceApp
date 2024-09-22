@@ -1,3 +1,7 @@
-body {
+.dark {
     background-color: #151515;
+}
+
+.white {
+    background-color: #fff;
 }
