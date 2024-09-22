@@ -1,14 +1,21 @@
 import "../../styles/components/LandingPage/Hero.css";
 import { Link } from "react-router-dom";
 
-export default function Hero({ textColor }: { textColor: string }) {
+interface HeroProps {
+  textColor: string;
+  isDarkMode: boolean;
+}
+
+export default function Hero({ textColor, isDarkMode }: HeroProps) {
+  const gradientColor = isDarkMode ? "gradient-dark" : "gradient";
+
   return (
     <>
       <div className={`grid grid-cols-12 justify-center mb-32 ${textColor}`}>
         <div className="col-span-12 mt-20 md:mt-40 flex justify-center items-center">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl xl:text-7xl  text-center font-bold">
+          <h1 className="text-3xl sm:text-3xl md:text-5xl xl:text-7xl  text-center font-bold">
             Know where your money goes{" "}
-            <p className="gradient">to control your finances</p>
+            <p className={gradientColor}>to control your finances</p>
           </h1>
         </div>
         <div className="col-span-12 flex justify-center items-center mt-12 p-3">

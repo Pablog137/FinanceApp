@@ -12,7 +12,7 @@ export default function LandingPage() {
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
       />
-      <Hero textColor={textColor} />
+      <Hero textColor={textColor} isDarkMode={isDarkMode} />
     </>
   );
 }

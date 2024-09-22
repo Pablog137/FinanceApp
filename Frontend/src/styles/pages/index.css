@@ -1,7 +1,8 @@
 .dark {
-    background-color: #151515;
+    background-color: #1B1B1B;
+
 }
 
 .white {
-    background-color: #fff;
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
 }

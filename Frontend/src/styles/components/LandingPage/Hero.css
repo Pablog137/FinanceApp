@@ -1,11 +1,13 @@
-.gradient {
-    /* Create a linear gradient background */
+.gradient-dark {
     background-image: linear-gradient(to right, #186c57, white);
-
-    /* Set background-clip to text */
     -webkit-background-clip: text;
     background-clip: text;
+    color: transparent;
+}
 
-    /* Set transparent text color */
+.gradient {
+    background-image: linear-gradient(to right, #186c57, #a2cfc4);
+    -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
 }
