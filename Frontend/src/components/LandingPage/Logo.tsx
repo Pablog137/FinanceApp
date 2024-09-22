@@ -1,4 +1,4 @@
-export default function Header() {
+export default function Logo() {
   return (
     <header className="col-span-6">
       <div className="col-span-12 flex items-center gap-5">

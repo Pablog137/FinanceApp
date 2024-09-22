@@ -1,11 +1,11 @@
-import NavBar from "../components/Navbar";
-import Header from "../components/Header";
+import Hero from "../components/LandingPage/Hero";
+import Header from "../components/LandingPage/Header";
 
 export default function LandingPage() {
   return (
-    <section className="grid grid-cols-12 p-6 ">
+    <>
       <Header />
-      <NavBar />
-    </section>
+      <Hero />
+    </>
   );
 }
