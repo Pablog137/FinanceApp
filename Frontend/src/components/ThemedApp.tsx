@@ -10,7 +10,7 @@ const ThemedApp = () => {
   const bgColor = isDarkMode ? "dark" : "white";
 
   return (
-    <div className={bgColor}>
+    <div className={`${bgColor} h-screen`}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />

@@ -19,7 +19,7 @@ export default function Hero({ textColor }: { textColor: string }) {
         </div>
         <div className="col-span-12 flex justify-center items-center mt-12">
           <Link to="/register">
-            <button className="bg-[#5897A3] hover:bg-[#3b98ab] font-semibold px-4 py-2 rounded-md">
+            <button className="bg-[#5897A3] hover:bg-[#3b98ab] font-semibold px-4 py-2 rounded-md text-white">
               Get started
             </button>
           </Link>
