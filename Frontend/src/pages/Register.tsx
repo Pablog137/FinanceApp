@@ -18,9 +18,15 @@ export default function Register() {
 
   return (
     <>
+      <div className="bubbles">
+        <div className="bubble bubble3"></div>
+        <div className="bubble bubble4"></div>
+        <div className="bubble bubble5"></div>
+      </div>
+
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-white grid place-items-center px-6">
-          <h1 className="text-3xl text-center font-bold py-8 md:p-10">
+        <div className="text-white grid place-items-center px-6 login-container p-16">
+          <h1 className="text-3xl md:text-4xl text-center font-bold py-8 md:p-10">
             Create an account
           </h1>
           {errorMessage && showError && (
@@ -41,67 +47,49 @@ export default function Register() {
             noValidate
           >
             <div className="col-span-12">
-              <label htmlFor="username" className="font-bold">
-                Username
-              </label>
               <input
                 type="username"
                 id="username"
                 name="username"
                 placeholder="Username"
-                className="bg-gray-800 p-2 rounded w-full mt-2"
+                className="bg-gray-800 p-3 rounded-lg w-full mt-2"
                 onChange={onChangeInput}
               />
             </div>
             <div className="col-span-12">
-              <label htmlFor="email" className="font-bold">
-                Email
-              </label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 placeholder="Email"
-                className="bg-gray-800 p-2 rounded w-full mt-2"
+                className="bg-gray-800 p-3 rounded-lg w-full mt-2"
                 onChange={onChangeInput}
               />
             </div>
             <div className="col-span-12">
-              <div className="flex justify-between">
-                <label htmlFor="password" className="font-bold">
-                  Password
-                </label>
-              </div>
-
               <input
                 type="password"
                 id="password"
                 name="password"
                 placeholder="Password"
-                className="bg-gray-800 p-2 rounded w-full mt-2"
+                className="bg-gray-800 p-3 rounded-lg w-full mt-2"
                 onChange={onChangeInput}
               />
             </div>
             <div className="col-span-12">
-              <div className="flex justify-between">
-                <label htmlFor="password_confirmation" className="font-bold">
-                  Repeat password
-                </label>
-              </div>
-
               <input
                 type="password"
                 id="password_confirmation"
                 name="password_confirmation"
                 placeholder="Repeat password"
-                className="bg-gray-800 p-2 rounded w-full mt-2"
+                className="bg-gray-800 p-3 rounded-lg w-full mt-2"
                 onChange={onChangeInput}
               />
             </div>
             <div className="col-span-12 flex justify-center p-0 py-2">
               <button
                 type="submit"
-                className="bg-purple-500 p-2 rounded font-bold w-full"
+                className="bg-[#3B98AB] p-2 rounded font-bold w-full"
               >
                 Register
               </button>

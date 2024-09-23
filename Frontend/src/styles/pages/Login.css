@@ -1,4 +1,3 @@
-
 .bubbles {
     position: absolute;
     top: 0;
@@ -13,7 +12,7 @@
     background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
     border-radius: 50%;
     opacity: 0.6;
-    animation: bubble 20s infinite;
+    animation: bubble 40s infinite;
 
 }
 
@@ -21,9 +20,15 @@
     0% {
         transform: translateY(0) scale(1);
     }
-    50% {
+
+    33% {
         transform: scale(1.1);
     }
+
+    66% {
+        transform: scale(0.9);
+    }
+
     100% {
         transform: translateY(0) scale(1);
     }
@@ -43,7 +48,71 @@
     right: 15%;
 }
 
- .login-container {
-     position: relative;
-     z-index: 10;
- }
+.bubble3 {
+    width: 255px;
+    height: 255px;
+    top: 5%;
+    left: -1%;
+}
+
+.bubble4 {
+    width: 250px;
+    height: 250px;
+    top: 65%;
+    right: 10%;
+}
+
+.bubble5 {
+    width: 150px;
+    height: 150px;
+    top: -10%;
+    right: 10%;
+}
+.bubble6{
+    width: 150px;
+    height: 150px;
+    top: 90%;
+    left: 10%;
+}
+
+@media screen and (max-width: 768px) {
+    .bubble1 {
+        width: 200px;
+        height: 200px;
+        top: -10%;
+        left: 20%;
+    }
+
+    .bubble2 {
+        width: 150px;
+        height: 150px;
+        top: 45%;
+        right: 15%;
+    }
+
+    .bubble3 {
+        width: 175px;
+        height: 175px;
+        top: 5%;
+        left: -1%;
+    }
+
+    .bubble4 {
+        width: 200px;
+        height: 200px;
+        top: 65%;
+        right: 10%;
+    }
+
+    .bubble5 {
+        width: 120px;
+        height: 120px;
+        top: -5%;
+        right: 10%;
+    }
+}
+
+.login-container {
+    position: relative;
+    z-index: 10;
+}

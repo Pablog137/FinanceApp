@@ -17,9 +17,10 @@ export default function Login() {
 
   return (
     <>
-      <div className="hidden sm:block bubbles">
+      <div className="bubbles">
         <div className="bubble bubble1"></div>
         <div className="bubble bubble2"></div>
+        <div className="bubble bubble6"></div>
       </div>
 
       <div className="flex justify-center items-center min-h-screen">
