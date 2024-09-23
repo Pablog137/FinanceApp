@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/pages/Login.css";
 import Spinner from "../components/UI/Spinner";
+import { useDarkMode } from "../context/DarkModeContext";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -11,6 +12,7 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const { textColor, inputStyles } = useDarkMode();
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +27,9 @@ export default function Login() {
       </div>
 
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-white grid place-items-center px-6 login-container  p-16">
+        <div
+          className={`${textColor} grid place-items-center px-6 login-container p-16`}
+        >
           <h1 className="text-3xl md:text-4xl text-center font-bold py-8 md:p-10">
             Sign in
           </h1>
@@ -52,7 +56,7 @@ export default function Login() {
                 id="email"
                 name="email"
                 placeholder="Email"
-                className="bg-gray-800 p-3 rounded-lg w-full mt-2"
+                className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
                 onChange={onChangeInput}
               />
             </div>
@@ -73,14 +77,14 @@ export default function Login() {
                 id="password"
                 name="password"
                 placeholder="Password"
-                className="bg-gray-800 p-3 rounded-lg w-full mt-2"
+                className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
                 onChange={onChangeInput}
               />
             </div>
             <div className="col-span-12 flex justify-center p-0 py-2">
               <button
                 type="submit"
-                className="bg-[#3B98AB] p-2 rounded font-bold w-full"
+                className="text-white bg-[#3B98AB] p-2 rounded font-bold w-full"
               >
                 Sign in
               </button>

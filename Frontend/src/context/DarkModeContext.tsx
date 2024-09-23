@@ -11,6 +11,7 @@ interface DarkModeContextProps {
   toggleDarkMode: () => void;
   bgColor: string;
   textColor: string;
+  inputStyles: string;
 }
 interface DarkModeProviderProps {
   children: ReactNode;
@@ -44,11 +45,14 @@ export const DarkModeProvider = ({ children }: DarkModeProviderProps) => {
   };
 
   const bgColor = isDarkMode ? "dark" : "white";
-  const textColor = isDarkMode ? "text-white" : "text-black";
+  const textColor = isDarkMode ? "text-white" : "text-gray-700";
+  const inputStyles = isDarkMode
+    ? "bg-gray-800"
+    : "bg-gray-300  placeholder-gray-700";
 
   return (
     <DarkModeContext.Provider
-      value={{ isDarkMode, toggleDarkMode, bgColor, textColor }}
+      value={{ isDarkMode, toggleDarkMode, bgColor, textColor,inputStyles }}
     >
       {children}
     </DarkModeContext.Provider>
