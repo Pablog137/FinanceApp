@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/pages/Login.css";
+import Spinner from "../components/UI/Spinner";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -11,7 +12,7 @@ export default function Login() {
     password: "",
   });
 
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -93,7 +94,7 @@ export default function Login() {
               </p>
             </div>
           </form>
-          <div className="mt-10">{isLoading && <p>Spinner...</p>}</div>
+          <div className="mt-10">{isLoading && <Spinner />}</div>
         </div>
       </div>
     </>

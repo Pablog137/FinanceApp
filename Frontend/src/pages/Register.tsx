@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Spinner from "../components/UI/Spinner";
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -12,7 +13,7 @@ export default function Register() {
     password: "",
   });
 
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -103,7 +104,7 @@ export default function Register() {
               </p>
             </div>
           </form>
-          <div className="mt-10">{isLoading && <p>Spinner...</p>}</div>
+          <div className="mt-10">{isLoading && <Spinner />}</div>
         </div>
       </div>
     </>
