@@ -1,21 +1,19 @@
-import { useState } from "react";
 import "../styles/pages/Login.css";
 import Spinner from "../components/UI/Spinner";
 import { useDarkMode } from "../context/DarkModeContext";
+import useForm from "../hooks/useForm";
+import { useState } from "react";
 
 export default function Login() {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [serverError, setServerError] = useState("");
-  const [showError, setShowError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
   const { textColor, inputStyles } = useDarkMode();
+  const { errors, handleChange, handleSubmit, values } = useForm();
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e);
   };
 
   return (
@@ -33,9 +31,14 @@ export default function Login() {
           <h1 className="text-3xl md:text-4xl text-center font-bold py-8 md:p-10">
             Sign in
           </h1>
-          {errorMessage && showError && (
+          {errors && errors.email && (
             <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
-              {errorMessage}
+              {errors.email}
+            </div>
+          )}
+          {errors && errors.password && (
+            <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
+              {errors.password}
             </div>
           )}
 
@@ -47,6 +50,7 @@ export default function Login() {
 
           <form
             action=""
+            onSubmit={handleLogin}
             className="grid grid-cols-12 gap-4 w-full max-w-md "
             noValidate
           >
@@ -57,7 +61,7 @@ export default function Login() {
                 name="email"
                 placeholder="Email"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
-                onChange={onChangeInput}
+                onChange={handleChange}
               />
             </div>
             <div className="col-span-12">
@@ -71,14 +75,13 @@ export default function Login() {
                   </a>
                 </span>
               </div>
-
               <input
                 type="password"
                 id="password"
                 name="password"
                 placeholder="Password"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
-                onChange={onChangeInput}
+                onChange={handleChange}
               />
             </div>
             <div className="col-span-12 flex justify-center p-0 py-2">
