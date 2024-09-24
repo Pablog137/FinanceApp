@@ -3,10 +3,11 @@ import Spinner from "../components/UI/Spinner";
 import { useDarkMode } from "../context/DarkModeContext";
 import useForm from "../hooks/useForm";
 import { useState } from "react";
+import Error from "../components/UI/Error";
 
 export default function Login() {
   const { textColor, inputStyles } = useDarkMode();
-  const { errors, handleChange, handleSubmit, values } = useForm();
+  const { errors, handleChange, handleSubmit, showErrors } = useForm("login");
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState("");
@@ -15,6 +16,8 @@ export default function Login() {
     e.preventDefault();
     handleSubmit(e);
   };
+
+  const currentError = errors?.email || errors?.password || serverError;
 
   return (
     <>
@@ -31,23 +34,7 @@ export default function Login() {
           <h1 className="text-3xl md:text-4xl text-center font-bold py-8 md:p-10">
             Sign in
           </h1>
-          {errors && errors.email && (
-            <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
-              {errors.email}
-            </div>
-          )}
-          {errors && errors.password && (
-            <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
-              {errors.password}
-            </div>
-          )}
-
-          {serverError && (
-            <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
-              {serverError}
-            </div>
-          )}
-
+          {currentError && showErrors && <Error currentError={currentError} />}
           <form
             action=""
             onSubmit={handleLogin}

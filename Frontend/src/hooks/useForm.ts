@@ -1,25 +1,34 @@
 import { useState } from "react";
-import { MIN_PASSWORD_LENGTH } from "../helpers/constants";
+import { MIN_PASSWORD_LENGTH, MIN_USERNAME_LENGTH } from "../helpers/constants";
 
 interface Values {
   [key: string]: string;
 }
+type FormType = "login" | "register";
 
-export default function useForm() {
-  const [values, setValues] = useState<Values>({});
+export default function useForm(formType: FormType) {
+  const initialValues: Values =
+    formType === "login"
+      ? { email: "", password: "" }
+      : { email: "", password: "", username: "", password_confirmation: "" };
+
+  const [values, setValues] = useState<Values>(initialValues);
   const [errors, setErrors] = useState<Values>({});
+  const [showErrors, setShowErrors] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowErrors(false);
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    console.log(errors);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setShowErrors(true);
     const validationErrors = validateForm();
     if (Object.values(validationErrors).some((err) => err)) {
-      console.log("Validation errors", validationErrors);
       setErrors(validationErrors);
       return;
     }
@@ -45,6 +54,20 @@ export default function useForm() {
       newErrors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`;
     }
 
+    if (formType === "register") {
+      if (!values.username.trim()) {
+        newErrors.username = "Username is required";
+      } else if (values.username.length < MIN_USERNAME_LENGTH) {
+        newErrors.username = `Username must be at least ${MIN_USERNAME_LENGTH} characters`;
+      }
+
+      if (!values.password_confirmation.trim()) {
+        newErrors.password_confirmation = "Password confirmation is required";
+      } else if (values.password !== values.password_confirmation) {
+        newErrors.password_confirmation = "Passwords do not match";
+      }
+    }
+
     return newErrors;
   };
 
@@ -53,5 +76,6 @@ export default function useForm() {
     handleSubmit,
     values,
     errors,
+    showErrors,
   };
 }

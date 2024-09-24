@@ -1,23 +1,28 @@
 import { useState } from "react";
 import Spinner from "../components/UI/Spinner";
 import { useDarkMode } from "../context/DarkModeContext";
+import Error from "../components/UI/Error";
+import useForm from "../hooks/useForm";
 
 export default function Register() {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [serverError, setServerError] = useState("");
-  const [showError, setShowError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    username: "",
-    confirmPassword: "",
-    password: "",
-  });
   const { textColor, inputStyles } = useDarkMode();
+  const { errors, handleChange, handleSubmit, showErrors } =
+    useForm("register");
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e);
   };
+
+  const currentError =
+    errors?.username ||
+    errors?.email ||
+    errors?.password ||
+    errors?.password_confirmation ||
+    serverError;
 
   return (
     <>
@@ -34,22 +39,13 @@ export default function Register() {
           <h1 className="text-3xl md:text-4xl text-center font-bold py-8 md:p-10">
             Create an account
           </h1>
-          {errorMessage && showError && (
-            <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
-              {errorMessage}
-            </div>
-          )}
-
-          {serverError && (
-            <div className="w-full text-red-400 text-sm text-center p-3 mb-5 rounded border border-red-900 bg-red-950">
-              {serverError}
-            </div>
-          )}
+          {currentError && showErrors && <Error currentError={currentError} />}
 
           <form
             action=""
             className="grid grid-cols-12 gap-4 w-full max-w-md "
             noValidate
+            onSubmit={handleRegister}
           >
             <div className="col-span-12">
               <input
@@ -58,7 +54,7 @@ export default function Register() {
                 name="username"
                 placeholder="Username"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
-                onChange={onChangeInput}
+                onChange={handleChange}
               />
             </div>
             <div className="col-span-12">
@@ -68,7 +64,7 @@ export default function Register() {
                 name="email"
                 placeholder="Email"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
-                onChange={onChangeInput}
+                onChange={handleChange}
               />
             </div>
             <div className="col-span-12">
@@ -78,7 +74,7 @@ export default function Register() {
                 name="password"
                 placeholder="Password"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
-                onChange={onChangeInput}
+                onChange={handleChange}
               />
             </div>
             <div className="col-span-12">
@@ -88,7 +84,7 @@ export default function Register() {
                 name="password_confirmation"
                 placeholder="Repeat password"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
-                onChange={onChangeInput}
+                onChange={handleChange}
               />
             </div>
             <div className="col-span-12 flex justify-center p-0 py-2">
