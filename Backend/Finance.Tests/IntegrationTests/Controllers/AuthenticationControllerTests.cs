@@ -29,7 +29,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
                 .RuleFor(x => x.Username, f => f.Person.UserName)
                 .RuleFor(x => x.Email, f => f.Person.Email)
                 .RuleFor(x => x.Password, f => f.Internet.Password(8))
-                .RuleFor(x => x.ConfirmPassword, (f, u) => u.Password)
+                .RuleFor(x => x.PasswordConfirmation, (f, u) => u.Password)
                 .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
@@ -54,7 +54,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
                 .RuleFor(x => x.Username, f => f.Person.UserName)
                 .RuleFor(x => x.Email, f => "test@gmail.com")
                 .RuleFor(x => x.Password, f => f.Internet.Password(8))
-                .RuleFor(x => x.ConfirmPassword, (f, u) => u.Password)
+                .RuleFor(x => x.PasswordConfirmation, (f, u) => u.Password)
                 .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
@@ -73,7 +73,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
                .RuleFor(x => x.Username, f => "username777")
                .RuleFor(x => x.Email, f => f.Internet.Email())
                .RuleFor(x => x.Password, f => f.Internet.Password(8))
-               .RuleFor(x => x.ConfirmPassword, (f, u) => u.Password)
+               .RuleFor(x => x.PasswordConfirmation, (f, u) => u.Password)
                .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");
@@ -90,7 +90,7 @@ namespace Finance.Tests.IntegrationTests.Controllers
                 //.RuleFor(x => x.Username, f => f.Person.UserName)
                 .RuleFor(x => x.Email, f => f.Person.Email)
                 .RuleFor(x => x.Password, f => f.Internet.Password(8))
-                .RuleFor(x => x.ConfirmPassword, (f, u) => u.Password)
+                .RuleFor(x => x.PasswordConfirmation, (f, u) => u.Password)
                 .Generate();
 
             var content = new StringContent(JsonConvert.SerializeObject(registerDto), Encoding.UTF8, "application/json");

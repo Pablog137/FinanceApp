@@ -3,10 +3,11 @@ import Spinner from "../components/UI/Spinner";
 import { useDarkMode } from "../context/DarkModeContext";
 import Error from "../components/UI/Error";
 import useForm from "../hooks/useForm";
+import { setCookie, setItemLocalStorage } from "../helpers/localStorage";
 
 export default function Register() {
   const { textColor, inputStyles } = useDarkMode();
-  const { errors, handleChange, handleSubmit, showErrors } =
+  const { errors, handleChange, handleSubmit, showErrors, values } =
     useForm("register");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -14,17 +15,46 @@ export default function Register() {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSubmit(e);
     const formSubmitted = handleSubmit(e);
     if (!formSubmitted) return;
+
     setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        setItemLocalStorage("token", data.token);
+        setItemLocalStorage(
+          "user",
+          JSON.stringify({ email: data.email, username: data.username })
+        );
+        setCookie("refresh_token", data.refreshToken);
+        // Redirect to the dashboard
+      }
+    } catch (err) {
+      // setServerError(err.message);
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const currentError =
     errors?.username ||
     errors?.email ||
     errors?.password ||
-    errors?.password_confirmation ||
+    errors?.passwordConfirmation ||
     serverError;
 
   return (
@@ -83,8 +113,8 @@ export default function Register() {
             <div className="col-span-12">
               <input
                 type="password"
-                id="password_confirmation"
-                name="password_confirmation"
+                id="passwordConfirmation"
+                name="passwordConfirmation"
                 placeholder="Repeat password"
                 className={`${inputStyles} p-3 rounded-lg w-full mt-2`}
                 onChange={handleChange}

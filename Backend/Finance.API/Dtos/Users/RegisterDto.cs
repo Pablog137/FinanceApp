@@ -22,6 +22,6 @@ namespace Finance.API.Dtos.Users
 
         [Required(ErrorMessage = "Confirm password is required")]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string ConfirmPassword { get; set; }
+        public string PasswordConfirmation { get; set; }
     }
 }

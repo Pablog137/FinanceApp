@@ -4,10 +4,12 @@ import { useDarkMode } from "../context/DarkModeContext";
 import useForm from "../hooks/useForm";
 import { useState } from "react";
 import Error from "../components/UI/Error";
+import { setCookie, setItemLocalStorage } from "../helpers/localStorage";
 
 export default function Login() {
   const { textColor, inputStyles } = useDarkMode();
-  const { errors, handleChange, handleSubmit, showErrors } = useForm("login");
+  const { errors, handleChange, handleSubmit, showErrors, values } =
+    useForm("login");
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState("");
@@ -16,7 +18,34 @@ export default function Login() {
     e.preventDefault();
     const formSubmitted = handleSubmit(e);
     if (!formSubmitted) return;
+
     setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        setItemLocalStorage("token", data.token);
+        setItemLocalStorage("user", JSON.stringify({ email: data.email }));
+        setCookie("refresh_token", data.refreshToken);
+        // Redirect to the dashboard
+      }
+    } catch (err) {
+      // setServerError(err.message);
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const currentError = errors?.email || errors?.password || serverError;

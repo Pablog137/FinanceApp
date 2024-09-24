@@ -10,7 +10,7 @@ export default function useForm(formType: FormType) {
   const initialValues: Values =
     formType === "login"
       ? { email: "", password: "" }
-      : { email: "", password: "", username: "", password_confirmation: "" };
+      : { email: "", password: "", username: "", passwordConfirmation: "" };
 
   const [values, setValues] = useState<Values>(initialValues);
   const [errors, setErrors] = useState<Values>({});
@@ -24,7 +24,7 @@ export default function useForm(formType: FormType) {
     console.log(errors);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : boolean => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): boolean => {
     e.preventDefault();
     setShowErrors(true);
     const validationErrors = validateForm();
@@ -62,10 +62,10 @@ export default function useForm(formType: FormType) {
         newErrors.username = `Username must be at least ${MIN_USERNAME_LENGTH} characters`;
       }
 
-      if (!values.password_confirmation.trim()) {
-        newErrors.password_confirmation = "Password confirmation is required";
-      } else if (values.password !== values.password_confirmation) {
-        newErrors.password_confirmation = "Passwords do not match";
+      if (!values.passwordConfirmation.trim()) {
+        newErrors.passwordConfirmation = "Password confirmation is required";
+      } else if (values.password !== values.passwordConfirmation) {
+        newErrors.passwordConfirmation = "Passwords do not match";
       }
     }
 
