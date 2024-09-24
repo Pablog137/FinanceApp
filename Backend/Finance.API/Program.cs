@@ -1,11 +1,10 @@
-using Finance.API.Data;
 using Finance.API.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 
 try
 {
+    var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
     var builder = WebApplication.CreateBuilder(args);
 
     Log.Logger = new LoggerConfiguration()
@@ -24,6 +23,8 @@ try
     builder.Services.AddRepositories();
     builder.Services.AddSerilog();
     builder.Services.AddHealthCheck();
+    builder.Services.AddCors(MyAllowSpecificOrigins);
+
 
     var app = builder.Build();
 
@@ -42,7 +43,7 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
+    app.UseCors(MyAllowSpecificOrigins);
     app.UseAuthentication();
     app.UseAuthorization();
 

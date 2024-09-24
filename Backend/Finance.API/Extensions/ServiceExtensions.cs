@@ -112,7 +112,7 @@ namespace Finance.API.Extensions
             });
         }
 
-       public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options => options
                 .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -124,6 +124,20 @@ namespace Finance.API.Extensions
                 .AddCheck<HealthCheck>("API and DB Check", tags: new[] { "api", "db" });
         }
 
+        public static void AddCors(this IServiceCollection services, string MyAllowSpecificOrigins)
+        {
+
+            services.AddCors(options =>
+       {
+           options.AddPolicy(name: MyAllowSpecificOrigins,
+                             policy =>
+                             {
+                                 policy.WithOrigins("http://localhost:3000")
+                                       .AllowAnyHeader()
+                                       .AllowAnyMethod();
+                             });
+       });
+        }
 
 
     }

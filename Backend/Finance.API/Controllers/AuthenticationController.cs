@@ -10,7 +10,7 @@ using Serilog;
 namespace Finance.API.Controllers
 {
     [ApiController]
-    [Route("api/authentication")]
+    [Route("api/auth")]
     public class AuthenticationController : ControllerBase, IAuthentication
     {
 
