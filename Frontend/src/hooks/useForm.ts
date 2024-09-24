@@ -24,15 +24,16 @@ export default function useForm(formType: FormType) {
     console.log(errors);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : boolean => {
     e.preventDefault();
     setShowErrors(true);
     const validationErrors = validateForm();
     if (Object.values(validationErrors).some((err) => err)) {
       setErrors(validationErrors);
-      return;
+      return false;
     }
     console.log("Form submitted", values);
+    return true;
   };
 
   const validateForm = (): Values => {

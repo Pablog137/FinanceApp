@@ -15,6 +15,9 @@ export default function Register() {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleSubmit(e);
+    const formSubmitted = handleSubmit(e);
+    if (!formSubmitted) return;
+    setIsLoading(true);
   };
 
   const currentError =
