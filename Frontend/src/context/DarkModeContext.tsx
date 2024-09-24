@@ -52,7 +52,7 @@ export const DarkModeProvider = ({ children }: DarkModeProviderProps) => {
 
   return (
     <DarkModeContext.Provider
-      value={{ isDarkMode, toggleDarkMode, bgColor, textColor,inputStyles }}
+      value={{ isDarkMode, toggleDarkMode, bgColor, textColor, inputStyles }}
     >
       {children}
     </DarkModeContext.Provider>
