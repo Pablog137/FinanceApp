@@ -23,7 +23,11 @@ export default function NavBar({
   };
 
   return (
-    <nav className="border-gray-200 col-span-6 lg:col-span-9 grid grid-cols-12 items-center justify-end gap-4 ">
+    <nav
+      className={`border-gray-200 col-span-6 lg:col-span-9 grid grid-cols-12 items-center justify-end gap-4 ${
+        menuOpen ? "mb-10" : "mb-20 md:mb-40"
+      }`}
+    >
       <ul
         className={`${textColor} hidden lg:flex col-span-6 justify-start gap-12 text-lg mx-5`}
       >
@@ -39,11 +43,11 @@ export default function NavBar({
           isDarkMode={isDarkMode}
           toggleDarkMode={toggleDarkMode}
         />
-        <MenuIcon toggleMenu={toggleMenu} />
+        <MenuIcon toggleMenu={toggleMenu} textColor={textColor}/>
       </div>
 
       {menuOpen && (
-        <div className="col-span-12 mt-4 lg:hidden text-white">
+        <div className="col-span-12 mt-4 lg:hidden text-white ">
           <ul className="bg-white list-none p-2 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
             {links.map((link, index) => (
               <li key={index}>
