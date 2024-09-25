@@ -1,4 +1,9 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { links } from "../../helpers/lists";
+import LinkList from "./LinkList";
+import LinkItem from "./LinkItem";
+import LightModeIcon from "../UI/LightModeIIcon";
+import MenuIcon from "../UI/MenuIcon";
 
 interface NavBarProps {
   textColor: string;
@@ -11,45 +16,49 @@ export default function NavBar({
   isDarkMode,
   toggleDarkMode,
 }: NavBarProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
-    <nav className="border-gray-200 col-span-8 xl:col-span-10 grid grid-cols-12 items-center justify-end gap-4 ">
+    <nav className="border-gray-200 col-span-6 lg:col-span-9 grid grid-cols-12 items-center justify-end gap-4 ">
       <ul
-        className={`${textColor} flex col-span-6 lg:col-span-8 justify-start gap-12 text-lg mx-5`}
+        className={`${textColor} hidden lg:flex col-span-6 justify-start gap-12 text-lg mx-5`}
       >
-        <li>
-          <a href="Pricing" className="hover:text-green-200">
-            Pricing
-          </a>
-        </li>
-        <li>
-          <a href="Features" className="hover:text-green-200">
-            Features
-          </a>
-        </li>
+        <LinkList />
       </ul>
-      <div className={`col-span-6 lg:col-span-4 flex justify-end gap-4 items-center pe-4 ${textColor}`}>
-        <Link to="/login">
-          <button className="px-4 py-2 rounded-sm border hover:border-green-300 hover:border-2">
-            Sign in
-          </button>
-        </Link>
-        <Link to="/register">
-          <button className=" px-4 py-2 rounded-sm border hover:border-green-300 hover:border-2">
-            Sign Up
-          </button>
-        </Link>
-        {isDarkMode ? (
-          <i
-            className="fa-solid fa-sun text-yellow-300 text-3xl ps-4"
-            onClick={toggleDarkMode}
-          ></i>
-        ) : (
-          <i
-            className="fa-solid fa-moon text-black text-3xl ps-4"
-            onClick={toggleDarkMode}
-          ></i>
-        )}
+
+      <div
+        className={`col-span-12 lg:col-span-6 flex justify-end gap-4 items-center pe-4 ${textColor}`}
+      >
+        <LinkItem path="/login" text="Sign in" />
+        <LinkItem path="/register" text="Sign Up" />
+        <LightModeIcon
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+        />
+        <MenuIcon toggleMenu={toggleMenu} />
       </div>
+
+      {menuOpen && (
+        <div className="col-span-12 mt-4 lg:hidden text-white">
+          <ul className="bg-white list-none p-2 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
+            {links.map((link, index) => (
+              <li key={index}>
+                <a
+                  href={link.url}
+                  className="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+                  onClick={toggleMenu}
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

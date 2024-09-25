@@ -1,6 +1,6 @@
 export default function Logo({ textColor }: { textColor: string }) {
   return (
-    <header className="col-span-4 xl:col-span-2">
+    <section className="col-span-6 lg:col-span-3 me-5">
       <div className="col-span-12 flex items-center gap-5">
         <img
           src="/images/logo.svg"
@@ -9,6 +9,6 @@ export default function Logo({ textColor }: { textColor: string }) {
         />
         <h1 className={`${textColor} text-3xl  font-bold`}>FinanceApp</h1>
       </div>
-    </header>
+    </section>
   );
 }

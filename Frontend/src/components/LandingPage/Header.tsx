@@ -13,13 +13,13 @@ export default function Header({
   toggleDarkMode,
 }: HeaderProps) {
   return (
-    <section className="grid grid-cols-12 p-6 ">
+    <header className="grid grid-cols-12 p-6 ">
       <Logo textColor={textColor} />
       <NavBar
         textColor={textColor}
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
       />
-    </section>
+    </header>
   );
 }
