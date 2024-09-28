@@ -21,7 +21,6 @@ export default function useForm(formType: FormType) {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-    console.log(errors);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): boolean => {
