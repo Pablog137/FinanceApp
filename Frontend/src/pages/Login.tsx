@@ -34,15 +34,17 @@ export default function Login() {
       );
 
       const data = await response.json();
-      if (response.ok) {
-        setItemLocalStorage("token", data.token);
-        setItemLocalStorage("user", JSON.stringify({ email: data.email }));
-        setCookie("refresh_token", data.refreshToken);
-        // Redirect to the dashboard
+      if (!response.ok) {
+        setServerError(data.message);
+        setIsLoading(false);
+        return;
       }
-    } catch (err) {
-      // setServerError(err.message);
-      console.error(err);
+      setItemLocalStorage("token", data.token);
+      setItemLocalStorage("user", JSON.stringify({ email: data.email }));
+      setCookie("refresh_token", data.refreshToken);
+      // Redirect to the dashboard
+    } catch (err: any) {
+      setServerError(err.message);
     } finally {
       setIsLoading(false);
     }

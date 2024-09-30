@@ -37,15 +37,15 @@ namespace Finance.API.Controllers
                 return Ok(userDto);
 
             }
-            catch (ArgumentException a)
+            catch (ArgumentException e)
             {
-                Log.Error(a, a.Message);
-                return Conflict(a.Message);
+                Log.Error(e, e.Message);
+                return Conflict(new { message = e.Message });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error registering user");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = "Error registering user" });
             }
         }
 
@@ -63,12 +63,12 @@ namespace Finance.API.Controllers
             catch (UnauthorizedAccessException e)
             {
                 Log.Error(e, "Invalid email or password");
-                return Unauthorized(e.Message);
+                return Unauthorized(new { message = e.Message });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error logging user");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = e.Message });
             }
 
         }
@@ -82,10 +82,10 @@ namespace Finance.API.Controllers
                 await _authService.LogOutAsync();
                 return Ok("Logged out successfully");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, "Error logging out user");
-                return StatusCode(500, ex.Message);
+                Log.Error(e, "Error logging out user");
+                return StatusCode(500, new { message = "Error logging out user" });
             }
 
         }
@@ -107,12 +107,12 @@ namespace Finance.API.Controllers
             catch (InvalidTokenException e)
             {
                 Log.Error(e, "Token does not exist");
-                return Unauthorized(e.Message);
+                return Unauthorized(new { message = e.Message });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error with refresh token");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = "Error with refresh token" });
             }
 
         }

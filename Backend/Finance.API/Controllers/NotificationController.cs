@@ -39,7 +39,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, "Error getting all notifications");
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
 
             }
 
@@ -60,7 +60,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, "Error getting all ordered notifications");
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
         }
 
@@ -82,7 +82,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, "Error getting notification by id");
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
         }
 
@@ -103,12 +103,12 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, "Error creating notification");
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error creating notification");
-                return StatusCode(500, e);
+                return StatusCode(500, new { message = "Error creating notification" });
             }
         }
 
@@ -121,19 +121,19 @@ namespace Finance.API.Controllers
                 if (userId == null) return Unauthorized();
 
                 var notification = await _notificationService.UpdateAsync(id, userId.Value);
-                if(notification == null) return NotFound("Notification not found");
+                if (notification == null) return NotFound("Notification not found");
                 return Ok(notification.toDto());
 
             }
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, "Error creating notification");
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error updating notification");
-                return StatusCode(500, e);
+                return StatusCode(500, new { message = "Error updating notification" });
             }
 
         }

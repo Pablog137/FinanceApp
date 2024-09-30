@@ -36,7 +36,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = e.Message });
             }
         }
 
@@ -56,7 +56,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = e.Message });
             }
         }
 
@@ -78,17 +78,17 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = e.Message });
             }
             catch (ContactAlreadyExistsException e)
             {
                 Log.Error(e, e.Message);
-                return StatusCode(409, e.Message);
+                return StatusCode(409, new { message = e.Message });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error creating contact");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = "Error creating contact" });
             }
         }
 
@@ -108,7 +108,7 @@ namespace Finance.API.Controllers
             catch (Exception e)
             {
                 Log.Error(e, "Error deleting contact");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = e.Message });
             }
 
         }

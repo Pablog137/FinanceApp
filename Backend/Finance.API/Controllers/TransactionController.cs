@@ -37,7 +37,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
         }
 
@@ -59,7 +59,7 @@ namespace Finance.API.Controllers
             (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
         }
 
@@ -82,17 +82,17 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, "The account was not found");
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
             catch (InvalidOperationException e)
             {
                 Log.Error(e, "Insufficient balance");
-                return BadRequest(e.Message);
+                return BadRequest(new { message = "Insufficient balance" });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error creating transaction");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = "Error creating transaction" });
             }
 
         }

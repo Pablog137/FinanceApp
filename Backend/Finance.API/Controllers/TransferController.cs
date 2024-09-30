@@ -39,12 +39,12 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error creating transfer");
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { message = "Error creating transfer" });
             }
         }
 
@@ -62,7 +62,7 @@ namespace Finance.API.Controllers
             catch (AccountNotFoundException e)
             {
                 Log.Error(e, e.Message);
-                return NotFound(e.Message);
+                return NotFound(new { message = "Account not found" });
 
             }
         }
