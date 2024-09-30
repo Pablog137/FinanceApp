@@ -15,12 +15,19 @@ export default function useForm(formType: FormType) {
   const [values, setValues] = useState<Values>(initialValues);
   const [errors, setErrors] = useState<Values>({});
   const [showErrors, setShowErrors] = useState(true);
+  const [serverError, setServerError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowErrors(false);
+    resetErrors();
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const resetErrors = () => {
+    setShowErrors(false);
+    setErrors({});
+    setServerError("");
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): boolean => {
@@ -29,6 +36,7 @@ export default function useForm(formType: FormType) {
     const validationErrors = validateForm();
     if (Object.values(validationErrors).some((err) => err)) {
       setErrors(validationErrors);
+      console.log("Form not submitted", validationErrors);
       return false;
     }
     console.log("Form submitted", values);
@@ -77,5 +85,7 @@ export default function useForm(formType: FormType) {
     values,
     errors,
     showErrors,
+    serverError,
+    setServerError,
   };
 }

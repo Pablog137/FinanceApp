@@ -8,11 +8,17 @@ import { setCookie, setItemLocalStorage } from "../helpers/localStorage";
 
 export default function Login() {
   const { textColor, inputStyles } = useDarkMode();
-  const { errors, handleChange, handleSubmit, showErrors, values } =
-    useForm("login");
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    showErrors,
+    values,
+    serverError,
+    setServerError,
+  } = useForm("login");
 
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

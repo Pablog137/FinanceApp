@@ -7,11 +7,17 @@ import { setCookie, setItemLocalStorage } from "../helpers/localStorage";
 
 export default function Register() {
   const { textColor, inputStyles } = useDarkMode();
-  const { errors, handleChange, handleSubmit, showErrors, values } =
-    useForm("register");
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    showErrors,
+    values,
+    serverError,
+    setServerError,
+  } = useForm("register");
 
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,9 +48,8 @@ export default function Register() {
         setCookie("refresh_token", data.refreshToken);
         // Redirect to the dashboard
       }
-    } catch (err) {
-      // setServerError(err.message);
-      console.error(err);
+    } catch (err: any) {
+      setServerError(err.message);
     } finally {
       setIsLoading(false);
     }
