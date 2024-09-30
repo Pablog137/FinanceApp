@@ -4,6 +4,7 @@ import { useDarkMode } from "../context/DarkModeContext";
 import Error from "../components/UI/Error";
 import useForm from "../hooks/useForm";
 import { setCookie, setItemLocalStorage } from "../helpers/localStorage";
+import { useNavigate } from "react-router";
 
 export default function Register() {
   const { textColor, inputStyles } = useDarkMode();
@@ -18,6 +19,7 @@ export default function Register() {
   } = useForm("register");
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,6 +49,7 @@ export default function Register() {
         );
         setCookie("refresh_token", data.refreshToken);
         // Redirect to the dashboard
+        navigate("/dashboard");
       }
     } catch (err: any) {
       setServerError(err.message);

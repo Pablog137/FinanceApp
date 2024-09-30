@@ -5,6 +5,7 @@ import useForm from "../hooks/useForm";
 import { useState } from "react";
 import Error from "../components/UI/Error";
 import { setCookie, setItemLocalStorage } from "../helpers/localStorage";
+import { useNavigate } from "react-router";
 
 export default function Login() {
   const { textColor, inputStyles } = useDarkMode();
@@ -19,6 +20,7 @@ export default function Login() {
   } = useForm("login");
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,6 +51,7 @@ export default function Login() {
       setItemLocalStorage("user", JSON.stringify({ email: data.email }));
       setCookie("refresh_token", data.refreshToken);
       // Redirect to the dashboard
+      navigate("/dashboard");
     } catch (err: any) {
       setServerError(err.message);
     } finally {
