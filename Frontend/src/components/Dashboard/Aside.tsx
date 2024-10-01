@@ -9,7 +9,7 @@ export default function Aside() {
   return (
     <aside
       id="logo-sidebar"
-      className={`${bgColor} h-full min-h-screen transition-transform border-r border-gray-200 sm:translate-x-0  dark:border-gray-700 flex-shrink-0 overflow-y-auto`}
+      className={`${bgColor} h-full min-h-screen transition-transform sm:translate-x-0 flex-shrink-0 overflow-y-auto`}
       aria-label="Sidebar"
     >
       <div className="h-full flex flex-col md:px-3 xl:px-4 pb-4 pt-6">

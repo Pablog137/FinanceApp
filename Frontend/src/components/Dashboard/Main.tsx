@@ -7,7 +7,7 @@ type Props = {
 export default function Main({ colMain }: Props) {
   const { isDarkMode, textColor } = useDarkMode();
 
-  const bgColor = isDarkMode ? "bg-[#161922]" : "bg-white";
+  const bgColor = isDarkMode ? "bg-[#161922]" : "bg-[rgb(246,246,246)]";
 
   return (
     <>
@@ -27,7 +27,6 @@ export default function Main({ colMain }: Props) {
             This is a test
           </h5>
         </div>
-        <div className="border-b border-white w-full mt-20"></div>
       </div>
     </>
   );

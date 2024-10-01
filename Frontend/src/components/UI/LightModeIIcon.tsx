@@ -11,12 +11,12 @@ export default function LightModeIcon({
     <>
       {isDarkMode ? (
         <i
-          className="fa-solid fa-sun text-yellow-300 text-3xl"
+          className="fa-solid fa-sun text-yellow-300 text-3xl cursor-pointer"
           onClick={toggleDarkMode}
         ></i>
       ) : (
         <i
-          className="fa-solid fa-moon text-black text-3xl"
+          className="fa-solid fa-moon text-black text-3xl cursor-pointer"
           onClick={toggleDarkMode}
         ></i>
       )}
