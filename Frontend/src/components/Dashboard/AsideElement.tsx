@@ -1,15 +1,16 @@
 type Props = {
   text: string;
   icon: string;
+  textColor?: string;
   url?: string;
 };
 
-export default function AsideElement({ text, icon, url }: Props) {
+export default function AsideElement({ text, icon, textColor, url }: Props) {
   return (
     <li className="p-2">
       <a
         href={url}
-        className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        className={`${textColor} flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group`}
       >
         <i
           className={`

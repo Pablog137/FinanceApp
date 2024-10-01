@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 type Props = {
   isAsideOpen: boolean;
@@ -7,9 +8,14 @@ type Props = {
 
 export default function Navbar({ isAsideOpen, toggleAside }: Props) {
   const [showProfile, setShowProfile] = useState(false);
+  const { isDarkMode } = useDarkMode();
+
+  const bgColor = isDarkMode ? "dark:bg-gray-800" : "bg-white";
 
   return (
-    <nav className="w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-1">
+    <nav
+      className={`${bgColor} w-full border-b border-gray-200 dark:border-gray-700 p-1`}
+    >
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">
