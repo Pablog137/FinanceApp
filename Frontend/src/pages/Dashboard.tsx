@@ -1,7 +1,9 @@
-import { useDarkMode } from "../context/DarkModeContext";
+// import Main from "../components/Dashboard/Main";
+// import { useDarkMode } from "../context/DarkModeContext";
+import StructureContainer from "./StructureContainer";
 
 export default function Dashboard() {
-  const { textColor } = useDarkMode();
+  // const { textColor } = useDarkMode();
 
-  return <div className={`${textColor} text-3xl`}>Dashboard</div>;
+  return <StructureContainer />;
 }
