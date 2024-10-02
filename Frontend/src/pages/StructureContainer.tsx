@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Aside from "../components/Dashboard/Aside";
 import Navbar from "../components/Dashboard/NavBar";
+import NavBarMobile from "../components/Dashboard/NavBarMobile";
 
 interface StructureContainerProps {
   MainComponent: any;
@@ -22,7 +23,7 @@ export default function StructureContainer({
 
   return (
     <>
-      <Navbar isAsideOpen={isAsideOpen} toggleAside={toggleAside} />
+      <NavBarMobile isAsideOpen={isAsideOpen} toggleAside={toggleAside} />
       <div className="grid grid-cols-12">
         <div className={colsAside}>
           <Aside />
