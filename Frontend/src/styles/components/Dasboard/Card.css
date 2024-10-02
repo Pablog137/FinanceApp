@@ -1,0 +1,32 @@
+.mastercard-icon {
+    display: inline-block;
+    height: 2em;
+    isolation: isolate;
+    position: relative;
+    line-height: 2em;
+    vertical-align: middle;
+    width: 3.222em;
+}
+
+.mastercard-icon::before,
+.mastercard-icon::after {
+    border-radius: 1em;
+    content: "";
+    display: inline-block;
+    height: 2em;
+    position: absolute;
+    width: 2em;
+}
+
+.mastercard-icon::before {
+    background-color: #eb001b;
+    left: 0;
+    top: 0;
+}
+
+.mastercard-icon::after {
+    background-color: #f79e1b;
+    mix-blend-mode: hard-light;
+    right: 0;
+    top: 0;
+}
