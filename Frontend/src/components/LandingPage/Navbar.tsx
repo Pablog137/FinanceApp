@@ -2,8 +2,8 @@ import { useState } from "react";
 import { links } from "../../helpers/lists";
 import LinkList from "./LinkList";
 import LinkItem from "./LinkItem";
-import LightModeIcon from "../UI/LightModeIIcon";
-import MenuIcon from "../UI/MenuIcon";
+import LightModeIcon from "../UI/Icons/LightModeIcon";
+import MenuIcon from "../UI/Icons/MenuIcon";
 
 interface NavBarProps {
   textColor: string;
@@ -43,7 +43,7 @@ export default function NavBar({
           isDarkMode={isDarkMode}
           toggleDarkMode={toggleDarkMode}
         />
-        <MenuIcon toggleMenu={toggleMenu} textColor={textColor}/>
+        <MenuIcon toggleMenu={toggleMenu} textColor={textColor} />
       </div>
 
       {menuOpen && (

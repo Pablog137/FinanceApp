@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Aside from "../components/Dashboard/Aside";
-import Navbar from "../components/Dashboard/NavBar";
-import NavBarMobile from "../components/Dashboard/NavBarMobile";
-import AsideMobile from "../components/Dashboard/AsideMobile";
+import Aside from "../components/Shared/Aside";
+import Navbar from "../components/Shared/NavBar";
+import NavBarMobile from "../components/Shared/NavBarMobile";
+import AsideMobile from "../components/Shared/AsideMobile";
 
 interface StructureContainerProps {
   MainComponent: any;
