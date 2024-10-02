@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useDarkMode } from "../../context/DarkModeContext";
-import LightModeIcon from "../UI/Icons/LightModeIcon";
-import NotificationIcon from "../UI/Icons/NotificationIcon";
+import { useDarkMode } from "../../../context/DarkModeContext";
+import LightModeIcon from "../../UI/Icons/LightModeIcon";
+import NotificationIcon from "../../UI/Icons/NotificationIcon";
 
 export default function NavBarMobile() {
   const [showProfile, setShowProfile] = useState(false);

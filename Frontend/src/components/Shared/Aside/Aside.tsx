@@ -1,5 +1,5 @@
-import { useDarkMode } from "../../context/DarkModeContext";
-import AsideElement from "./AsideElement";
+import { useDarkMode } from "../../../context/DarkModeContext";
+import AsideElementList from "./AsideElementList";
 
 export default function Aside() {
   const { isDarkMode, textColor } = useDarkMode();
@@ -14,18 +14,7 @@ export default function Aside() {
     >
       <div className="h-full flex flex-col md:px-3 xl:px-4 pb-4 pt-6">
         <ul className="font-medium flex flex-col items-center lg:items-start justify-start list-none flex-grow">
-          <AsideElement
-            text="Dashboard"
-            icon="fa-solid fa-home"
-            textColor={textColor}
-            url="/"
-          />
-          <AsideElement
-            text="Notes"
-            icon="fa-solid fa-sticky-note"
-            textColor={textColor}
-            url="/notes"
-          />
+          <AsideElementList textColor={textColor} />
         </ul>
       </div>
     </aside>

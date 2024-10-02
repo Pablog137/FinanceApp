@@ -1,5 +1,5 @@
-import { useDarkMode } from "../../context/DarkModeContext";
-import AsideElement from "./AsideElement";
+import { useDarkMode } from "../../../context/DarkModeContext";
+import AsideElementList from "./AsideElementList";
 
 export default function AsideMobile() {
   const { isDarkMode, textColor } = useDarkMode();
@@ -13,18 +13,7 @@ export default function AsideMobile() {
       aria-label="Sidebar"
     >
       <ul className="font-medium list-none flex justify-center items-center">
-        <AsideElement
-          text="Dashboard"
-          icon="fa-solid fa-home"
-          textColor={textColor}
-          url="/"
-        />
-        <AsideElement
-          text="Notes"
-          icon="fa-solid fa-sticky-note"
-          textColor={textColor}
-          url="/notes"
-        />
+        <AsideElementList textColor={textColor} />
       </ul>
     </aside>
   );
