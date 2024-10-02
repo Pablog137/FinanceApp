@@ -3,11 +3,7 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import LightModeIcon from "../UI/LightModeIIcon";
 import NotificationIcon from "../UI/NotificationIcon";
 
-type Props = {
-  isAsideOpen: boolean;
-};
-
-export default function NavBarMobile({ isAsideOpen }: Props) {
+export default function NavBarMobile() {
   const [showProfile, setShowProfile] = useState(false);
   const { isDarkMode, toggleDarkMode, textColor } = useDarkMode();
 
@@ -62,9 +58,7 @@ export default function NavBarMobile({ isAsideOpen }: Props) {
             )}
 
             <div
-              className={`z-50 ${
-                isAsideOpen ? "block" : "hidden"
-              } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600`}
+              className={`z-50 block my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600`}
               id="dropdown-user"
             ></div>
           </div>
