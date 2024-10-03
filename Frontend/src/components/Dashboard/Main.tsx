@@ -6,17 +6,23 @@ type Props = {
 };
 
 export default function Main({ colMain }: Props) {
-  const { isDarkMode, textColor } = useDarkMode();
-
-  const bgColor = isDarkMode ? "bg-[#161922]" : "bg-[rgb(246,246,246)]";
+  const { textColor } = useDarkMode();
 
   return (
     <>
       <div
-        className={`${textColor} pt-20 md:pt-40 h-screen ${colMain} ${bgColor}`}
+        className={`${textColor} pt-5 md:pt-10 h-screen ${colMain} grid grid-cols-12 p-5`}
       >
-        <div className="text-white p-10">
+        <div className="text-white p-10 col-span-12 ">
           <Card />
+        </div>
+        {/* Quick actions */}
+        <div className="col-span-12">
+          <h1 className="text-lg font-semibold">Quick actions</h1>
+        </div>
+        {/* Schedule payments */}
+        <div className="col-span-12">
+          <h1 className="text-lg font-semibold">Schedule payments</h1>
         </div>
       </div>
     </>
