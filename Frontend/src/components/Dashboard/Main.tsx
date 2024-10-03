@@ -18,9 +18,7 @@ export default function Main({ colMain }: Props) {
         <div className="text-white p-10 col-span-12 ">
           <Card />
         </div>
-        {/* Quick actions */}
         <QuickActions />
-        {/* Schedule payments */}
         <SchedulePayments />
       </div>
     </>
