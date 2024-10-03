@@ -1,4 +1,4 @@
-import { navLinks } from "../../../helpers/lists";
+import { navLinks } from "../../../helpers/links";
 import AsideElement from "./AsideElement";
 
 export default function AsideElementList({ textColor }: { textColor: string }) {

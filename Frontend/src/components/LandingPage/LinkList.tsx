@@ -1,4 +1,4 @@
-import { links } from "../../helpers/lists";
+import { links } from "../../helpers/links";
 
 export default function LinkList() {
   return (

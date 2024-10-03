@@ -1,5 +1,7 @@
 import { useDarkMode } from "../../context/DarkModeContext";
 import Card from "./Card";
+import QuickActions from "./QuickActions";
+import SchedulePayments from "./SchedulePayments";
 
 type Props = {
   colMain: string;
@@ -17,13 +19,9 @@ export default function Main({ colMain }: Props) {
           <Card />
         </div>
         {/* Quick actions */}
-        <div className="col-span-12">
-          <h1 className="text-lg font-semibold">Quick actions</h1>
-        </div>
+        <QuickActions />
         {/* Schedule payments */}
-        <div className="col-span-12">
-          <h1 className="text-lg font-semibold">Schedule payments</h1>
-        </div>
+        <SchedulePayments />
       </div>
     </>
   );

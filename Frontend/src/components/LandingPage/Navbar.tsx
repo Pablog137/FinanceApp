@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { links } from "../../helpers/lists";
+import { links } from "../../helpers/links";
 import LinkList from "./LinkList";
 import LinkItem from "./LinkItem";
 import LightModeIcon from "../UI/Icons/LightModeIcon";
