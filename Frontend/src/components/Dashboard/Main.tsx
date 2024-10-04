@@ -19,10 +19,10 @@ export default function Main({ colMain }: Props) {
         <div className="text-white p-10 col-span-12 md:col-span-6 xl:col-span-4">
           <Card />
         </div>
-        <div className="p-5 hidden md:block md:col-span-6 xl:col-span-8">
+        <div className="p-5 hidden md:col-span-6 xl:col-span-8 md:grid grid-cols-12 gap-4 items-center">
           {/* <h1 className={`${textColor} text-2xl font-semibold`}>Summary</h1> */}
-          <div className="">
-            <div className="pt-5 flex flex-col">
+          <div className="col-span-12 xl:col-span-6">
+            <div className="flex flex-col">
               <div className="bg-gray-200 p-6 rounded-md flex justify-between">
                 {/* Graph */}
                 <div className="flex flex-col gap-2">
@@ -45,8 +45,8 @@ export default function Main({ colMain }: Props) {
               </div>
             </div>
           </div>
-          <div className="">
-            <div className="pt-5 flex flex-col">
+          <div className="col-span-12 xl:col-span-6">
+            <div className="flex flex-col">
               <div className="bg-gray-200 p-6 rounded-md flex justify-between">
                 {/* Graph */}
                 <div className="flex flex-col gap-2">

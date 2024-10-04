@@ -23,7 +23,7 @@ export default function SchedulePaymentElement({
       </div>
       <p className="text-xl font-bold">
         ${amount}
-        <span className="text-sm">USD</span>
+        <span className="text-sm ps-1">USD</span>
       </p>
     </li>
   );
