@@ -9,7 +9,7 @@ export default function AsideMobile() {
   return (
     <aside
       id="logo-sidebar"
-      className={`${bgColor} col-span-12 w-full transition-transform sm:translate-x-0 flex-shrink-0 overflow-y-auto p-2`}
+      className={`${bgColor} fixed inset-x-0 bottom-0 w-full transition-transform sm:translate-x-0 flex-shrink-0 overflow-y-auto p-2 sm:hidden md:hidden`}
       aria-label="Sidebar"
     >
       <ul className="font-medium list-none flex justify-center items-center">
