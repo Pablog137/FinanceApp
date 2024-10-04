@@ -12,7 +12,7 @@ export default function SchedulePaymentElement({
   icon,
 }: SchedulePaymentElementProps) {
   return (
-    <li className="p-4 rounded-md bg-white flex justify-between items-center">
+    <li className="p-5 rounded-md bg-white flex justify-between items-center">
       <i className={`${icon} text-2xl text-green-300`}></i>
       <div className="flex flex-col">
         <h5 className="text-xl font-semibold">{title}</h5>

@@ -10,7 +10,7 @@ export default function SchedulePayments() {
         <h1 className="text-xl font-bold">Schedule payments</h1>
         <p className="text-sm">View All</p>
       </div>
-      <ul className={`${textColor} pt-4 flex flex-col gap-2`}>
+      <ul className={`${textColor} pt-4 flex flex-col gap-3`}>
         {schedulePayments.map((payment, index) => (
           <SchedulePaymentElement
             key={index}
