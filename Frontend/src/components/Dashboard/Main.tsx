@@ -1,4 +1,5 @@
 import { useDarkMode } from "../../context/DarkModeContext";
+import BasicLineChart from "./BasicLineChart";
 import Card from "./Card";
 import QuickActions from "./QuickActions";
 import SchedulePayments from "./SchedulePayments";
@@ -18,8 +19,8 @@ export default function Main({ colMain }: Props) {
         <div className="text-white p-10 col-span-12 md:col-span-6 xl:col-span-4">
           <Card />
         </div>
-        <div className="p-10 hidden md:block md:col-span-6 xl:col-span-4">
-          <h1 className={`${textColor} text-2xl font-semibold`}>Summary</h1>
+        <div className="p-5 hidden md:block md:col-span-6 xl:col-span-8">
+          {/* <h1 className={`${textColor} text-2xl font-semibold`}>Summary</h1> */}
           <div className="">
             <div className="pt-5 flex flex-col">
               <div className="bg-gray-200 p-6 rounded-md flex justify-between">
@@ -69,6 +70,7 @@ export default function Main({ colMain }: Props) {
             </div>
           </div>
         </div>
+        <BasicLineChart />
         <QuickActions />
         <SchedulePayments />
       </div>
