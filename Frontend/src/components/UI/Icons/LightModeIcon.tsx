@@ -1,22 +1,26 @@
 interface LightModeItemProps {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  textColorDark?: string;
+  textColorLight?: string;
 }
 
 export default function LightModeIcon({
   isDarkMode,
   toggleDarkMode,
+  textColorDark = "text-black",
+  textColorLight = "text-yellow-300",
 }: LightModeItemProps) {
   return (
     <>
       {isDarkMode ? (
         <i
-          className="fa-solid fa-sun text-yellow-300 text-3xl cursor-pointer"
+          className={`${textColorLight} fa-solid fa-sun text-3xl cursor-pointer`}
           onClick={toggleDarkMode}
         ></i>
       ) : (
         <i
-          className="fa-solid fa-moon text-black text-3xl cursor-pointer"
+          className={`${textColorDark} fa-solid fa-moon text-3xl cursor-pointer`}
           onClick={toggleDarkMode}
         ></i>
       )}

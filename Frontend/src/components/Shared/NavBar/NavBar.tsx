@@ -16,7 +16,7 @@ export default function Navbar({ isAsideOpen, toggleAside }: Props) {
 
   return (
     <nav
-      className={`${bgColor + " " + textColor} w-full dark:border-gray-700 p-1`}
+      className={`${bgColor + " " + textColor} fixed z-50 w-full dark:border-gray-700 p-1`}
     >
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">

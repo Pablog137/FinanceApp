@@ -5,7 +5,7 @@ export default function BasicLineChart() {
   const { chartSize, chartHeight } = useWindowSize();
 
   return (
-    <div className="hidden md:block col-span-12 rounded-md border-2 text-gray-700 bg-gray-100">
+    <div className="hidden md:block col-span-12 rounded-md text-gray-700 bg-white">
       <h1 className="text-xl font-bold p-4 border-b">Analytics</h1>
       <div className="p-4 flex flex-col items-center">
         <div className="flex flex-col self-start">
