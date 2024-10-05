@@ -1,4 +1,4 @@
-import { schedulePayments } from "../../helpers/DashboardLists";
+import { schedulePayments } from "../../helpers/dashboardLists";
 import SchedulePaymentElement from "./SchedulePaymentElement";
 
 export default function SchedulePayments() {

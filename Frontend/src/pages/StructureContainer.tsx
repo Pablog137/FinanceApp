@@ -13,7 +13,7 @@ interface StructureContainerProps {
 export default function StructureContainer({
   MainComponent,
 }: StructureContainerProps) {
-  const [isAsideOpen, setIsAsideOpen] = useState(false);
+  const [isAsideOpen, setIsAsideOpen] = useState(true);
   const { isDarkMode } = useDarkMode();
   const { isMobile } = useWindowSize();
 
