@@ -1,6 +1,9 @@
 import { LineChart } from "@mui/x-charts/LineChart";
+import useWindowSize from "../../hooks/useWindowSize";
 
 export default function BasicLineChart() {
+  const { chartSize, chartHeight } = useWindowSize();
+
   return (
     <div className="hidden md:block col-span-12 rounded-md border-2 text-gray-700 bg-gray-100">
       <h1 className="text-xl font-bold p-4 border-b">Analytics</h1>
@@ -31,8 +34,8 @@ export default function BasicLineChart() {
               data: [2, 5.5, 2, 4.5, 8.5, 3, 7.2, 1.5, 4],
             },
           ]}
-          width={500}
-          height={300}
+          width={chartSize}
+          height={chartHeight}
         />
       </div>
     </div>
