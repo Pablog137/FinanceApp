@@ -55,7 +55,7 @@ export default function Aside() {
         <ul className="font-medium flex flex-col items-center lg:items-start justify-end list-none flex-grow gap-1">
           <li className="p-2 lg:w-full">
             <a
-              className={`${textColor} ${bgColor} flex items-center p-2 rounded-lg group hover:bg-gray-100 cursor-pointer`}
+              className={`${textColor} ${bgHoverColor} flex items-center p-2 rounded-lg group cursor-pointer`}
             >
               <i
                 className={`fa-solid fa-arrow-right-from-bracket text-lg md:text-2xl transition duration-75 `}
