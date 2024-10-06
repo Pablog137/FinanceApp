@@ -20,12 +20,11 @@ export default function AsideElement({
   const bgHoverColor = isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100";
 
   return (
-    <li className="p-2">
+    <li className="p-2 lg:w-full">
       <a
         href={url}
         className={`
-          ${textColor} ${bgHoverColor} flex items-center p-2 rounded-lg 
-           group
+          ${textColor} ${bgHoverColor} flex items-center p-2 rounded-lg group
         `}
       >
         <i

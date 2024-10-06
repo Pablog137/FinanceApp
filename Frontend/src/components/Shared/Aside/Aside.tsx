@@ -7,6 +7,8 @@ export default function Aside() {
 
   const bgColor = isDarkMode ? "dark:bg-gray-800" : "bg-white";
   const textColor = isDarkMode ? "text-gray-200" : "text-gray-600";
+  const bgHoverColor = isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100";
+
   return (
     <aside
       id="logo-sidebar"
@@ -17,7 +19,7 @@ export default function Aside() {
         <ul className="font-medium flex flex-col items-center lg:items-start justify-start list-none flex-grow gap-1">
           <AsideElementList textColor={textColor} />
         </ul>
-        <ul className="font-medium flex flex-col items-center lg:items-start justify-center list-none flex-grow gap-1">
+        <ul className="font-medium flex flex-col items-center lg:items-start justify-center list-none flex-grow gap-1 pt-10">
           <div className="p-2">
             <h1 className={`${textColor} p-2 font-semibold text-sm`}>
               PREFERENCES
@@ -30,10 +32,10 @@ export default function Aside() {
             textColor={textColor}
             textSize="text-lg"
           />
-          <li className="p-2">
-            <button
+          <li className="p-2 lg:w-full">
+            <a
               onClick={toggleDarkMode}
-              className={`${textColor} ${bgColor} flex items-center p-2 rounded-lg group hover:bg-gray-100`}
+              className={`${textColor} ${bgHoverColor} flex items-center p-2 rounded-lg group  cursor-pointer`}
             >
               {isDarkMode ? (
                 <i
@@ -47,13 +49,13 @@ export default function Aside() {
               <span className="flex-1 whitespace-nowrap ms-3 hidden lg:flex">
                 Light
               </span>
-            </button>
+            </a>
           </li>
         </ul>
         <ul className="font-medium flex flex-col items-center lg:items-start justify-end list-none flex-grow gap-1">
-          <li className="p-2">
-            <button
-              className={`${textColor} ${bgColor} flex items-center p-2 rounded-lg group hover:bg-gray-100`}
+          <li className="p-2 lg:w-full">
+            <a
+              className={`${textColor} ${bgColor} flex items-center p-2 rounded-lg group hover:bg-gray-100 cursor-pointer`}
             >
               <i
                 className={`fa-solid fa-arrow-right-from-bracket text-lg md:text-2xl transition duration-75 `}
@@ -61,7 +63,7 @@ export default function Aside() {
               <span className="flex-1 whitespace-nowrap ms-3 hidden lg:flex">
                 Sign out
               </span>
-            </button>
+            </a>
           </li>
         </ul>
       </div>

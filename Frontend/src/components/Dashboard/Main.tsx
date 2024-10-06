@@ -14,7 +14,7 @@ export default function Main({ colMain }: Props) {
   return (
     <>
       <div
-        className={`${textColor} pt-5 md:pt-10 ${colMain} grid grid-cols-12 xl:p-20 p-10 pb-20`}
+        className={`${textColor} ${colMain} grid grid-cols-12 p-10 xl:p-20 pb-20 pt-10 md:pt-20`}
       >
         <div className="text-white p-5 lg:p-10 col-span-12 md:col-span-6 xl:col-span-4">
           <Card />
