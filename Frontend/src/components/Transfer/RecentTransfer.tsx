@@ -2,7 +2,7 @@ import RecentTransferElement from "./RecentTransferElement";
 
 export default function RecentTransfer() {
   return (
-    <div>
+    <div className="flex flex-col items-center ">
       <h1 className="text-lg font-semibold pt-16 pb-10 text-start">
         Recent transfers
       </h1>
