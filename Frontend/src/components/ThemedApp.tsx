@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import { useDarkMode } from "../context/DarkModeContext";
 import NotFound from "../pages/NotFound";
 import Dashboard from "../pages/Dashboard";
+import Transfer from "../pages/Transfer";
 
 const ThemedApp = () => {
   const { isDarkMode } = useDarkMode();
@@ -18,6 +19,7 @@ const ThemedApp = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/transfer" element={<Transfer />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

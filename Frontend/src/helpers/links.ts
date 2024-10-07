@@ -18,9 +18,9 @@ export const navLinks = [
     textSize: "text-lg",
   },
   {
-    text: "Transactions",
+    text: "Transfer",
     icon: "fa-solid fa-arrows-left-right",
-    url: "/transactions",
+    url: "/Transfer",
     textColor: "text-white",
     textSize: "text-lg",
   },
