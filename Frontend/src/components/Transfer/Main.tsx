@@ -19,7 +19,7 @@ export default function Main({ colMain }: Props) {
           <h1 className="text-xl font-semibold pt-5 pb-10 text-center">
             Money transfer
           </h1>
-          <SearchContact />
+          {/* <SearchContact /> */}
           <RecentTransfer />
           <NewTransferForm />
         </div>

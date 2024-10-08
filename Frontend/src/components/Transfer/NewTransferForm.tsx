@@ -4,7 +4,7 @@ export default function NewTransferForm() {
       <h1 className="text-lg font-semibold pt-16 pb-5 text-start">
         Make new transfer
       </h1>
-      <form action="" className="grid grid-cols-12 gap-4 w-full max-w-md px-1">
+      <form action="" className="grid grid-cols-12 gap-4 w-full max-w-lg px-1">
         <div className="col-span-12">
           <input
             type="username"

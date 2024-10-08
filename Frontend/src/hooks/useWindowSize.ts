@@ -13,7 +13,7 @@ export default function useWindowSize() {
   }, []);
 
   const isMobile = windowWidth < 768;
-  const chartWidth = windowWidth < 900 ? 600 : 800;
+  const chartWidth = windowWidth < 900 ? 600 : windowWidth < 1000 ? 700 : 800;
   const chartHeight = windowWidth < 900 ? 300 : 400;
 
   return {
